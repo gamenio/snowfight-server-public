@@ -1,0 +1,6 @@
+authserver
+authserver.conf.dist
+realmlist.db.sql
+bannedlist.db.sql
+geoip.mmdb
+scripts/import_auth_sql.sh

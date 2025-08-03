@@ -1,0 +1,28 @@
+message("")
+if( UNIX )
+  message("* Build type  : ${CMAKE_BUILD_TYPE}")
+endif()
+
+message("* Install core to        : ${CMAKE_INSTALL_PREFIX}")
+
+if( WITH_COREDEBUG )
+  message("")
+  message(" *** WITH_COREDEBUG - WARNING!")
+  message(" *** additional core debug logs have been enabled!")
+  message(" *** this setting doesn't help to get better crash logs!")
+  message(" *** in case you are searching for better crash logs use")
+  message(" *** -DCMAKE_BUILD_TYPE=RELWITHDEBINFO")
+  message(" *** DO NOT ENABLE IT UNLESS YOU KNOW WHAT YOU'RE DOING!")
+  message("* Use coreside debug     : Yes")
+  add_definitions(-DNS_DEBUG)
+else()
+  message("* Use coreside debug     : No  (default)")
+endif()
+
+if( NOT WITH_SOURCE_TREE STREQUAL "no" )
+  message("* Show source tree       : Yes - \"${WITH_SOURCE_TREE}\"")
+else()
+  message("* Show source tree       : No")
+endif()
+
+message("")

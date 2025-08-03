@@ -1,0 +1,265 @@
+################################################
+# Auth Server 配置文件                         #
+################################################
+[authserver]
+
+###################################################################################################
+# 连接和目录配置
+#
+# LogsDir
+#    Description: 设置日志的目录
+#    Important:   LogsDir需要用引号包围，因为字符串可能包含空格。
+#                 需要填写绝对路径。
+#    Default:     "" - (日志文件将被存储在程序所在目录的"log"文件夹下)
+
+LogsDir = ""
+
+#
+# ThreadPool
+#    Description: 线程池中的线程数量
+#                 线程池当前用于:
+#					  - Log异步输出（通过参数Log.Async.Enable激活）
+#                     - Signal处理
+#                     - Auth的socket监听
+#        Default:   1
+
+ThreadPool = 1
+
+#
+# AuthServerPort
+#    Description: 服务器端口号
+#    Default:     18401
+
+AuthServerPort = 18401
+
+#
+# BindIP
+#    Description: 服务器IP地址。
+#    Default:     "0.0.0.0" - (绑定系统的所有IP)
+
+BindIP = "0.0.0.0"
+
+#
+###################################################################################################
+
+###################################################################################################
+# 性能配置
+#
+# UseProcessors
+#    Description: Windows和Linux多处理器掩码（mask）
+#    Example:     假设服务器有两个CPU:
+#                     1 - 仅使用第一个CPU
+#                     2 - 仅使用第二个CPU
+#					  3 - 同时使用两个CPU（3=1|2）
+#    Default:     0  - (由操作系统调度)
+#                 1+ - (所选处理器的位掩码（Bit mask）)
+
+UseProcessors = 0
+
+#
+# ProcessPriority
+#    Description: 进程在Windows和Linux上的处理优先级设置
+#    Details:     在Linux上使用了一个最佳的值“-15”。 (需要系统管理员权限).
+#                 在Windows上进程设置为HIGH级别。
+#    Default:     0 - (Normal)
+#                 1 - (High)
+
+ProcessPriority = 1
+
+#
+# SessionTimeout
+#    Description: 玩家会话超时时间（毫秒）
+#    Default:  10000
+#              0      -  不超时
+
+SessionTimeout = 10000
+
+#
+###################################################################################################
+
+
+###################################################################################################
+# 网络配置
+#
+# Network.Threads
+#    Description: 网络线程的数量
+#    Default:     1 - 每1000个连接1个线程
+
+Network.Threads = 1
+
+#
+# Network.OutKBuff
+#    Description: 用于内核发送缓冲区的大小（bytes），参考socket选项SO_SNDBUF。
+#    Default:     -1 - 使用系统的默认设置
+
+Network.OutKBuff = 4096
+
+#
+# Network.TcpNoDelay:
+#    Description: TCP的Nagle算法设置。
+#    Default:     0 - (Disabled, 流量少延迟大)
+#                 1 - (Enabled, 流量多延迟小, TCP_NO_DELAY)
+
+Network.TcpNoDelay = 0
+
+#
+# Network.SendQueueLimit
+#    Description: 用于每个连接发送队列的大小（bytes），当发送队列超出这个限制时将强制断开连接
+#    Default:     0      - 无限制
+
+Network.SendQueueLimit = 12800
+
+#
+###################################################################################################
+
+
+###################################################################################################
+# Realm配置
+#
+# RegionMap.DefaultCountry
+#    Description: 地区映射的默认国家，使用ISO 3166-1编码标准
+#                 当玩家所在国家没有出现在地区映射表中时将使用默认国家
+#    Default:     US
+
+RegionMap.DefaultCountry = "US"
+
+#
+# RegionMap.GeoIP
+#    Description: 使用玩家IP地理位置进行地区映射
+#                 如果禁用则使用玩家上报的国家编码进行地区映射
+#    Default:     1 - (Enabled)
+#                 0 - (Disabled)
+
+RegionMap.GeoIP = 1
+
+#
+###################################################################################################
+
+
+###################################################################################################
+# 日志系统配置
+#
+# Appender配置
+#    Description: 定义日志的输出目标
+#    Format:      Appender.<Name>=<Type>,<LogLevel>,<Flags>,[optional1],[optional2],[optional3]
+#
+#                    Name:     目标名称
+#  
+#                    Type:     日志输出目标的类型
+#                              0 - (None)
+#                              1 - (Console)
+#                              2 - (File)
+#                              3 - (DB)
+#
+#                    LogLevel: 日志等级
+#                              0 - (Disabled)
+#                              1 - (Trace)
+#                              2 - (Debug)
+#                              3 - (Info)
+#                              4 - (Warn)
+#                              5 - (Error)
+#                              6 - (Fatal)
+#
+#                    Flags:    日志标记，可以组合使用（例如：1|2|4|8=15）
+#                              0 - 无
+#                              1 - 增加时间戳到输出的内容
+#                              2 - 增加日志等级到输出的内容
+#                              4 - 增加过滤器类型到输出的内容
+#                              8 - 增加一个时间戳到日志的文件名，格式：YYYY-MM-DD_HH-MM-SS (仅用于 Type = File)
+#                             16 - 在重写日志文件之前，如果该文件已经存在则将其备份，备份文件名将会增加一个时间戳。
+#                               (仅用于 Mode = w)
+#
+#                    Colors:   日志的输出颜色（当Type=Console时用于optional1）
+#                              Format: "fatal error warn info debug trace"
+#                              0 - BLACK
+#                              1 - RED
+#                              2 - GREEN
+#                              3 - BROWN
+#                              4 - BLUE
+#                              5 - MAGENTA
+#                              6 - CYAN
+#                              7 - GREY
+#                              8 - YELLOW
+#                              9 - LRED
+#                             10 - LGREEN
+#                             11 - LBLUE
+#                             12 - LMAGENTA
+#                             13 - LCYAN
+#                             14 - WHITE
+#                             例如: "13 11 9 5 3 1"
+#
+#                    File:     设置日志的文件名（当Type=File时用于optional1）
+#                              允许使用"%s"创建一个动态文件名的日志文件
+#  
+#                    Mode:     文件打开模式（当Type=File时用于optional2）
+#                              a - (Append)
+#                              w - (Overwrite)
+#  
+#                    MaxFileSize: 限制文件大小，当超出这个限制时创建新的文件(当Type=File时用于optional3)
+#                                 值应该被设置为64位无符号整数.
+#                                 最大值为 4294967295 (4 gb)，空值为无限制
+#                                 注意: 不能用于动态文件名的日志文件
+#                                 例如:  536870912 (512 mb)
+#
+
+Appender.Console=1,3,0
+Appender.Server=2,3,23,auth.log,w,1048576
+
+#
+# Logger配置
+#    Description: 定义日志的类型
+#    Format:      Logger.<Name>=<LogLevel>,<Appender1> [Appender2]...
+#
+#                     LogLevel: 日志等级
+#                               0 - (Disabled)
+#                               1 - (Trace)
+#                               2 - (Debug)
+#                               3 - (Info)
+#                               4 - (Warn)
+#                               5 - (Error)
+#                               6 - (Fatal)
+#
+#                     Appender[N]: Logger链接到的Appender列表(使用空格分隔)。
+#
+
+Logger.root=5,Console Server
+
+# Server
+Logger.server=2,Console Server
+Logger.server.authserver=2,Console Server
+Logger.server.loading=2,Console Server
+
+# Network
+Logger.network=2,Server
+Logger.network.acceptor=2,Console Server
+Logger.network.thread=2,Server
+Logger.network.socket=2,Server
+
+# Auth
+Logger.auth=2,Server
+Logger.auth.session=2,Server
+Logger.auth.socket=2,Server
+Logger.auth.geoip=2,Server
+
+# Auth.Handler
+Logger.auth.handler.logon=2,Server
+
+#
+# Log.Async.Enable
+#    Description: 异步输出日志。
+#    Default:     0 - (Disabled)
+#                 1 - (Enabled)
+
+Log.Async.Enable = 0
+
+#
+# PidFile
+#    Description: Auth守护进程的PID文件。
+#    Example:     "auth.pid" - (Enabled)
+#    Default:     ""          - (Disabled)
+
+PidFile = "auth.pid"
+
+#
+###################################################################################################
+

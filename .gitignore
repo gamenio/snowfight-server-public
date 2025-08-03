@@ -1,0 +1,9 @@
+# Common
+build/
+
+# Windows
+proj.win64/
+*.bak
+
+# MacOS
+.DS_Store

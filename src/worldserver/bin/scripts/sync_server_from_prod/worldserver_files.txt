@@ -1,0 +1,6 @@
+worldserver-18403
+worldserver.conf
+worldserver.conf.dist
+odb/
+map/
+scripts/import_world_sql.sh

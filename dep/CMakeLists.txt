@@ -1,0 +1,8 @@
+ add_subdirectory(boost)
+ add_subdirectory(protobuf-lite)
+ add_subdirectory(utf8cpp)
+ add_subdirectory(cppformat)
+ add_subdirectory(tinyxml2)
+ add_subdirectory(zlib)
+ add_subdirectory(sqlitecpp)
+ add_subdirectory(maxminddb)
