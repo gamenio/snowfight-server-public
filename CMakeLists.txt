@@ -14,21 +14,21 @@ endif()
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/macros")
 
-# 如果没有设置构建类型则默认为"RELEASE"模式
+# If no build type is set, the default is “RELEASE” mode
 if( NOT CMAKE_BUILD_TYPE )
   set(CMAKE_BUILD_TYPE "RELEASE")
 endif()
 
-# 设置默认的构建选项
+# Set the default build options
 include(cmake/options.cmake)
 
-# 加载与平台相关的配置文件
+# Load platform-specific configuration files
 include(CheckPlatform)
 
 include(GroupSources)
 include(CollectSources)
 
-# 打印选项配置结果
+# Print option configuration results
 include(cmake/showoptions.cmake)
 
 add_subdirectory(dep)

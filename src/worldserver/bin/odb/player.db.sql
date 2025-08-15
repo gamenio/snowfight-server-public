@@ -35,8 +35,7 @@ CREATE TABLE IF NOT EXISTS "reward_for_ranking" (
 	"xp_max"	INTEGER,
 	"xp_rewarded_players_percent"	REAL
 );
-INSERT INTO "player_name" ("lang","name") VALUES (0,'Player%d'),
- (1,'玩家%d');
+INSERT INTO "player_name" ("lang","name") VALUES (0,'Player%d');
 INSERT INTO "player_template" ("id","display_id","origin_level") VALUES (1,1,1),
  (2,2,1),
  (3,3,1),

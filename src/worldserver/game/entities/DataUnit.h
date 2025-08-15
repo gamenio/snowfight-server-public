@@ -22,7 +22,7 @@ enum StaminaFlag
 	STAMINA_FLAG_CHARGING			= 1 << 1,
 };
 
-// 隐蔽状态
+// Concealment state
 enum ConcealmentState
 {
 	CONCEALMENT_STATE_EXPOSED,
@@ -30,8 +30,8 @@ enum ConcealmentState
 	CONCEALMENT_STATE_CONCEALED,
 };
 
-// 英雄角色ID
-// 与玩家和机器人模板ID相同
+// Hero character ID
+// Same as player and robot template ID
 enum HeroID
 {
 	HERO_NONE			= 0,
@@ -60,37 +60,37 @@ enum StatType
 	MAX_STAT_TYPES,
 };
 
-#define	MAX_ATTACK_RANGE				343.0f	// 最大攻击范围。单位：points
-#define MAX_MOVE_SPEED					150		// 最大移动速度。单位：points/second
+#define	MAX_ATTACK_RANGE				343.0f	// Maximum attack range. Unit: points
+#define MAX_MOVE_SPEED					150		// Maximum moving speed. Unit: points/second
 
-// 单位的等级范围
+// Unit level range
 #define LEVEL_MIN			1
 #define LEVEL_MAX			200
 
-// 战斗力最大值
+// Maximum combat power
 #define COMBAT_POWER_MAX	1000
 
-// 默认的国家
+// Default country
 #define COUNTRY_DEFAULT		"US"
 
-// 表情代码
+// Smiley code
 enum SmileyCode
 {
-	SMILEY_NONE				= 0,	// 无
-	SMILEY_LAUGH			= 1,	// 笑
-	SMILEY_NAUGHTY			= 2,	// 淘气
-	SMILEY_DEVIL			= 3,	// 魔鬼
-	SMILEY_SAD				= 4,	// 伤心
-	SMILEY_CRY				= 5,	// 哭
-	SMILEY_ANGRY			= 6,	// 愤怒
+	SMILEY_NONE				= 0,
+	SMILEY_LAUGH			= 1,
+	SMILEY_NAUGHTY			= 2,
+	SMILEY_DEVIL			= 3,
+	SMILEY_SAD				= 4,
+	SMILEY_CRY				= 5,
+	SMILEY_ANGRY			= 6,
 };
 
 enum UnitFlag: uint32
 {
 	UNIT_FLAG_NONE				= 0,
-	UNIT_FLAG_DEATH_LOSE_MONEY	= 1 << 0,	// 在单位死亡（生命值为0）时是否失去钱币
-	UNIT_FLAG_DAMAGED			= 1 << 1,	// 单位受到伤害
-};
+	UNIT_FLAG_DEATH_LOSE_MONEY	= 1 << 0,	// Whether money is lost when a unit dies (health reaches 0)
+	UNIT_FLAG_DAMAGED			= 1 << 1,	// Unit received damage
+}; 
 
 struct CombatGrade
 {
@@ -100,10 +100,10 @@ struct CombatGrade
 	float loseMoneyPercent;
 	float loseMoneyApportionment;
 	float robotNoNameChance;
-	int32 dangerStateHealthLoss;	// 当单位位于危险区时每秒失去的生命值
+	int32 dangerStateHealthLoss;	// The health points lost per second when the unit is in a danger zone.
 };
 
-#define TRAINING_GROUND_COMBAT_GRADE					0	// 训练场的战斗等级
+#define TRAINING_GROUND_COMBAT_GRADE					0	// Combat grade of the training ground
 
 struct UnitStats
 {
@@ -118,7 +118,7 @@ struct UnitStats
 	int32 damage;
 };
 
-// 衡量战斗力的属性指标
+// Statistic indices that measure combat power
 enum StatIndex
 {
 	STATINDEX_MAX_HEALTH,
@@ -187,29 +187,29 @@ public:
 	virtual Point const& getPosition() const override { return m_movementInfo.position; }
 	virtual void setPosition(Point const& position) override { m_movementInfo.position = position; }
 
-	// 名称
+	// Name
 	void setName(std::string const& name) { m_name = name; }
 	std::string const& getName() const { return m_name; }
 
-	// 显示ID
+	// Display ID
 	uint32 getDisplayId() const { return m_displayId; }
 	void setDisplayId(uint32 id) { m_displayId = id; }
 
-	 // 国家
+	 // Country
 	void setCountry(std::string const& country) { m_country = country; }
 	std::string const& getCountry() const { return m_country; }
 
-	// 出生点
+	// Spawning point
 	void setSpawnPoint(TileCoord const& spawnPoint) { m_spawnPoint = spawnPoint; }
 	TileCoord const& getSpawnPoint() const { return m_spawnPoint; }
 
-	// 等级
+	// Level
 	void setLevel(uint8 level);
 	uint8 getLevel() const { return m_level; }
-	// 经验值
+	// Experience
 	virtual void setExperience(int32 xp) { m_experience = xp; }
 	int32 getExperience() const { return m_experience; }
-	// 下一个等级所需的经验值
+	// Experience required for the next level
 	virtual void setNextLevelXP(int32 xp) { m_nextLevelXP = xp; }
 	int32 getNextLevelXP() const { return m_nextLevelXP; }
 
@@ -217,103 +217,104 @@ public:
 	void setOrientation(float rad);
 	void randomOrientation() { this->setOrientation(float(random((float)-M_PI, (float)M_PI)));}
 
-	// 攻击范围。单位：points
+	// Attack range. Unit: points
 	void setAttackRange(float range);
 	float getAttackRange() const { return m_attackRange; }
 	void setBaseAttackRange(float range) { m_baseAttackRange = range; }
 	float getBaseAttackRange() const { return m_baseAttackRange; }
 
-	// 移动速度。单位：points/second
+	// Moving speed. Unit: points/second
 	int32 getMoveSpeed() const { return m_moveSpeed; }
 	void setMoveSpeed(int32 moveSpeed);
 	int32 getBaseMoveSpeed() const { return m_baseMoveSpeed; }
 	void setBaseMoveSpeed(int32 moveSpeed) { m_baseMoveSpeed = moveSpeed; }
 
-	// 生命值
+	// Health
 	int32 getHealth() const { return m_health; }
 	void setHealth(int32 health);
-	// 最大生命值
+	// Maximum health
 	int32 getMaxHealth() const { return m_maxHealth; }
 	void setMaxHealth(int32 maxHealth);
 	int32 getBaseMaxHealth() const { return m_baseMaxHealth; }
 	void setBaseMaxHealth(int32 maxHealth) { m_baseMaxHealth = maxHealth; }
-	// 生命值恢复比率。单位：生命值恢复比率/minute
+	// Health regeneration rate. Unit: Health regeneration rate/minute
 	void setHealthRegenRate(float rate) { m_healthRegenRate = rate; }
 	float getHealthRegenRate() const { return m_healthRegenRate; }
 	void setBaseHealthRegenRate(float rate) { m_baseHealthRegenRate = rate; }
 	float getBaseHealthRegenRate() const { return m_baseHealthRegenRate; }
 
-	// 体力值
+	// Stamina
 	void setStamina(int32 stamina) { m_staminaInfo.stamina = stamina; }
 	int32 getStamina() const { return m_staminaInfo.stamina; }
 	StaminaInfo const& getStaminaInfo() const { return m_staminaInfo; }
-	// 体力计数器
+	// Stamina counter
 	void increaseStaminaCounter() { ++m_staminaInfo.counter; }
 	uint32 getStaminaCounter() const { return m_staminaInfo.counter; }
-	// 攻击计数器
+	// Attack counter
 	uint32 getAttackCounter() const { return m_staminaInfo.attackCounter; }
 	void increaseAttackCounter() { ++m_staminaInfo.attackCounter; }
 	void resetAttackCounter() { m_staminaInfo.attackCounter = 0; }
-	// 消耗体力总和
+	//  The total of stamina consumed.
 	uint32 getConsumedStaminaTotal() const { return m_staminaInfo.consumedStaminaTotal; }
 	void increaseConsumedStaminaTotal(uint32 amount) { m_staminaInfo.consumedStaminaTotal += amount; }
 	void resetConsumedStaminaTotal() { m_staminaInfo.consumedStaminaTotal = 0; }
-	// 体力标记
+	// Stamina flag
 	void setStaminaFlags(uint32 flags) { m_staminaInfo.flags = flags; }
 	void addStaminaFlag(uint32 flag) { if (!this->hasStaminaFlag(flag)) m_staminaInfo.flags |= flag; }
 	bool hasStaminaFlag(uint32 flag) const { return (m_staminaInfo.flags & flag) != 0; }
 	void clearStaminaFlag(uint32 flag) { if (hasStaminaFlag(flag)) m_staminaInfo.flags &= ~flag; }
 	uint32 getStaminaFlags() const { return m_staminaInfo.flags; }
-	// 最大体力值
+	// Maximum stamina
 	void setMaxStamina(int32 maxStamina) { m_staminaInfo.maxStamina = maxStamina; }
 	int32 getMaxStamina() const { return m_staminaInfo.maxStamina; }
 	void setBaseMaxStamina(int32 stamina) { m_baseMaxStamina = stamina; }
 	int32 getBaseMaxStamina() const { return m_baseMaxStamina; }
-	// 蓄力开始的体力
+	// Stamina at the start of charging
 	void setChargeStartStamina(int32 stamina) { m_staminaInfo.chargeStartStamina = stamina; }
 	int32 getChargeStartStamina() const { return m_staminaInfo.chargeStartStamina; }
-	// 已蓄力的体力
+	// Charged stamina
 	void setChargedStamina(int32 stamina) { m_staminaInfo.chargedStamina = stamina; }
 	int32 getChargedStamina() const { return m_staminaInfo.chargedStamina; }
-	// 体力恢复比率。单位：体力恢复的比率/second
+	// Stamina regeneration rate. Unit: Stamina regeneration rate / second
 	void setStaminaRegenRate(float rate) { m_staminaInfo.staminaRegenRate = rate; }
 	float getStaminaRegenRate() const { return m_staminaInfo.staminaRegenRate; }
 	void setBaseStaminaRegenRate(float rate) { m_baseStaminaRegenRate = rate; }
 	float getBaseStaminaRegenRate() const { return m_baseStaminaRegenRate; }
-	// 每次攻击需要的体力
+	// The stamina required for each attack
 	void setAttackTakesStamina(int32 stamina) { m_attackTakesStamina = stamina; }
 	int32 getAttackTakesStamina() const { return m_attackTakesStamina; }
 	void setBaseAttackTakesStamina(int32 stamina) { m_baseAttackTakesStamina = stamina; }
 	int32 getBaseAttackTakesStamina() const { return m_baseAttackTakesStamina; }
-	// 蓄力攻击每秒消耗的体力
+	// Stamina consumed per second for charged attack
 	void setChargeConsumesStamina(int32 stamina) { m_staminaInfo.chargeConsumesStamina = stamina; }
 	int32 getChargeConsumesStamina() const { return m_staminaInfo.chargeConsumesStamina; }
 	void setBaseChargeConsumesStamina(int32 stamina) { m_baseChargeConsumesStamina = stamina; }
 	int32 getBaseChargeConsumesStamina() const { return m_baseChargeConsumesStamina; }
-	// 攻击信息计数器
+	// Attack information counter
 	void setAttackInfoCounter(uint32 counter) { m_staminaInfo.attackInfoCounter = counter; }
 	uint32 getAttackInfoCounter() const { return m_staminaInfo.attackInfoCounter; }
 
-	// 每次攻击造成的伤害
+	// Damage dealing by each attack
 	void setDamage(int32 damage) { m_damage = damage; }
 	int32 getDamage() const { return m_damage; }
 	void setBaseDamage(int32 damage) { m_baseDamage = damage; }
 	int32 getBaseDamage() const { return m_baseDamage; }
 
-	// 防御力
+	// Defense
 	void setDefense(int32 defense) { m_defense = defense; }
 	int32 getDefense() const { return m_defense; }
 
-	// 战斗力
+	// Combat power
 	uint16 getCombatPower() const { return m_combatPower; }
 	void setCombatPower(uint16 cp) { m_combatPower = cp; }
 
 	// void setMovementInfo(MovementInfo const& movement) { m_movementInfo = movement; }
 	MovementInfo const& getMovementInfo() const { return m_movementInfo; }
 
-	// 动作计数器
-	// 默认情况下客户端与服务器的动作计数保持同步。
-	// 在某些情况下（例如：重生、传输），需要将已同步到客户端的动作计数标记为无效，这就需要提高动作计数器，这样服务器将忽略来自客户端的与当前计数不匹配的动作
+	// Movement counter
+	// By default, the movement counter is synchronized between the client and the server.
+	// In some cases (e.g., respawn, transport) it is necessary to invalidate the movement counter synchronized to the client. 
+	// This requires increasing the movement counter so that the server ignores movement from the client that does not match the current count.
 	void increaseMovementCounter() { ++m_movementInfo.counter; }
 	uint32 getMovementCounter() const { return m_movementInfo.counter; }
 
@@ -336,23 +337,23 @@ public:
 	void setUnitFlags(uint32 flags);
 	uint32 getUnitFlags() const { return m_unitFlags; }
 	
-	// 表情
+	// Smiley
 	void setSmiley(uint16 code);
 	uint16 getSmiley() const { return m_smiley; }
 
-	// 隐蔽状态
+	// Concealment state
 	virtual void setConcealmentState(ConcealmentState state) { m_concealmentState = state; }
 	ConcealmentState getConcealmentState() const { return m_concealmentState; }
 
-	// 捡拾持续时间。单位：毫秒
+	// Pickup duration. Unit: milliseconds
 	virtual void setPickupDuration(int32 duration) { m_pickupDuration = duration; }
 	int32 getPickupDuration() const { return m_pickupDuration; }
 
-	// 魔豆数量
+	// Number of magic beans
 	void setMagicBeanCount(int32 count);
 	int32 getMagicBeanCount() const { return m_magicBeanCount; }
 
-	// 击败人数
+	// Number of kills
 	virtual void setKillCount(int32 count) { m_killCount = count; }
 	int32 getKillCount() const { return m_killCount; }
 
@@ -403,4 +404,4 @@ protected:
 	int32 m_killCount;
 };
 
-#endif //__DATA_UNIT_H__
+#endif // __DATA_UNIT_H__

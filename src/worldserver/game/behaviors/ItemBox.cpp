@@ -108,7 +108,7 @@ void ItemBox::enterCollision(Projectile* proj, float precision)
 
 	Unit* attacker = proj->getLauncher().getSource();
 
-	// 计算伤害
+	// Calculate damage
 	int32 damage = attacker->calcDamage(this, proj, precision);
 	attacker->dealDamage(this, damage);
 }
@@ -191,7 +191,7 @@ void ItemBox::dropLoot(Unit* looter)
 	if (!itemList)
 		return;
 
-	// 初始化地面物品位置
+	// Initialize floor item position
 	FloorItemPlace::Direction placeDir;
 	switch (this->getData()->getDirection())
 	{
@@ -205,7 +205,7 @@ void ItemBox::dropLoot(Unit* looter)
 	TileCoord currCoord(m_map->getMapData()->getMapSize(), this->getData()->getPosition());
 	FloorItemPlace itemPlace(m_map, currCoord, placeDir);
 
-	// 创建掉落物品
+	// Create drop items
 	for (auto it = itemList->begin(); it != itemList->end(); ++it)
 	{
 		ItemBoxItem const& item = *it;

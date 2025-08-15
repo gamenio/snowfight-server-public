@@ -5,7 +5,7 @@
 #include "game/behaviors/UnitHelper.h"
 #include "game/entities/ObjectGuid.h"
 
-// 目标的执行动作
+// Target execution actions
 enum TargetAction
 {
 	TARGET_ACTION_COLLECT,

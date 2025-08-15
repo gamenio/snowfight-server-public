@@ -44,12 +44,12 @@ bool SimpleChaseMovementGenerator<TARGET>::update(NSTime diff)
 	if (!this->m_owner->getMoveSpline()->isFinished())
 		return true;
 
-	// 已锁定目标
+	// Target locked
 	if (this->m_owner->lockingTarget(this->m_target.getTarget()))
 	{
 		this->moveStop();
 	}
-	// 开始追赶目标
+	// Start chasing the target
 	else
 	{
 		TileCoord targetCoord(this->m_owner->getMap()->getMapData()->getMapSize(), this->m_target->getData()->getPosition());

@@ -193,7 +193,7 @@ bool Item::canDetect(Unit* target) const
 	if (!this->isActive() || !target->isInWorld() || !target->isVisible() || !target->isAlive())
 		return false;
 
-	// 物品无法探测到GM玩家
+	// The item cannot detect GM players
 	if (target->asPlayer() && target->asPlayer()->getData()->isGM())
 		return false;
 
@@ -324,7 +324,7 @@ void Item::respawn()
 
 	SpawnManager* spawnMgr = m_map->getSpawnManager();
 
-	// 随机数量
+	// Random count
 	int32 count = random(spawnInfo->minCount, spawnInfo->maxCount);
 	this->getData()->setCount(count);
 	spawnMgr->increaseItemCount(tmpl->id, count);
@@ -344,11 +344,11 @@ bool Item::inactivate()
 	ItemSpawnInfo const* spawnInfo = sObjectMgr->getItemSpawnInfo(this->getMap()->getMapId(), m_spawnInfoId);
 	if (spawnInfo && spawnInfo->spawnTime > 0)
 	{
-		// 如果随机位置在安全区内则设置为不活跃状态
+		// If the random position is within the safe zone, set it to inactive state
 		TileCoord coord = this->getMap()->randomOpenTileOnCircle(spawnInfo->spawnPos, spawnInfo->spawnDist, true);
 		if (this->getMap()->isWithinSafeZone(coord))
 		{
-			// 强制更新可见状态
+			// Force update visibility state
 			this->setItemState(ITEM_STATE_INACTIVE);
 			this->updateObjectVisibility(true);
 

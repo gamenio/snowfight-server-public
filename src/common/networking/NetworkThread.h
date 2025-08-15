@@ -15,7 +15,7 @@
 #include "logging/Log.h"
 #include "containers/ConcurrentQueue.h"
 
-#define UPDATE_TIMER_INTERVAL				10 // 毫秒
+#define UPDATE_TIMER_INTERVAL				10 // Milliseconds
 
 using boost::asio::ip::tcp;
 
@@ -46,7 +46,7 @@ public:
 		return true;
 	}
 
-	// 停止网络IO事件分发并等待线程结束
+	// Stop dispatching network IO events and wait for the thread to finish
     void stop()
     {
 		if (m_isStopped.exchange(true))
@@ -134,7 +134,7 @@ private:
 		this->scheduleUpdateTimer();
         this->processPendingSockets();
 
-		// 移除已关闭的Socket，如果未关闭则更新
+		// Remove closed sockets, or update them if they are not closed
 		m_sockets.erase(std::remove_if(m_sockets.begin(), m_sockets.end(), [this](std::shared_ptr<SOCKET_TYPE> const& socket)
 		{
 			if (socket->isOpen())

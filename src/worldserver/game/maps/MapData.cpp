@@ -417,17 +417,17 @@ void MapData::initWaypoints()
 			int32 sourceTileIndex = this->getTileIndex(source);
 			m_linkedWaypoints.emplace(sourceTileIndex, target);
 
-			// 初始化导航点区域
+			// Initialize the waypoint area
 			int32 diffX = target.x - source.x;
 			int32 diffY = target.y - source.y;
 			int32 areaW, areaH;
-			// 横向拆分
+			// Horizontal splitting
 			if (diffX * diffY > 0 || diffY == 0)
 			{
 				areaW = (int32)std::ceil((std::abs(diffX) + 1) / 2.f);
 				areaH = std::abs(diffY) + 1;
 			}
-			// 纵向拆分
+			// Vertical splitting
 			else
 			{
 				areaW = std::abs(diffX) + 1;

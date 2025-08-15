@@ -8,7 +8,7 @@ endif()
 if(MSVC)
 	add_definitions(-D_WIN32_WINNT=0x0601)
 	
-	# 指定源文件字符编码
+	# Specify the character encoding of the source file
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /source-charset:utf-8")
 endif(MSVC)
 

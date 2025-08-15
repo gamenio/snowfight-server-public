@@ -1,6 +1,6 @@
 #include "MovementUtil.h"
 
-#define BYPASS_TARGET_SEGMENT_DISTANCE			TILE_WIDTH			// 绕过目标的分段距离
+#define BYPASS_TARGET_SEGMENT_DISTANCE			TILE_WIDTH			// The segment distance bypassing the target
 
 
 bool MovementUtil::calcTileCoordToBypassTarget(Unit* agent, Unit* target, TileCoord const& goalCoord, TileCoord& result)

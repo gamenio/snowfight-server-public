@@ -29,16 +29,16 @@ class BasicPacket
 public:
 	enum
 	{
-		// 数据头字节长度 = 主体2个字节 + 操作码2个字节
+		// Data header byte length = body (2 bytes) + opcode (2 bytes)
 		HEADER_BYTE_SIZE = 4,
 
-		// 最大允许的Body数据长度
+		// Maximum allowed body data length
 		MAX_BODY_BYTE_SIZE = 8192,
 
-		// 无效的操作码
+		// Invalid opcode
 		INVALID_OPCODE = 0,
 
-		// 默认缓冲区大小
+		// Default buffer size
 		DEFAULT_BUFFER_SIZE = 1024
 
 	};
@@ -108,7 +108,7 @@ public:
 	}
 
 
-	// 将数据写入到MessageBuffer
+	// Write data to MessageBuffer
 	void write(MessageBuffer& buff)
 	{
 		this->encodeHeader(buff.getWritePointer());
@@ -122,8 +122,8 @@ public:
 		}
 	}
 
-	// 从MessageBuffer读取Header数据。
-	// 如果Opcode的取值范围或者Body数据长度无效将抛出PacketException异常
+	// Read header data from MessageBuffer.
+	// If the opcode value range or body data length is invalid, a PacketException exception will be thrown.
 	void decodeHeader(MessageBuffer& buff)
 	{
 		uint8* readPtr = buff.getReadPointer();
@@ -135,14 +135,14 @@ public:
 		opcode |= ((*(readPtr++) << 8) & 0xFF00);
 		opcode |= (*(readPtr++) & 0xFF);
 
-		// 无效的Body数据长度
+		// Invalid Body data length
 		if (size > MAX_BODY_BYTE_SIZE)
 		{
 			throw PacketException(StringUtil::format("Failed to decode packet because body bytes(%d) > MAX_BODY_BYTE_SIZE(%d)", size, MAX_BODY_BYTE_SIZE));
 		}
 
 
-		// 无效的Opcode取值范围
+		// Invalid opcode value range
 		if (opcode >= NUM_MSG_TYPES)
 		{
 			throw PacketException(StringUtil::format("Failed to decode packet because unknown opcode(0x%X).", opcode));
@@ -270,4 +270,4 @@ private:
 };
 
 
-#endif //__BASIC_PACKET_H__
+#endif // __BASIC_PACKET_H__

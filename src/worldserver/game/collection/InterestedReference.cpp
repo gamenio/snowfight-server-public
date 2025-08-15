@@ -5,8 +5,8 @@
 #include "game/world/ObjectMgr.h"
 #include "game/behaviors/Robot.h"
 
-// 愿望的优先级
-// 值越大优先级越高
+// Priority of wishes
+// The higher the value, the higher the priority
 enum WishPriority
 {
 	WISH_PRIORITY_NONE,

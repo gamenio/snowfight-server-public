@@ -4,14 +4,14 @@
 #include "Common.h"
 #include "DataWorldObject.h"
 
-#define ITEM_PARABOLA_DURATION					500		// 物品抛物线运动持续时间，单位：毫秒 
+#define ITEM_PARABOLA_DURATION					500		// Duration of parabola motion of an item. Unit: milliseconds
 
-// 物品可堆叠数量
-#define ITEM_STACK_UNLIMITED					-1		// 无限制
-#define ITEM_STACK_NON_STACKABLE				0		// 不可堆叠
+// The number of items that can be stacked
+#define ITEM_STACK_UNLIMITED					-1		// Unlimited
+#define ITEM_STACK_NON_STACKABLE				0		// Non-stackable
 
-#define MAGIC_BEAN_DROPPED_MAX_STACK_COUNT		3		// 掉落的魔豆最大堆叠数量
-#define EQUIPMENT_LEVEL_MAX						3		// 装备的最大等级
+#define MAGIC_BEAN_DROPPED_MAX_STACK_COUNT		3		// The maximum stack size for dropped magic beans
+#define EQUIPMENT_LEVEL_MAX						3		// The maximum level of equipment
 
 enum PickupStatus
 {
@@ -73,7 +73,7 @@ enum ItemEffectType
 enum ItemApplicationFlag
 {
 	ITEM_APPFLAG_NONE							= 0,
-	ITEM_APPFLAG_VISIBLE_TO_SELF				= 1 << 0,	// 对自己可见或者全部可见
+	ITEM_APPFLAG_VISIBLE_TO_SELF				= 1 << 0,	// Visible to self or visible to all
 };
 
 enum ItemStatType
@@ -106,14 +106,14 @@ struct ItemStat
 
 struct ItemTemplate
 {
-	uint32 id;									// 物品模板ID。值与ItemID对应
-	uint32 itemClass;							// 物品的类别
-	uint32 displayId;							// 显示ID
-	uint32 itemSubClass;						// 物品的子类
-	int32 stackable;							// 可堆叠数量
-	uint8 level;								// 物品的等级
-	uint32 appId;								// 物品应用ID
-	std::vector<ItemStat> itemStats;			// 作用于角色的属性列表
+	uint32 id;									// Item template ID. The value corresponds to ItemID
+	uint32 itemClass;							// Item class
+	uint32 displayId;							// Display ID
+	uint32 itemSubClass;						// Item subclass
+	int32 stackable;							// Number of stacks
+	uint8 level;								// Item level
+	uint32 appId;								// Item application ID
+	std::vector<ItemStat> itemStats;			// List of statistics that apply to character
 };
 
 struct ItemSpawnInfo
@@ -124,7 +124,7 @@ struct ItemSpawnInfo
 	int32 maxCount;
 	TileCoord spawnPos;
 	int32 spawnDist;
-	int32 spawnTime;					//  出生的间隔时间。单位：秒
+	int32 spawnTime;					// Spawning interval. Unit: seconds
 };
 
 struct LootItem
@@ -143,18 +143,18 @@ struct ItemEffect
 
 #define MAX_ITEM_EFFECTS			2
 
-// 物品应用持续时间类型
-#define ITEM_APP_DURATION_INSTANT				0		// 立即的
-#define ITEM_APP_DURATION_PERMANENT				-1		// 永久的
+// Item application duration type
+#define ITEM_APP_DURATION_INSTANT				0		// Instant
+#define ITEM_APP_DURATION_PERMANENT				-1		// Permanent
 
 struct ItemApplicationTemplate
 {
-	uint32 id;									// 物品应用模板ID
-	uint32 flags;								// 物品应用标记
-	uint32 visualId;							// 视觉效果ID
-	int32 duration;								// 持续时间。单位：秒
-	int32 recoveryTime;							// 恢复时间。单位：秒
-	std::vector<ItemEffect> effects;			// 物品效果列表
+	uint32 id;									// Item application template ID
+	uint32 flags;								// Item application flags
+	uint32 visualId;							// Visual effect ID
+	int32 duration;								// Duration. Unit: seconds
+	int32 recoveryTime;							// Recovery time. Unit: seconds
+	std::vector<ItemEffect> effects;			// Item effect list
 };
 
 struct ItemDest
@@ -192,11 +192,11 @@ public:
 	float getLaunchRadiusInMap() const { return m_launchRadiusInMap; };
 	void setLaunchRadiusInMap(float radius) { m_launchRadiusInMap = radius; }
 
-	// 掉落持续时间。单位：毫秒
+	// Drop duration. Unit: milliseconds
 	int32 getDropDuration() const { return m_dropDuration; }
 	void setDropDuration(int32 duration) { m_dropDuration = duration; }
 
-	// 掉落已用时间。单位：毫秒
+	// Drop elapsed time. Unit: milliseconds
 	int32 getDropElapsed() const { return m_dropElapsed; }
 	void setDropElapsed(int32 elapsed) { m_dropElapsed = elapsed; }
 

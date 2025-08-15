@@ -113,7 +113,7 @@ void AuthSession::sendRealmList()
 	{
 		RealmInfo const& info = *it;
 		Realm* realm = realmList.add_result();
-		realm->set_address(info.address); // 如果地址为"0.0.0.0"，客户端将指向验证服务器地址
+		realm->set_address(info.address); // If the address is “0.0.0.0”, the client will point to the authentication server address
 		realm->set_port(info.port);
 		realm->set_name(info.name);
 		//realm->set_flag();

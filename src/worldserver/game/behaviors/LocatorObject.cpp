@@ -67,7 +67,7 @@ void LocatorObject::buildValuesUpdate(PlayerUpdateMapType& updateMap)
 	if (!m_owner)
 		return;
 
-	// 收集所有能够追踪当前定位器所有者的玩家以及与玩家相关的更新数据
+	// Collect all players who can track the current locator owner and updated data related to the players
 	LocatorValuesUpdateAccumulator accumulator(*this, updateMap);
 	m_owner->visitAllObjects(accumulator);
 }

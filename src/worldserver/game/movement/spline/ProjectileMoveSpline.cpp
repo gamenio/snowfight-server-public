@@ -77,7 +77,7 @@ void ProjectileMoveSpline::update(NSTime diff)
 
 	float updateDt = std::min(1.0f, m_elapsed / float(m_duration));
 
-	// 求出在贝塞尔曲线上，到时间updateDt时移动到的点
+	// Find the point moved to on the bezier curve when the arrival time is updateDt
 	BezierCurveConfig const& config = m_owner->getData()->getTrajectory();
 	float xa = 0;
 	float xb = config.controlPoints[0].x;

@@ -8,7 +8,8 @@
 #include "game/entities/ObjectGuid.h"
 #include "GridReference.h"
 
-#define MAX_NUMBER_OF_GRIDS					23 // 地图中Grid的行和列数，Grid的总面积应该可以足够覆盖地图的大小
+// The number of rows (columns) of the grid in the map, Grid's total area should be able to be enough to cover the size of the map.
+#define MAX_NUMBER_OF_GRIDS					23
 #define GRID_SIZE							256
 #define GRID_SIZE_HALF						(GRID_SIZE / 2)
 

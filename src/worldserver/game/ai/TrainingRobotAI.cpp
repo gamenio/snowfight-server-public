@@ -100,8 +100,8 @@ void TrainingRobotAI::updateCombat()
 		m_me->combatStop();
 		m_me->getMotionMaster()->moveIdle();
 
-		// 在自己和周围的目标均处于静止状态时，
-		// 更新可见状态可以让自己主动搜寻周围视野内的目标
+		// When both oneself and nearby targets are stationary, updating the state of visibility 
+		// allows one to actively search for targets within one's line of sight
 		m_me->updateObjectVisibility();
 	}
 }

@@ -42,7 +42,7 @@ namespace ObjectAccessor
 	ItemBox* getItemBox(WorldObject const* u, ObjectGuid const& guid);
 	Item* getItem(WorldObject const* u, ObjectGuid const& guid);
 
-	// 在整个世界中查找玩家。对返回对象的操作不是线程安全的
+	// Find the player in the entire world. Operating on the returned object is not thread-safe.
 	Player* findPlayer(ObjectGuid const& guid);
 
 	template <typename T> void addObject(T* object);

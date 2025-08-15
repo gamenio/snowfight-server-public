@@ -27,13 +27,13 @@ public:
 	void addSession(WorldSession* session);
 	bool acceptSession(WorldSession* session);
 	bool removeSession(uint32 id);
-	// 替换具有相同SessionID的会话
-	// 如果替换成功则返回true，否则返回false
+	// Replace sessions with the same ID
+	// If the replacement is successful, return true otherwise return false
 	bool replaceSession(WorldSession* session);
 	SessionMap& getSessionList() { return m_sessions; };
 	SessionMap const& getSessionList() const { return m_sessions; };
 
-	// 等待玩家。如果需要等待则返回true，否则返回false。
+	// Wait for players. If waiting is required, return true otherwise return false.
 	bool waitForPlayers();
 	void skipWaitingPlayers();
 	void sendWaitForPlayersToPlayer(WorldSession* session);

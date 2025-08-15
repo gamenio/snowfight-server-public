@@ -40,10 +40,10 @@ public:
 	void setDataObserver(DataObserver* observer) { m_dataObserver = observer; }
 	void removeDataObserver() { m_dataObserver = nullptr; }
 
-	// 通知对象数据被更新
+	// Notify that the object data has been updated
 	virtual void notifyDataUpdated();
 
-	// 更新数据用于指定的玩家
+	// Update data for the specified player
 	virtual void updateDataForPlayer(UpdateType updateType, Player* player) { }
 
 	virtual void setGuid(ObjectGuid const& guid) { m_guid = guid; }

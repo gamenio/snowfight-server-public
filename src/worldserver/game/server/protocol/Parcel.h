@@ -33,7 +33,8 @@ public:
 	void SerializeWithCachedSizes(::google::protobuf::io::CodedOutputStream* output) const override;
 
 	int GetCachedSize() const  override { return m_cachedSize; }
-	// 获取数据的字节数。存储字节数的变量将会被缓存下来避免重复计算。
+	// Get the number of bytes of data. The variable storing the number 
+	// of bytes will be cached to avoid repeated calculations.
 	size_t ByteSizeLong() const override;
 
 	virtual size_t sizeInBytes() const = 0;

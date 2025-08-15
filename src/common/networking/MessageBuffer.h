@@ -88,7 +88,7 @@ public:
 		m_storage.resize(newSize);
 	}
 
-	// 丢弃不活动的数据
+	// Discard inactive data
 	void normalize()
 	{
 		if (m_rpos)
@@ -100,7 +100,7 @@ public:
 		}
 	}
 
-	// 确保剩余空间足够容纳期望的数据大小
+	// Ensure that the free space is enough to store the expected data size
 	void ensureFreeSpace(uint16 expectSize)
 	{
 		this->normalize();

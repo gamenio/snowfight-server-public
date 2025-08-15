@@ -17,8 +17,8 @@ enum RobotAIType
 	ROBOTAI_TYPE_TRAINING,
 };
 
-// AI动作类型。
-// 按执行顺序排列，值大的优先执行
+// AI action type.
+// Sorted by execution order, with higher values executed first
 enum AIActionType
 {
 	AI_ACTION_TYPE_NONE,

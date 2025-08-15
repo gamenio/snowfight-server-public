@@ -5,7 +5,7 @@
 #include "DataUnit.h"				
 #include "game/world/Locale.h"
 
-// 机器人的熟练等级范围
+// The range of proficiency levels for the robot
 #define PROFICIENCY_LEVEL_MIN			1
 #define PROFICIENCY_LEVEL_MAX			6
 
@@ -37,10 +37,10 @@ struct RobotTemplate
 
 struct RobotSpawnInfo
 {
-	uint8 combatGrade;		// 战斗等级
+	uint8 combatGrade;		// Combat level
 	uint32 templateId;
-	uint8 minLevel;			// 最小等级
-	uint8 maxLevel;			// 最大等级
+	uint8 minLevel;			// Minimum level
+	uint8 maxLevel;			// Maximum level
 };
 
 struct RobotRegion
@@ -78,19 +78,19 @@ enum NatureType
 
 enum NatureEffectType
 {
-	NATURE_EFFECT_ABANDON_HIDING_HEALTH_PERCENT						= 1,	// 放弃躲藏时的生命值比例
-	NATURE_EFFECT_ABANDON_COLLECTING_HEALTH_PERCENT					= 2,	// 放弃收集时的生命值比例
-	NATURE_EFFECT_ABANDON_ESCAPE_HEALTH_PERCENT						= 3,	// 放弃逃跑时的生命值比例
-	NATURE_EFFECT_ABANDON_ESCAPE_TO_CHASE_HEALTH_PERCENT			= 4,	// 放弃逃跑开始追击时的生命值比例
-	NATURE_EFFECT_USEITEM_ESCAPE_HEALTH_PERCENT						= 5,	// 使用物品逃跑时的生命值比例
-	NATURE_EFFECT_USEITEM_FIRST_AID_HEALTH_PERCENT					= 6,	// 使用物品急救时的生命值比例
-	NATURE_EFFECT_LOCK_ITEM_PICKUP_TIME_REMAINING					= 7,	// 锁定物品时的捡拾剩余时间。单位：毫秒
-	NATURE_EFFECT_ABANDON_ESCAPE_IN_1V1_COMBAT_HEALTH_PERCENT		= 8,	// 一对一战斗中放弃逃跑的生命值比例
-	NATURE_EFFECT_ABANDON_UNLOCKING_HEALTH_PERCENT					= 9,	// 放弃解锁时的生命值比例
-	NATURE_EFFECT_CHASE_THREAT_DISTANCE_WEIGHTED_PERCENT			= 10,	// 追击时敌人距离的威胁权重比例
-	NATURE_EFFECT_CHASE_THREAT_ENEMY_HEALTH_WEIGHTED_PERCENT		= 11,	// 追击时敌人生命值的威胁权重比例
-	NATURE_EFFECT_CHASE_THREAT_RECEIVED_DAMAGE_WEIGHTED_PERCENT		= 12,	// 追击时敌人对我累计造成伤害的威胁权重比例
-	NATURE_EFFECT_CHASE_THREAT_ENEMY_CHARGED_POWER_WEIGHTED_PERCENT	= 13,	// 追击时敌人蓄力攻击威力的威胁权重比例
+	NATURE_EFFECT_ABANDON_HIDING_HEALTH_PERCENT						= 1,	// Abandon the percentage of health when hiding
+	NATURE_EFFECT_ABANDON_COLLECTING_HEALTH_PERCENT					= 2,	// Abandon the percentage of health when collecting
+	NATURE_EFFECT_ABANDON_ESCAPE_HEALTH_PERCENT						= 3,	// Abandon the percentage of health when escaping
+	NATURE_EFFECT_ABANDON_ESCAPE_TO_CHASE_HEALTH_PERCENT			= 4,	// Abandon the percentage of health when starting to chase after escaping
+	NATURE_EFFECT_USEITEM_ESCAPE_HEALTH_PERCENT						= 5,	// Percentage of health when using item to escape
+	NATURE_EFFECT_USEITEM_FIRST_AID_HEALTH_PERCENT					= 6,	// Percentage of health when using item for first aid
+	NATURE_EFFECT_LOCK_ITEM_PICKUP_TIME_REMAINING					= 7,	// Remaining pickup time when locking item. Unit: milliseconds
+	NATURE_EFFECT_ABANDON_ESCAPE_IN_1V1_COMBAT_HEALTH_PERCENT		= 8,	// Abandon the percentage of health when escaping in one-on-one combat
+	NATURE_EFFECT_ABANDON_UNLOCKING_HEALTH_PERCENT					= 9,	// Abandon the percentage of health when unlocking
+	NATURE_EFFECT_CHASE_THREAT_DISTANCE_WEIGHTED_PERCENT			= 10,	// Threat weight percentage of enemy distance during chase
+	NATURE_EFFECT_CHASE_THREAT_ENEMY_HEALTH_WEIGHTED_PERCENT		= 11,	// Threat weight percentage of enemy health during chase
+	NATURE_EFFECT_CHASE_THREAT_RECEIVED_DAMAGE_WEIGHTED_PERCENT		= 12,	// Threat weight percentage of cumulative damage received from enemy during chase
+	NATURE_EFFECT_CHASE_THREAT_ENEMY_CHARGED_POWER_WEIGHTED_PERCENT	= 13,	// Threat weight percentage of enemy charged attack power during chase
 };
 
 struct RobotNature
@@ -120,30 +120,30 @@ public:
 	void setTarget(ObjectGuid const& guid);
 	ObjectGuid const& getTarget() const { return m_target; }
 
-	// 属性阶段
+	// Statistics stage
 	void setStage(uint8 stage) { m_stage = stage; }
 	uint8 getStage() const { return m_stage; }
 
-	// 反应标记
+	// Reaction flag
 	void clearReactFlag(uint32 flag) { if (hasReactFlag(flag)) m_reactFlags &= ~flag; }
 	bool hasReactFlag(uint32 flag) const { return (m_reactFlags & flag) != 0; }
 	void addReactFlag(uint32 flag) { if (!hasReactFlag(flag)) m_reactFlags |= flag; }
 	void setReactFlags(uint32 flags) { m_reactFlags = flags; }
 	uint32 getReactFlags() const { return m_reactFlags; }
 
-	// 机器人的熟练等级
+	// Robot proficiency level
 	void setProficiencyLevel(uint8 level) { m_proficiencyLevel = level; }
 	uint8 getProficiencyLevel() const { return m_proficiencyLevel; }
 
-	// 机器人性格
+	// Robot nature type
 	void setNatureType(uint32 type) { m_natureType = type; }
 	uint32 getNatureType() const { return m_natureType; }
 
-	// AI动作类型
+	// AI action type
 	void setAIActionType(uint32 actionType);
 	uint32 getAIActionType() const { return m_aiActionType; }
 
-	// AI动作状态
+	// AI action state
 	void setAIActionState(uint32 actionState);
 	uint32 getAIActionState() const { return m_aiActionState; }
 

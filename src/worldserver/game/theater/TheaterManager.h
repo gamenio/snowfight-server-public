@@ -20,12 +20,12 @@ public:
 	static TheaterManager* instance();
 
 	void initialize();
-	// 停止战区服务
+	// Stop the theater service
 	void stop();
 	bool isStopped() const { return m_isStopped; }
 
 	void queueSession(WorldSession* session);
-	// 根据ID查找被接受的会话
+	// Find accepted sessions by ID
 	WorldSession const* findSession(uint32 id) const;
 
 	int32 getOnlineCount() const { return m_playerCount + m_gmCount; }
@@ -40,7 +40,7 @@ public:
 	void addPlayerToTheater(WorldSession* session);
 	uint16 selectMapForPlayer(WorldSession* session) const;
 
-	// 当战区服务被完全停止时返回false
+	// Returns false when the theater service is completely stopped
 	bool update(NSTime diff);
 
 private:

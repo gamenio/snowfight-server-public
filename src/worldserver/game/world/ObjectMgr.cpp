@@ -12,7 +12,7 @@
 
 #define MAX_PLAYER_NAME_ID_COUNTER					0x0FFF
 
-// 默认的机器人名字语言
+// Default robot name language
 #define DEFAULT_ROBOT_NAME_LANG						LANG_enUS
 
 ObjectMgr::ObjectMgr() :

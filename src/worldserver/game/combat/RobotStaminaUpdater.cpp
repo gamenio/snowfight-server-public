@@ -4,7 +4,7 @@
 #include "game/behaviors/Robot.h"
 #include "game/behaviors/Projectile.h"
 
-#define STAMINA_SYNC_INTERVAL			200	// 体力同步间隔时间。单位：毫秒
+#define STAMINA_SYNC_INTERVAL			200	// Stamina synchronization interval. Unit: milliseconds
 
 RobotStaminaUpdater::RobotStaminaUpdater(Robot* owner) :
 	m_owner(owner),
@@ -42,7 +42,7 @@ void RobotStaminaUpdater::update(NSTime diff)
 		int32 diffStamina = currStamina - m_owner->getData()->getStamina();;
 		//NS_LOG_DEBUG("misc", "RobotStaminaUpdater::update(diff=%d) current: %d/%d remainder: %d updateDt: %d staminaDiff: %d", diff, m_staminaSyncTimer.getCurrent(), m_staminaSyncTimer.getInterval(), m_staminaSyncTimer.getRemainder(), updateDt, diffStamina);
 
-		// 定时同步体力
+		// Synchronize stamina at regular intervals
 		m_staminaSyncTimer.update(diff);
 		if (m_staminaSyncTimer.passed())
 		{
@@ -165,7 +165,7 @@ void RobotStaminaUpdater::deductStaminaForAttack()
 		m_staminaSyncTimer.reset();
 	}
 
-	// 计算新的体力
+	// Calculate new stamina
 	int32 consumedStamina = m_owner->calcConsumedStamina();
 	int32 newStamina = m_owner->getData()->getStamina() - consumedStamina;
 	NS_ASSERT(newStamina >= 0);

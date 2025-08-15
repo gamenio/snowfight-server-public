@@ -10,7 +10,7 @@
 #include <Windows.h>
 #include <timeapi.h>
 
-#define TIMER_TARGET_RESOLUTION		1		// 计时器目标分辨率为1毫秒
+#define TIMER_TARGET_RESOLUTION		1		// The timer target resolution is 1 millisecond
 
 #endif // PLATFORM_WINDOWS
 
@@ -166,14 +166,15 @@ void World::updateLoop()
 		if (!sTheaterManager->update(m_updateDiff))
 			break;
 
-		// 平衡接近WORLD_SLEEP_CONST的Tick持续时间
+		// Balance the tick duration close to WORLD_SLEEP_CONST
 		int64 executionTime = getUptimeMillis() - realPrevTime;
 		if (executionTime < m_worldUpdateInterval)
 		{
 #if PLATFORM == PLATFORM_WINDOWS
-			// Windows的计时器精度通过“timeBeginPeriod()”设置为最高（1ms），但仍然不够精确。 
-			// 例如，如果定时器的精度为1ms，则Sleep(3)可能会休眠2ms或4ms。 
-			// 因此，我们这里减去1ms，使休眠时间变短。 如果“sleepTime”等于或小于1ms，则不休眠并进入下一个循环，以将CPU准确地提升到下一帧。
+			// The precision of Windows Timer is set to the highest level (1ms) via "timeBeginPeriod()", but it is still not precise enough.
+			// For example, if the timer's precision is 1ms, then Sleep(3) may result in a sleep duration of 2ms or 4ms.
+			// Therefore, we subtract 1ms here to shorten the sleep duration. If “sleepTime” is equal to or less than 1ms, no sleep occurs, 
+			// and the program proceeds to the next loop to accurately advance the CPU to the next frame.
 			int64 sleepTime = m_worldUpdateInterval - executionTime - 1L;
 			if (sleepTime > 1L)
 				std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));

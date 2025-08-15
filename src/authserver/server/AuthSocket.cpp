@@ -69,7 +69,7 @@ void AuthSocket::update()
 {
 	BasicSocket::update();
 
-	// 判断会话是否超时
+	// Check if the session has timed out
 	if (m_sessTimeout > 0 && m_sessActiveTime > 0)
 	{
 		int32 diff = (int32)(getUptimeMillis() - m_sessActiveTime);
@@ -84,7 +84,7 @@ void AuthSocket::update()
 
 void AuthSocket::checkIP()
 {
-	// TODO 检查IP是否在黑名单
+	// TODO Check if the IP is on the blacklist
 
 	if (m_session)
 	{

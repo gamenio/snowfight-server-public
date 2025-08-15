@@ -8,9 +8,9 @@
 #include "MovementGenerator.h"
 
 
-#define DODGE_DISTANCE								64 			// 每次躲闪移动的距离
+#define DODGE_DISTANCE								64 			// The distance moved for each dodge
 
-// 躲闪持续时间范围。单位：毫秒
+// Dodge duration time range. Unit: milliseconds
 template<> int32 SmartChaseMovementGenerator<Unit>::DODGE_DURATION_MIN = 3000;
 template<> int32 SmartChaseMovementGenerator<Unit>::DODGE_DURATION_MAX = 5000;
 template<> int32 SmartChaseMovementGenerator<ItemBox>::DODGE_DURATION_MIN = 500;
@@ -107,10 +107,10 @@ bool SmartChaseMovementGenerator<TARGET>::update(NSTime diff)
 	TileCoord targetCoord(mapData->getMapSize(), targetPos);
 
 	TileCoord toCoord;
-	// 目标在有效攻击范围内
+	// The target is within effective attack range
 	if (this->m_owner->isWithinEffectiveRange(this->m_target.getTarget()))
 	{
-		// 躲避危险区
+		// Dodge the danger zone
 		bool isKeepDistance = true;
 		if (this->m_owner->getMap()->getCurrentSafeZoneRadius() > 0 &&
 			!this->m_owner->getMap()->isSafeDistanceMaintained(currCoord))
@@ -128,7 +128,7 @@ bool SmartChaseMovementGenerator<TARGET>::update(NSTime diff)
 
 		if (!isDodging && (m_dodgeTimer.passed() || !m_isLocked))
 		{
-			// 目标是否被锁定
+			// Whether the target is locked
 			m_isLocked = this->m_owner->lockingTarget(this->m_target.getTarget());
 			if (m_isLocked)
 			{
@@ -160,7 +160,7 @@ bool SmartChaseMovementGenerator<TARGET>::update(NSTime diff)
 
 		m_isChasing = false;
 	}
-	// 开始追赶目标
+	// Start chasing the target
 	else
 	{
 		if (!isDodging && m_dodgeTimer.passed())
@@ -240,7 +240,7 @@ TileCoord SmartChaseMovementGenerator<TARGET>::calcDodgeTileCoordAroundTarget(TA
 		r = std::min(r, d);
 	}
 	float theta = std::atan2(dy, dx);
-	float rad = (float)DODGE_DISTANCE / r; // 通过半径和弧长求弧度
+	float rad = (float)DODGE_DISTANCE / r; // Find the radian by radius and arc length
 	float angle = theta + (dir == DODGE_CLOCKWISE ? -rad : rad);
 
 	Point offset;

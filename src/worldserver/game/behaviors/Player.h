@@ -10,9 +10,9 @@
 #include "game/server/WorldSession.h"
 #include "Unit.h"
 
-#define MOVING_HEARTBEAT_INTERVAL_MAX				0.2f	// 客户端移动心跳的最大间隔时间，单位：秒
-#define STAMINA_SYNC_INTERVAL						0.2f	// 客户端体力同步的间隔时间，单位：秒
-// 玩家移动允许的最大步长，单位：points。 
+#define MOVING_HEARTBEAT_INTERVAL_MAX				0.2f	// Maximum interval for client moving heartbeat, unit: seconds
+#define STAMINA_SYNC_INTERVAL						0.2f	// Client stamina synchronization interval, unit: seconds
+// The maximum step length allowed for player moving, unit: points
 static const float MAX_STEP_LENGTH = MOVING_HEARTBEAT_INTERVAL_MAX * MAX_MOVE_SPEED + 1.0f;
 
 
@@ -78,21 +78,21 @@ public:
 	void modifyChargeConsumesStamina(int32 stamina) override;
 
 	bool canSeeOrDetect(WorldObject* object) const override;
-	// 玩家的视野范围由终端设备屏幕大小决定
+	// The player's sight distance is determined by the size of the terminal device screen
 	virtual float getSightDistance() const override { return 0; }
-	// 判断对象是否在可见范围内
+	// Check if the object is within the visible range
 	bool isWithinVisibleRange(WorldObject* object) const;
 
 	bool canTrack(WorldObject* object) const;
 	bool hasTrackingAtClient(WorldObject* object) const;
 	void removeTrackingFromClient(WorldObject* object);
 
-	// 更新指定目标对象的可追踪性
+	// Update the traceability of the specified target object
 	void updateTraceabilityOf(WorldObject* target);
 	void updateTraceabilityOf(WorldObject* target, UpdateObject& update);
-	// 更新玩家附近单位的可追踪性
+	// Update the traceability of units near the player
 	void updateTraceabilityForPlayer();
-	// 更新玩家客户端列表中对象的可追踪性
+	// Update the traceability of objects in the player client list
 	void updateTraceabilityInClient();
 
 	virtual bool updatePosition(Point const& newPosition) override;
@@ -113,14 +113,14 @@ public:
 	void dealDamage(ItemBox* itemBox, int32 damage) override;
 	bool canCombatWith(Unit* victim) const override;
 
-	// 更新玩家附近单位的可见性
+	// Update the visibility of units near the player
 	void updateVisibilityForPlayer();
-	// 更新玩家客户端列表中对象的可见性
+	// Update the visibility of objects in the player client list
 	void updateVisibilityInClient();
-	// 更新指定目标对象的可见性
+	// Update the visibility of the specified target object
 	void updateVisibilityOf(WorldObject* target);
 	void updateVisibilityOf(WorldObject* target, UpdateObject& update, std::unordered_set<WorldObject*>& visibleNow);
-	// 更新玩家的可见性
+	// Update player visibility
 	void updateObjectVisibility(bool forced = false) override;
 
 	void updateDangerState() override;

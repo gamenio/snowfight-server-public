@@ -35,8 +35,9 @@ bool RealmManager::load()
                 uint32 groupId = query.getColumn("group_id");
 				int32 platform = query.getColumn("platform");
 
-				// World服务器对客户端游戏版本的兼容性。
-				// 例如：World服务器兼容的游戏版本需要大于等于1.0.1，则配置以下字段的值为：
+				// Compatibility between World server and client game version.
+				// For example: If the game version compatible with the World server needs to be greater than or equal to 1.0.1, 
+				// then configure the values of the following fields as follows:
 				//    game_version = "1.0.1"
 				//    compatibility = 3 (COMPATIBILITY_GREATER|COMPATIBILITY_EQUAL)
 				std::string verStr = query.getColumn("game_version");

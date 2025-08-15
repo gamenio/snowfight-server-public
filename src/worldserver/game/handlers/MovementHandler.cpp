@@ -12,7 +12,7 @@ void broadcastMovementWorker(Player* source, uint16 opcode, MovementInfo& moveme
 {
 	if (source->getMap()->isInBattle() || source->getMap()->isBattleEnding())
 	{
-		// 向发送者发送心跳确认包
+		// Send a heartbeat acknowledgment packet to the sender
 		if (opcode == MSG_MOVE_HEARTBEAT)
 		{
 			if (WorldSession* session = source->getSession())
@@ -24,7 +24,7 @@ void broadcastMovementWorker(Player* source, uint16 opcode, MovementInfo& moveme
 		}
 	}
 
-	// 发送给周围能够看到发送者的玩家
+	// Sent to players nearby who can see the sender
 	PlayerClientExistsObjectFilter filter(source);
 	std::list<Player*> result;
 	ObjectSearcher<Player, PlayerClientExistsObjectFilter> searcher(filter, result);
@@ -45,7 +45,7 @@ void broadcastMovementWorker(Player* source, uint16 opcode, MovementInfo& moveme
 
 void broadcastLocationWorker(Player* source, LocationInfo& location)
 {
-	// 发送给周围能够看到定位器的玩家
+	// Send to players nearby who can see the locator
 	PlayerClientExistsLocatorFilter filter(source->getLocator());
 	std::list<Player*> result;
 	ObjectSearcher<Player, PlayerClientExistsLocatorFilter> searcher(filter, result);
@@ -118,7 +118,7 @@ void WorldSession::handleMovementInfo(WorldPacket& recvPacket)
 	mover->updatePosition(movement.position);
 
 	if ((movement.flags & MOVEMENT_FLAG_WALKING) != 0)
-		// 记录上一个移动位置信息
+		// Mark the previous movement information
 		dPlayer->markMoveSegment(prevMovementInfo);
 	else
 		dPlayer->markMoveSegment(dPlayer->getMovementInfo());

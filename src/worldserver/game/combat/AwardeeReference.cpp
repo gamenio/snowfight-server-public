@@ -5,7 +5,7 @@
 #include "game/world/ObjectMgr.h"
 #include "RewardManager.h"
 
-#define AWARDEE_TIMEOUT_TIME			30000 // 获奖者超时时间， 单位: 毫秒
+#define AWARDEE_TIMEOUT_TIME			30000 //  Awardee timeout time, unit: milliseconds
 
 AwardeeReference::AwardeeReference(Unit* unit, RewardManager* rewardManager) :
 	m_damagePoints(0),

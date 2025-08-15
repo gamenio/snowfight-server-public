@@ -18,7 +18,7 @@ public:
 	void step(NSTime diff);
 	bool isDone() const;
 
-	// 设置移动速度比例，值必须大于零
+	// Set the moving speed scale. The value must be greater than zero
 	void setSpeedScale(float scale);
 
 private:

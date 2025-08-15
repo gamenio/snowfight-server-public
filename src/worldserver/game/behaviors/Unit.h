@@ -23,8 +23,8 @@
 #include "UnitLocator.h"
 #include "Item.h"
 
-#define DISCOVER_CONCEALED_UNIT_DISTANCE		80.0f	// 发现隐蔽单位的距离
-#define ITEM_PICKUP_DURATION					1000	// 捡拾持续时间，单位：毫秒
+#define DISCOVER_CONCEALED_UNIT_DISTANCE		80.0f	// Find the distance to concealed unit
+#define ITEM_PICKUP_DURATION					1000	// Pickup duration, unit: milliseconds
 
 enum DeathState
 {
@@ -148,7 +148,7 @@ public:
 	virtual bool canSeeOrDetect(WorldObject* object) const { return false; };
 	bool hasLineOfSight(Point const& pos) const;
 	bool hasLineOfSight(WorldObject* object) const { return hasLineOfSight(object->getData()->getPosition()); }
-	// 单位的视野范围
+	// The unit's sight distance
 	virtual float getSightDistance() const { return 0; }
 
 	void enterCollision(Projectile* proj, float precision) override;
@@ -193,7 +193,7 @@ public:
 	void updateDefense();
 
 	virtual void stopMoving();
-	// 如果位置发生变化则返回true，否则返回false
+	// Returns true if the position has changed, otherwise returns false
 	virtual bool updatePosition(Point const& newPosition);
 	virtual void transport(Point const& dest) { }
 

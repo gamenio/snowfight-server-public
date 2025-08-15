@@ -5,7 +5,7 @@
 #include "game/movement/MovementUtil.h"
 #include "logging/Log.h"
 
-#define GET_RID_OF_TARGET_DISTANCE				(float)(ABANDON_ATTACK_DISTANCE + TILE_WIDTH)			// 摆脱目标的距离
+#define GET_RID_OF_TARGET_DISTANCE				(float)(ABANDON_ATTACK_DISTANCE + TILE_WIDTH)			// Get rid of the target's distance
 
 EscapeMovementGenerator::EscapeMovementGenerator(Robot* owner, Unit* target) :
 	TargetMovementGenerator(owner, target),
@@ -79,7 +79,8 @@ bool EscapeMovementGenerator::update(NSTime diff)
 			}
 			else
 			{
-				// 应该排除原点在追击范围内的探索区域，因为前往原点位置无法改变该区域状态
+				// The exploration area within the chase range of the origin should be excluded, 
+				// because going to the origin cannot change the state of the area
 				Point pos = area.originInTile.computePosition(mapData->getMapSize());
 				if (m_target->isWithinDist(pos, ABANDON_ATTACK_DISTANCE))
 				{
@@ -127,10 +128,10 @@ bool EscapeMovementGenerator::update(NSTime diff)
 		}
 		else
 		{
-			// 当前往安全位置时不移除目标节点（最后一个节点）
+			// When going to a safe position, do not remove the target node (the last node)
 			if (!m_isGoingToSafety || node != m_path.back())
 			{
-				// 如果节点在目标与我所在位置范围内（不超出攻击范围）则将其移除
+				// If the node is within the target and my position (not exceeding the attack range), remove it.
 				float minR = std::min(m_target->getData()->getAttackRange(), targetPos.getDistance(currPos));
 				Point pos = node.computePosition(mapData->getMapSize());
 				float d = pos.getDistance(targetPos);

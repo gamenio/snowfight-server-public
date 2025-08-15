@@ -9,7 +9,7 @@
 #include "WorldObject.h"
 #include "ItemHelper.h"
 
-// 物品掉落的延迟时间，单位：毫秒 
+// Delay time for item drop. Unit: milliseconds
 #define ITEM_DROP_DELAY_MIN					0		
 #define ITEM_DROP_DELAY_MAX					200
 

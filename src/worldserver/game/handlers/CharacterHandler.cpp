@@ -53,16 +53,16 @@ void WorldSession::handlePlayerLogin(WorldPacket& recvPacket)
 	myChar->getData()->setRewardStage(static_cast<uint8>(playerLogin.reward_stage()));
 	myChar->getData()->setDailyRewardDays(playerLogin.daily_reward_days());
 
-	// 设置玩家等级和经验值
+	// Set player level and experience
 	myChar->setLevelAndXP(playerLogin.level(), playerLogin.experience());
 
-	// 给角色设置一个有效的名称
+	// Set a valid name for the character
 	if (playerLogin.char_name().empty())
 		myChar->getData()->setName(sObjectMgr->generatePlayerName(lang));
 	else
 		myChar->getData()->setName(playerLogin.char_name());
 
-	// 设置属性阶段并初始化属性
+	// Set the statistic stages and initialize the statistics
 	for (int32 i = 0; i < playerLogin.stat_stage_list_size(); ++i)
 	{
 		PlayerLogin::StatStage const& statStage = playerLogin.stat_stage_list(i);
@@ -70,7 +70,7 @@ void WorldSession::handlePlayerLogin(WorldPacket& recvPacket)
 	}
 	myChar->resetStats();
 
-	// 找到玩家的战斗等级
+	// Find the player's combat grade
 	if (myChar->getData()->isTrainee())
 		myChar->getData()->setCombatGrade(TRAINING_GROUND_COMBAT_GRADE);
 	else
@@ -80,7 +80,7 @@ void WorldSession::handlePlayerLogin(WorldPacket& recvPacket)
 		myChar->getData()->setCombatGrade(combatGrade->grade);
 	}
 
-	// 为玩家选择地图
+	// Select a map for the player
 	uint16 mapId = sTheaterManager->selectMapForPlayer(this);
 	myChar->getData()->setSelectedMapId(mapId);
 
@@ -130,7 +130,7 @@ void WorldSession::handleJoinTheater(WorldPacket& recvPacket)
 		NS_LOG_ERROR("world.handler.character", "Player(%s) not logged in from client %s:%d.", myChar->getData()->getGuid().toString().c_str(), m_remoteAddress.c_str(), m_remotePort);
 		return;
 	}
-	// 恢复玩家在世界中的角色
+	// Restore the player's character in the world
 	if (myChar->isInWorld())
 	{
 		myChar->setSession(this);
@@ -150,12 +150,12 @@ void WorldSession::handleJoinTheater(WorldPacket& recvPacket)
 	}
 	else
 	{
-		// 是否需要等待玩家
+		// Whether to wait for players
 		if (theater->waitForPlayers())
 		{
 			if (theater->getSpawnManager()->addPlayerToQueue(myChar))
 			{
-				// 学员跳过等待玩家
+				// The trainee skips waiting for players
 				if (myChar->getData()->isTrainee())
 					theater->skipWaitingPlayers();
 				else
@@ -205,7 +205,7 @@ void WorldSession::handleQueryCharacterInfo(WorldPacket& recvPacket)
 
 	ObjectGuid guid(query.guid());
 	Unit* unit = ObjectAccessor::getUnit(this->getPlayer(), guid);
-	// 被查询的角色有可能已经退出游戏
+	// The character being queried may have already logged out of the game
 	if(unit)
 		this->sendCharacterInfo(unit);
 }

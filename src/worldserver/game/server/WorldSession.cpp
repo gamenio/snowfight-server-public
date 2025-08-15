@@ -10,7 +10,7 @@
 #include "WorldSocket.h"
 
 
-#define TIME_SYNC_INTERVAL			10000 // 时间同步间隔时间。单位：毫秒
+#define TIME_SYNC_INTERVAL			10000 // Time synchronization interval. Unit: milliseconds
 
 WorldSession::WorldSession(std::shared_ptr<WorldSocket> const& socket):
 	m_sessionId(0),
@@ -133,7 +133,7 @@ bool WorldSession::update(NSTime diff)
 	{
 		try
 		{
-			// 调用Opcode对应的Handler处理协议数据
+			// Call the handler corresponding to the opcode to process the protocol data
 			if (gOpcodeHandlerTable.find(packet.getOpcode()) != gOpcodeHandlerTable.end())
 			{
 				OpcodeHandler& opHandler = gOpcodeHandlerTable[packet.getOpcode()];
@@ -177,7 +177,7 @@ bool WorldSession::update(NSTime diff)
 	{
 		if (m_player)
 		{
-			// 定时同步时间
+			// Synchronize time regularly
 			m_timeSyncTimer.update(diff);
 			if (m_timeSyncTimer.passed())
 			{

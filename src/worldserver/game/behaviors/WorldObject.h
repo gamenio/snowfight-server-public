@@ -10,16 +10,16 @@
 #include "game/combat/ProjectileCollisionRefManager.h"
 #include "Object.h"
 
-// 对象的最大尺寸，所有对象尺寸应该在这个值之内
+// The maximum size of the object. All object sizes should be within this value
 #define MAX_SIZE_OF_OBJECT		64.0f
 
 
 enum NotifyFlag
 {
 	NOTIFY_NONE						= 0,
-	NOTIFY_VISIBILITY_CHANGED		= 1 << 0, // 通知对象的可见性、位置或AI状态发生改变
-	NOTIFY_TRACEABILITY_CHANGED		= 1 << 1, // 通知对象的可追踪性发生改变
-	NOTIFY_SAFETY_CHANGED			= 1 << 2, // 通知对象的安全性发生改变
+	NOTIFY_VISIBILITY_CHANGED		= 1 << 0, // Notify when the visibility, position, or AI state of the object changes
+	NOTIFY_TRACEABILITY_CHANGED		= 1 << 1, // Notify when the traceability of the object changes
+	NOTIFY_SAFETY_CHANGED			= 1 << 2, // Notify when the safety of the object changes
 };
 
 template<typename T>
@@ -73,14 +73,14 @@ public:
 	void setVisible(bool visible) { m_isVisible = visible; }
 	bool isVisible() const { return m_isVisible; }
 	virtual void sendInitialVisiblePacketsToPlayer(Player* player) {}
-	// 更新对象的可见性、位置或AI状态
-	// 当forced为true时，强制为附近所有玩家更新对象的可见性
+	// Update the visibility, position, or AI state of the object
+	// When forced is true, force all nearby players to update the visibility of the object
 	virtual void updateObjectVisibility(bool forced = false);
-	// 更新对象的安全性
+	// Update the safety of the object
 	virtual void updateObjectSafety();
 
-	// 更新对象的可追踪性
-	// 当forced为true时，强制为附近所有玩家更新对象的可追踪性
+	// Update the traceability of the object
+	// When forced is true, force all nearby players to update the traceability of the object
 	virtual void updateObjectTraceability(bool forced = false);
 
 	void addToNotify(uint16 f) { m_notifyflags |= f; }
@@ -123,20 +123,21 @@ public:
 
 	virtual void cleanupBeforeDelete() override;
 
-	// 对象的攻击者
+	// The attacker of the object
 	void addAttacker(Unit* attacker) { m_attackers.insert(attacker); }
 	void removeAttacker(Unit* attacker) { m_attackers.erase(attacker); }
 	std::unordered_set<Unit*> const& getAllAttacker() const { return m_attackers; }
 	void removeAllAttackers();
 
-	// 对象的注视者。如果A在B的视线内(无遮挡)，则B将有可能成为A注视者，例如：攻击者便是注视者的一种
+	// Watcher of an object. If A is within B's line of sight (unobstructed), 
+	// then B may become A's watcher. For example, an attacker is a type of watcher
 	void addWatcher(Unit* watcher) { if (m_watchers.find(watcher) == m_watchers.end()) m_watchers.insert(watcher); }
 	void removeWatcher(Unit* watcher) { if (m_watchers.find(watcher) != m_watchers.end()) m_watchers.erase(watcher); }
 	bool hasWatcher(Unit* watcher) const { return m_watchers.find(watcher) != m_watchers.end(); }
 	void removeAllWatchers() { m_watchers.clear(); }
 
-	// 当对象开始接触抛射体时调用
-	// precision的取值范围为0-1.0，值越大精度越高
+	// Called when the object begins to collide with the projectile
+	// The value range of precision is 0-1.0. The higher the value, the higher the precision
 	virtual void enterCollision(Projectile* proj, float precision) {}
 
 	ProjectileCollisionRefManager* getProjectileCollisionRefManager() { return &m_projCollisionRefManager; }

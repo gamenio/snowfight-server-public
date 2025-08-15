@@ -28,146 +28,146 @@ public:
 	bool executeGMCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改移动速度。
-	// 语法：movespeed <value> [player|robot <spawn_id>]
-	// 选项： 
+	// Modify moving speed.
+	// Syntax: movespeed <value> [player|robot <spawn_id>]
+	// Options: 
 	//		value: 1-150
 	//
 	bool executeMoveSpeedCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改角色等级。
-	// 语法：level <value> [player|robot <spawn_id>]
-	// 选项： 
+	// Modify character level.
+	// Syntax: level <value> [player|robot <spawn_id>]
+	// Options:  
 	//		value: 1-100
 	//
 	bool executeLevelCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改攻击范围
-	// 语法：attackrange <value> [player|robot <spawn_id>]
-	// 选项： 
+	// Modify attack range.
+	// Syntax: attackrange <value> [player|robot <spawn_id>]
+	// Options:  
 	//		value: 1-343
 	//
 	bool executeAttackRangeCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改攻击力。
-	// 语法：damage <value> [player|robot <spawn_id>]
+	// Modify damage.
+	// Syntax: damage <value> [player|robot <spawn_id>]
 	//
 	bool executeDamageCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改体力。
-	// 语法：stamina <value> [player|robot <spawn_id>]
-	// 选项： 
-	//		value: -1 无限体力
+	// Modify stamina.
+	// Syntax: stamina <value> [player|robot <spawn_id>]
+	// Options:  
+	//		value: -1 Infinite stamina.
 	//
 	bool executeStaminaCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改体力恢复速度。
-	// 语法：stamina regenrate <value> [player|robot <spawn_id>]
+	// Modify stamina regeneration rate.
+	// Syntax: stamina regenrate <value> [player|robot <spawn_id>]
 	//
 	bool executeStaminaRegenRateCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改蓄力攻击每秒消耗的体力。
-	// 语法：stamina chargeconsumes <value> [player|robot <spawn_id>]
+	// Modify the stamina consumed per second by charged attack.
+	// Syntax: stamina chargeconsumes <value> [player|robot <spawn_id>]
 	//
 	bool executeStaminaChargeConsumesCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改生命值。
-	// 语法：health <value> [player|robot <spawn_id>]
+	// Modify health.
+	// Syntax: health <value> [player|robot <spawn_id>]
 	//
 	bool executeHealthCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改生命恢复速度。
-	// 语法：health regenrate <value> [player|robot <spawn_id>]
+	// Modify health regeneration rate.
+	// Syntax: health regenrate <value> [player|robot <spawn_id>]
 	//
 	bool executeHealthRegenRateCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改防御力。
-	// 语法：defense <value> [player|robot <spawn_id>]
+	// Modify defense.
+	// Syntax: defense <value> [player|robot <spawn_id>]
 	//
 	bool executeDefenseCommand(ArgList& args, std::string& error);
 
 	//
-	// 单位受到伤害。
-	// 语法：receivedamage <value> [player|robot <spawn_id>]
+	// The unit receives damage.
+	// Syntax: receivedamage <value> [player|robot <spawn_id>]
 	//
 	bool executeReceiveDamageCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改经验值。
-	// 语法：xp <value> [player|robot <spawn_id>]
+	// Modify experience.
+	// Syntax: xp <value> [player|robot <spawn_id>]
 	//
 	bool executeXPCommand(ArgList& args, std::string& error);
 
 	//
-	// 传输单位到地图瓦片坐标。
-	// 语法：transport <x> <y> [player|robot <spawn_id>]
-	// 选项： 
-	//		x: 瓦片的X坐标
-	//		y: 瓦片的Y坐标
+	// Transport the unit to the map tile coordinates.
+	// Syntax: transport <x> <y> [player|robot <spawn_id>]
+	// Options:  
+	//		x: The X coordinate in tiles.
+	//		y: The Y coordinate in tiles.
 	//
 	bool executeTransportCommand(ArgList& args, std::string& error);
 
 	//
-	// 传输单位到地图坐标。
-	// 语法：transport xy <x> <y> [player|robot <spawn_id>]
-	// 选项： 
-	//		x: X坐标
-	//		y: Y坐标
+	// Transport the unit to map coordinates.
+	// Syntax: transport xy <x> <y> [player|robot <spawn_id>]
+	// Options:  
+	//		x: X coordinate.
+	//		y: Y coordinate.
 	//
 	bool executeTransportXYCommand(ArgList& args, std::string& error);
 
 	//
-	// 移动机器人到地图瓦片坐标。
-	// 语法：moveto <x> <y> [robot <spawn_id>]
-	// 选项： 
-	//		x: 瓦片的X坐标
-	//		y: 瓦片的Y坐标
+	// Move the robot to the map tile coordinates.
+	// Syntax: moveto <x> <y> [robot <spawn_id>]
+	// Options:  
+	//		x: The X coordinate in tiles.
+	//		y: The Y coordinate in tiles.
 	//
 	bool executeMoveToCommand(ArgList& args, std::string& error);
 
 	//
-	// 添加对象。
-	// 语法：add robot <template_id> [combat_power]
+	// Add object.
+	// Syntax: add robot <template_id> [combat_power]
 	//		add itembox <template_id>
 	//		add item <template_id> [item_count]
 	//		add carrieditem <template_id> [item_count]
-	// 选项： 
-	//		combat_power: 1-1000 受限于战区的战斗力范围
+	// Options:  
+	//		combat_power: 1-1000 Limited by the combat power range of the theater.
 	//
 	bool executeAddCommand(ArgList& args, std::string& error);
 
 	//
-	// 删除对象。
-	// 语法：del <robot|itembox|item> <spawn_id>
+	// Delete object.
+	// Syntax: del <robot|itembox|item> <spawn_id>
 	//		del carrieditem <template_id>
 	//
 	bool executeDelCommand(ArgList& args, std::string& error);
 
 	//
-	// 杀死单位。
-	// 语法：die <player|robot> <spawn_id>
+	// Kill the unit.
+	// Syntax: die <player|robot> <spawn_id>
 	//
 	bool executeDieCommand(ArgList& args, std::string& error);
     
     //
-    // 重新加载服务器配置文件。
-    // 语法： reload config
+    // Reload the server configuration file.
+    // Syntax:  reload config
     //
     bool executeReloadConfigCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改日志等级。
-	// 语法： loglevel <name> <level>
-	// 选项： 
+	// Modify log level.
+	// Syntax:  loglevel <name> <level>
+	// Options:  
 	//		name: Appender.<filter>
 	//			  Logger.<filter>
 	//		level:
@@ -182,22 +182,22 @@ public:
 	bool executeLogLevelCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改钱数。
-	// 语法：money <value> [player <spawn_id>]
+	// Modify the amount of money.
+	// Syntax: money <value> [player <spawn_id>]
 	//
 	bool executeMoneyCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改机器人熟练等级。
-	// 语法：proficiency <value> robot <spawn_id>
-	// 选项： 
+	// Modify robot proficiency level.
+	// Syntax: proficiency <value> robot <spawn_id>
+	// Options:  
 	//		value: 1-6
 	//
 	bool executeProficiencyCommand(ArgList& args, std::string& error);
 
 	//
-	// 修改瓦片标记。
-	// 语法：tileflag <x> <y> <close|open>
+	// Modify tile flag.
+	// Syntax: tileflag <x> <y> <close|open>
 	//
 	bool executeTileFlagCommand(ArgList& args, std::string& error);
 

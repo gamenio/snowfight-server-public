@@ -26,7 +26,7 @@ void AuthSession::handlePacket(AuthPacket&& newPacket)
 {
 	try
 	{
-		// 调用Opcode对应的Handler处理协议数据
+		// Call the Handler corresponding to the Opcode to process the protocol data
 		if (gOpcodeHandlerTable.find(newPacket.getOpcode()) != gOpcodeHandlerTable.end())
 		{
 			OpcodeHandler& opHandler = gOpcodeHandlerTable[newPacket.getOpcode()];

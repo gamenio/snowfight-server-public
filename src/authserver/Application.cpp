@@ -15,10 +15,10 @@
 #define DEFAULT_CONFIG_FILE     "authserver.conf"
 #define DEFAULT_LOG_DIR         "log"
 
-// 构建版本号
+// Build version number
 #define BUILD_NUMBER                12
 
-// 在打印错误并释放资源后返回EXIT_FAILURE
+// Return EXIT_FAILURE after printing the error and releasing resource
 #define RETURN_FAILURE(...) \
 	do { \
 		NS_LOG_ERROR("server.authserver", __VA_ARGS__); \
@@ -86,13 +86,13 @@ int Application::run(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 
-	// 获得上一个实例的PID
+	// Get the PID of the previous instance
 	uint32 pid = 0;
 	std::string pidFile = sConfigMgr->getStringDefault("PidFile", "");
 	if (!pidFile.empty())
 		pid = getPIDFromFile(m_appRoot + pidFile);
 
-	// 向实例发送选项
+	// Send options to instance
 	try
 	{
 		if (!options.empty())
@@ -108,15 +108,15 @@ int Application::run(int argc, char** argv)
 	}
 
 
-	// 检测实例是否已经运行
+	// Check whether the instance is already running
 	if (pid && isProcessRunning(pid))
 	{
 		printf("An instance (PID=%u) of server is already running.\n", pid);
 		return EXIT_FAILURE;
 	}
 
-	// 如果要异步输出Log，需要将io_service传递给Log单例
-	// 通常情况下输出Log是在调用它的线程中执行的，这可能发生在主线程中
+	// If you want to output logs asynchronously, you need to pass io_service to the Log singleton
+	// Normally, logs are output in the thread that calls it, which may be the main thread
 	std::string logPath = m_appRoot + DEFAULT_LOG_DIR + '/';
 	sLog->initialize(sConfigMgr->getBoolDefault("Log.Async.Enable", false) ? &m_ioService : nullptr, logPath);
 
@@ -136,20 +136,20 @@ int Application::run(int argc, char** argv)
 	NS_LOG_INFO("server.authserver", "Using Boost version: %i.%i.%i", BOOST_VERSION / 100000, BOOST_VERSION / 100 % 1000, BOOST_VERSION % 100);
 	NS_LOG_INFO("server.authserver", "Bind Address: %s:%d", authListener.c_str(), authPort);
 
-	// 设置signal处理器
-	// 必须在启动io_service线程池之前设置，否则这些线程会退出
+	// Set the signal handler
+	// This must be set before starting the io_service thread pool, otherwise these threads will exit
 	boost::asio::signal_set signals(m_ioService, SIGINT, SIGTERM);
 #if PLATFORM == PLATFORM_WINDOWS
 	signals.add(SIGBREAK);
 #endif
 	signals.async_wait(std::bind(&Application::signalHandler, this, std::placeholders::_1, std::placeholders::_2));
 
-	// 启动io_service线程池
+	// Start the io_service thread pool
 	int numThreads = std::max(1, sConfigMgr->getIntDefault("ThreadPool", 1));
 	for (int i = 0; i < numThreads; ++i)
 		m_threadPool.emplace_back(boost::bind(&boost::asio::io_service::run, &m_ioService));
 
-	// 创建authserver的PID文件
+	// Create the PID file for authserver
 	uint32 newPID = 0;
 	if (!pidFile.empty())
 	{
@@ -159,25 +159,25 @@ int Application::run(int argc, char** argv)
 			RETURN_FAILURE("Cannot create PID file %s.", pidFile.c_str());
 	}
 
-	// 根据配置文件设置进程的优先级
+	// Set the priority of the process based on the configuration file
 	setProcessPriority("server.authserver");
 
-	// 加载应用配置 
+	// Load application configuration
 	this->loadConfigs();
 
-	// 加载GeoIP数据
+	// Load GeoIP data
 	if (!sGeoIPManager->load())
 	{
 		RETURN_FAILURE("Failed to load GeoIP data.");
 	}
 
-	// 加载禁止名单
+	// Load the banned list
 	if (!sBannedManager->load())
 	{
 		RETURN_FAILURE("Failed to load banned list.");
 	}
 
-	// 加载Realm列表
+	// Load the realm list
 	if (!sRealmManager->load())
 	{
 		RETURN_FAILURE("Failed to load realm list.");
@@ -188,7 +188,7 @@ int Application::run(int argc, char** argv)
 	{
 		RETURN_FAILURE("Network.Threads must be greater than 0");
 	}
-	// 启动authserver的监听Socket
+	// Start listening socket for authserver
 	if (!sAuthSocketMgr->startNetwork(m_ioService, authListener, authPort, networkThreads))
 	{
 		RETURN_FAILURE("Failed to start network.");
@@ -196,7 +196,7 @@ int Application::run(int argc, char** argv)
 
 	this->receiveIPCMsg(pid, newPID);
 
-	// 开始关闭服务器
+	// Start shutting down the server
 
 	shutdownThreadPool();
 
@@ -262,8 +262,8 @@ void Application::setIntConfig(int32 key, int value)
 		m_configs.emplace(key, value);
 }
 
-// 如果命令选项被处理则返回true，否则返回false
-// options中包含未被处理的命令选项
+// Returns true if the command option is processed, otherwise returns false
+// The options contain unprocessed command options
 bool Application::parseCommandLine(int argc, char** argv, std::string& configFile, variables_map& options)
 {
 	options_description desc("Allowed options");
@@ -336,7 +336,8 @@ void Application::receiveIPCMsg(uint32 oldPID, uint32 newPID)
 	message_queue::remove(msgQueueName.c_str());
 }
 
-// 如果发送成功则返回true，否则返回false表示IPC消息队列已满
+// If the message is sent successfully, true is returned, otherwise false is returned, 
+// indicating that the IPC message queue is full
 bool Application::sendIPCMsg(message_queue* msgQueue, std::string const& msg)
 {
 	return msgQueue->try_send(msg.data(), msg.size(), 0);

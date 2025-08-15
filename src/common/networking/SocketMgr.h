@@ -22,8 +22,8 @@ public:
 		this->stopNetwork();
     }
 
-	// 监听指定IP和端口上的连接请求，并启动网络I/O事件处理线程
-	// 新的连接将被分派给网络线程处理
+	// Listen for connection requests on specified IP address and port, and start a network I/O event handling thread
+	// The new connection will be dispatched to the network thread for processing
     virtual bool startNetwork(boost::asio::io_service& service, std::string const& bindIp, uint16 port, uint32 threadCount)
     {
         NS_ASSERT(threadCount > 0);
@@ -54,7 +54,7 @@ public:
         return true;
     }
 
-	// 停止接收新的连接并终止网络线程，已被接受的连接将被关闭
+	// Stop accepting new connections and stop network threads. Accepted connections will be closed
     virtual void stopNetwork()
     {
 		this->closeAcceptor();

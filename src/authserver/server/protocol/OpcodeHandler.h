@@ -5,7 +5,7 @@
 #include "Opcode.h"
 #include "server/AuthSession.h"
 
-// 仅对AuthSession进行前置声明而不导入头文件会导致OpcodeHandler内存错误
+// Declaring AuthSession without importing the header file will cause an OpcodeHandler memory error
 // class AuthSession;
 
 

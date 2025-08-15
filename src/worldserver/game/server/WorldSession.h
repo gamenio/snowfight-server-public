@@ -16,7 +16,8 @@ class Theater;
 
 enum RequiredCapabilities
 {
-	// 在玩家未请求登出而直接断开连接的情况下，服务器将在超时时间内允许玩家恢复连接
+	// If a player disconnects without requesting to log out, the server will allow 
+	// the player to restore the connection within the timeout time
 	REQUIRES_ALLOW_PLAYER_TO_RESTORE		= 0x00000001
 };
 
@@ -57,63 +58,67 @@ public:
 	void setPlayer(Player* player) { m_player = player; }
 	Player* getPlayer() const { return m_player; }
 
-	// 设置GM权限等级
+	// Set GM permission level
 	void setGMLevel(uint8 level) { m_gmLevel = level; }
 	uint8 getGMLevel() const { return m_gmLevel; }
 	bool hasGMPermission() const { return m_gmLevel > 0; }
 
-	// 玩家需要的功能
+	// The capabilities required of the player
 	void setRequiredCapabilities(uint32 capabilities) { m_requiredCapabilities = capabilities; }
 	uint32 getRequiredCapabilities() const { return m_requiredCapabilities; }
 	bool isRequiresCapability(uint32 capability) { return (m_requiredCapabilities & capability) != 0; }
 
-	// 踢出玩家。服务器将立即断开连接，并在处理完接收队列中的剩余消息后登出玩家
+	// Kick the player. The server will immediately disconnect and log out the player 
+	// after processing the remaining messages in the receive queue
 	void kickPlayer();
 	bool isConnected() const { return m_socket && m_socket->isOpen(); }
-	// 登出玩家并等待客户端断开连接，如果等待过程超时服务器将主动断开连接
+	// Log out the player and wait for the client to disconnect. 
+	// If the wait process times out, the server will actively disconnect
 	void logoutPlayer();
 	bool isLoggedIn() const { return m_player != nullptr; }
-	// 在客户端断开连接后登出玩家，否则玩家将在会话超时或调用logoutPlayer()函数后登出
+	// Log out the player after the client disconnects, otherwise the player will log out after 
+	// the session timeout or after calling the logoutPlayer() function
 	void setLogoutAfterDisconnected(bool logout) { m_isLogoutAfterDisconnected = logout; }
 
-	// 更新会话。当会话排队等待进入战区时会话由主线程更新，当进入战区后由战区线程更新
+	// Update the session. When the session is queued to join the theater, 
+	// it is updated by the main thread. Once it joins the theater, it is updated by the theater thread
 	bool update(NSTime diff);
 
-	// 登录验证
+	// Login authentication
 	void sendAuthVerdict(AuthVerdict::AuthResult result, int32 waitPos = 0);
 
-	// 在会话被接受时调用
+	// Called when the session is accepted
 	void onSessionAccepted();
 	void onSessionAccepted(WorldSession* oldSession);
-	// 在会话过期时调用
+	// Called when the session is expired
 	void onSessionExpired();
-	// 在会话排队加入战区时调用
+	// Called when the session is queued to join the theater
 	void onSessionQueued(int32 position);
-	// 在会话被战区接受时调用
+	// Called when the session is accepted by the theater
 	void onSessionAcceptedByTheater(Theater* theater);
 
-	// 客户端延迟
+	// Client latency
 	NSTime getLatency(LatencyIndex index);
 	void setLatency(NSTime latency);
 
-	// 客户端IP和端口
+	// Client IP and port
 	std::string const& getRemoteAddress() const { return m_remoteAddress; }
 	uint16 getRemotePort() const { return m_remotePort; };
 
-	// 会话超时计时器
+	// Session timeout timer
 	void setTimeout(NSTime time);
 	NSTime getTimeoutTime() const { return m_timeoutTime; }
 	void resetTimeoutTimer();
 	void updateTimeoutTimer(NSTime diff);
 	bool isSessionTimedOut() const { return m_timeoutTime > 0 && m_timeoutTimer <= 0; }
 
-	// 时间同步
+	// Time synchronization
 	NSTime getClientNowTimeMillis();
 	void sendTimeSync();
 	void resetTimeSync();
 	void updateClientTime(int32 counter, int32 time);
 
-	// 向玩家发送消息
+	// Send messages to the player
 	void sendFlashMessage(FlashMessage const& message);
 	void sendPlayerActionMessage(PlayerActionMessage const& message);
 

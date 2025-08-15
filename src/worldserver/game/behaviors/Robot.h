@@ -15,9 +15,9 @@
 #include "Unit.h"
 
 
-#define	SIGHT_DISTANCE							240		// 机器人默认的视野范围
-extern const int32 SIGHT_DISTANCE_IN_TILES;				// 以瓦片为单位的视野距离
-#define ABANDON_ATTACK_DISTANCE					380		// 机器人放弃追击目标的距离（不小于视野范围）
+#define	SIGHT_DISTANCE							240		// The robot's default sight distance
+extern const int32 SIGHT_DISTANCE_IN_TILES;				// Sight distance in tiles
+#define ABANDON_ATTACK_DISTANCE					380		// The distance (Not less than sight distance) at which the robot abandons chase of the target
 
 struct SimpleRobot
 {
@@ -226,11 +226,11 @@ public:
 	void setFacingToObject(WorldObject* object);
 
 	void cleanupAfterUpdate() override;
-	// 发送动作信息给周围能够看到当前机器人的玩家
+	// Send movement information to players around who can see the current robot
 	void sendMoveOpcodeToNearbyPlayers(Opcode opcode, MovementInfo& movement);
 	void sendMoveSync();
 	void sendStaminaOpcodeToNearbyPlayers(Opcode opcode, StaminaInfo& stamina);
-	// 发送位置信息给周围能够看到当前定位器的玩家
+	// Send location information to players around who can see the current locator
 	void sendLocationInfoToNearbyPlayers(LocationInfo& location);
 
 	void updateDangerState() override;

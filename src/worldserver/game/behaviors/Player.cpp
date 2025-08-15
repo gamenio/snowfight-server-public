@@ -18,8 +18,8 @@
 #include "ObjectShapes.h"
 #include "UnitLocator.h"
 
-#define ATTACK_INTERVAL								100		// 攻击间隔时间。单位：毫秒
-#define UNLOCKER_EXPIRATION_TIME					15000	// 解锁者失效时间。单位：毫秒
+#define ATTACK_INTERVAL								100		// Attack interval time. Unit: milliseconds
+#define UNLOCKER_EXPIRATION_TIME					15000	// Unlocker expiration time. Unit: milliseconds
 
 int32 RewardForRanking::getMoney(int32 rankNo, int32 rankTotal) const
 {
@@ -188,7 +188,7 @@ bool Player::canSeeOrDetect(WorldObject* object) const
 	if (object == this)
 		return true;
 
-	// 如果当前玩家没有开启GM模式，则无法看到其他GM玩家
+	// If the current player has not enabled GM mode, it is not possible to see other GM players
 	if (object->isType(TYPEMASK_PLAYER))
 	{
 		DataPlayer* dPlayer = object->asPlayer()->getData();
@@ -200,14 +200,14 @@ bool Player::canSeeOrDetect(WorldObject* object) const
 	{
 		if (!this->hasItemEffectType(ITEM_EFFECT_DISCOVER_CONCEALED_UNIT))
 		{
-			// 当前玩家无法看到已隐蔽并且不在发现范围内的单位
+			// Current player can't see units that are concealed and not within discover distance
 			DataUnit* dUnit = object->asUnit()->getData();
 			if (dUnit->getConcealmentState() == CONCEALMENT_STATE_CONCEALED && !this->isWithinDist(object, DISCOVER_CONCEALED_UNIT_DISTANCE))
 				return false;
 		}
 	}
 
-	// 如果当前玩家没有开启GM模式，则无法看到其他GM玩家的抛射体
+	// If the current player has not enabled GM mode, it will not be able to see other GM players' projectiles
 	if (object->isType(TYPEMASK_PROJECTILE))
 	{
 		Projectile* proj = object->asProjectile();
@@ -272,7 +272,7 @@ bool Player::canTrack(WorldObject* object) const
 	{
 		Unit* unit = object->asUnit();
 
-		// 如果当前玩家没有开启GM模式，则无法追踪其他GM玩家
+		// If the current player has not enabled GM mode, it is not possible to track other GM players
 		if (Player* player = unit->asPlayer())
 		{
 			DataPlayer* dPlayer = player->getData();
@@ -380,7 +380,7 @@ void Player::attack(AttackInfo const& attackInfo)
 	//NS_LOG_DEBUG("behaviors.player", "ATTACK facing angle:%f", attackInfo.direction());
 	this->addUnitState(UNIT_STATE_ATTACKING);
 
-	// 露出并重新隐蔽
+	// Expose and reconceal
 	switch (this->getData()->getConcealmentState())
 	{
 	case CONCEALMENT_STATE_CONCEALED:
@@ -404,7 +404,7 @@ void Player::attack(AttackInfo const& attackInfo)
 			int32 regenPoints = (int32)(this->getData()->getStaminaRegenRate() * this->getData()->getMaxStamina() * (nAttacks * (ATTACK_INTERVAL / 1000.f)));
 			nAttacks += regenPoints / this->getData()->getAttackTakesStamina();
 
-			m_numAttacks = nAttacks - 1; // 减去本次攻击
+			m_numAttacks = nAttacks - 1; // Subtract this attack
 			m_attackTimer.setInterval(ATTACK_INTERVAL);
 			m_isContinuousAttack = true;
 			m_attackDirection = attackInfo.direction();
@@ -476,7 +476,7 @@ void Player::receiveDamage(Unit* attacker, int32 damage)
 
 	if (attacker)
 	{
-		// 露出并重新隐蔽
+		// Expose and reconceal
 		switch (this->getData()->getConcealmentState())
 		{
 		case CONCEALMENT_STATE_CONCEALED:
@@ -515,7 +515,7 @@ bool Player::canCombatWith(Unit* victim) const
 	if (!Unit::canCombatWith(victim))
 		return false;
 
-	// GM只能攻击GM，不能攻击其他单位
+	// GM can only attack GM, not other units
 	if (this->getData()->isGM()
 		&& !(victim->asPlayer() && victim->asPlayer()->getData()->isGM()))
 		return false;
@@ -525,7 +525,7 @@ bool Player::canCombatWith(Unit* victim) const
 
 void Player::updateVisibilityForPlayer()
 {
-	// 更新当前玩家可视范围内所有对象的可见性
+	// Update the visibility of all objects within the current player's line of sight
 	VisibleNotifier notifier(*this);
 	this->visitNearbyObjects(this->getData()->getVisibleRange(), notifier);
 
@@ -930,7 +930,7 @@ void Player::attack(float direction, uint32 attackInfoCounter)
 
 	this->getData()->setOrientation(direction);
 
-	// 抛射体类型
+	// Projectile type
 	simpleProj.projectileType = PROJECTILE_TYPE_NORMAL;
 	if (this->hasUnitState(UNIT_STATE_CHARGING))
 		simpleProj.projectileType = PROJECTILE_TYPE_CHARGED;
@@ -944,23 +944,23 @@ void Player::attack(float direction, uint32 attackInfoCounter)
 		}
 	}
 
-	// 伤害加成
+	// Damage bonus
 	simpleProj.damageBonusRatio = 0.f;
 	if ((simpleProj.projectileType == PROJECTILE_TYPE_CHARGED || simpleProj.projectileType == PROJECTILE_TYPE_INTENSIFIED) && this->hasItemEffectType(ITEM_EFFECT_DAMAGE_BONUS_PERCENT))
 		simpleProj.damageBonusRatio = (float)getTotalItemEffectModifier(ITEM_EFFECT_DAMAGE_BONUS_PERCENT) / 100.f;
 
-	// 计算抛射体大小比例
+	// Calculate the size scale of the projectile
 	simpleProj.scale = this->calcProjectileScale(simpleProj.projectileType);
 	NS_ASSERT(simpleProj.scale >= 1.0f);
 
-	// 计算消耗的体力
+	// Calculate the stamina consumed
 	int32 consumedStamina = this->calcConsumedStamina();
 	simpleProj.consumedStamina = consumedStamina;
 	this->getData()->increaseConsumedStaminaTotal(consumedStamina);
 	this->getData()->increaseAttackCounter();
 	simpleProj.attackCounter = this->getData()->getAttackCounter();
 
-	// 计算新的体力
+	// Calculate new stamina
 	int32 newStamina = this->getData()->getStamina() - consumedStamina;
 	NS_ASSERT(newStamina >= 0);
 	this->getData()->setStamina(newStamina);
@@ -1090,7 +1090,7 @@ void Player::transport(Point const& dest)
 		this->concealIfNeeded(dest);
 	}
 
-	// 设置新的位置
+	// Set a new position
 	this->getMap()->playerRelocation(this, dest);
 	this->getData()->increaseMovementCounter();
 	this->getData()->markMoveSegment(this->getData()->getMovementInfo());
@@ -1193,7 +1193,7 @@ void Player::spawn(BattleMap* map)
 	PlayerTemplate const* tmpl = sObjectMgr->getPlayerTemplate(m_templateId);
 	NS_ASSERT(tmpl);
 
-	// 出生位置和朝向
+	// Spawning position and orientation
 	TileCoord spawnPoint = map->generateUnitSpawnPoint();
 	this->getData()->setSpawnPoint(spawnPoint);
 	Point position = spawnPoint.computePosition(map->getMapData()->getMapSize());
@@ -1202,7 +1202,7 @@ void Player::spawn(BattleMap* map)
 	this->getData()->randomOrientation();
 	this->getData()->markMoveSegment(this->getData()->getMovementInfo());
 
-	// 初始化定位器
+	// Initialize the locator
 	if (this->getLocator())
 	{
 		this->getLocator()->getData()->setGuid(ObjectGuid(GUIDTYPE_UNIT_LOCATOR, map->generateUnitLocatorSpawnId()));

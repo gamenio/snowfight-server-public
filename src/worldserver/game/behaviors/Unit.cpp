@@ -18,17 +18,17 @@
 #include "Projectile.h"
 #include "UnitLocator.h"
 
-#define HEALTH_REGEN_BASE_INTERVAL								5000	// 生命值恢复的基本间隔时间
-#define HEALTH_REGEN_RATE_PERCENT_WHEN_CONCEALED				150		// 隐蔽时增加生命值恢复速度百分比
-#define SMILEY_DURATION											5000	// 表情持续时间
+#define HEALTH_REGEN_BASE_INTERVAL								5000	// Base interval time for health regeneration
+#define HEALTH_REGEN_RATE_PERCENT_WHEN_CONCEALED				150		// Increase health regeneration rate percentage while concealed
+#define SMILEY_DURATION											5000	// Smiley duration
 
-#define SLOW_MOVE_DURATION										500		// 当受到伤害时减慢移动的持续时间
-#define MOVE_SPEED_PERCENT_WHEN_SLOW_MOVE						-60		// 缓慢移动时降低移动速度百分比
+#define SLOW_MOVE_DURATION										500		// The duration of slowed moving when damaged
+#define MOVE_SPEED_PERCENT_WHEN_SLOW_MOVE						-60		// The percentage of moving speed reduction when moving slowly
 
-#define PROJECTILE_SCALE_TO_STAMINA_RATIO						0.02f	// 抛射体大小比例与体力值的比率。单位：抛射体大小比例/每点体力
-#define INTENSIFIED_PROJECTILE_SCALE							1.5f	// 强化的抛射体大小比例
+#define PROJECTILE_SCALE_TO_STAMINA_RATIO						0.02f	// The ratio of projectile size scale to stamina. Unit: Projectile size scale / stamina point
+#define INTENSIFIED_PROJECTILE_SCALE							1.5f	// Intensified projectile size scale
 
-#define MAGICBEAN_DROP_REFERENCE_CHANCE							23.f	// 魔豆和单位数为1比1的情况下单位掉落魔豆的几率
+#define MAGICBEAN_DROP_REFERENCE_CHANCE							23.f	// The chance of a unit dropping magic beans when the ratio of magic beans to units is 1:1
 
 Unit::Unit() :
 	m_unitState(UnitState::UNIT_STATE_NONE),
@@ -154,7 +154,7 @@ void Unit::fillLoot(Unit* looter, std::vector<LootItem>& itemList)
 		NS_ASSERT(tmpl);
 
 		uint32 totalMagicBeans = m_map->getSpawnManager()->getClassifiedItemCount(ITEM_CLASS_MAGIC_BEAN);
-		// 计算每个魔豆增加的掉落几率
+		// Calculate the increased drop chance for each magic bean
 		float chanceInc = MAGICBEAN_DROP_REFERENCE_CHANCE / (totalMagicBeans / (float)m_map->getMapData()->getPopulationCap());
 		LootItem item;
 		item.itemId = tmpl->id;
@@ -164,7 +164,7 @@ void Unit::fillLoot(Unit* looter, std::vector<LootItem>& itemList)
 		itemList.push_back(item);
 	}
 
-	// 最后活着的单位不会掉落金币
+	// The last unit alive will not drop any golds
 	if (this->getMap()->getAliveCount() > 1)
 	{
 		CombatGrade const& combatGrade = this->getMap()->getCombatGrade();
@@ -211,11 +211,11 @@ void Unit::dropLoot(Unit* looter, std::vector<LootItem> const& itemList, int32* 
 	if (spentMoney)
 		*spentMoney = 0;
 
-	// 初始化地面物品位置
+	// Initialize floor item placement
 	TileCoord currCoord(m_map->getMapData()->getMapSize(), this->getData()->getPosition());
 	FloorItemPlace itemPlace(m_map, currCoord, FloorItemPlace::LEFT_DOWN);
 
-	// 根据几率掉落物品
+	// Drop items based on chance
 	int32 grade = std::max(0, (int32)(this->getMap()->getCombatGrade().grade - 1));
 	for (auto it = itemList.begin(); it != itemList.end(); ++it)
 	{
@@ -295,7 +295,7 @@ float Unit::calcReward(Unit* attacker, int32 damagePoints)
 	int32 aggDamage = m_rewardManager.getAggDamage();
 	CombatGrade const& combatGrade = this->getMap()->getCombatGrade();
 
-	// 对受害者造成的伤害
+	// The damage caused to the victim
 	float r1 = (float)damagePoints / aggDamage;
 	float r2 = std::min(1.0f, aggDamage / (float)this->getData()->getMaxHealth());
 
@@ -312,7 +312,7 @@ void Unit::applyReward(Unit* victim, float reward)
 	RewardOnKillUnit const* rewardData = sObjectMgr->getRewardOnKillUnit();
 	NS_ASSERT(rewardData);
 
-	// 计算经验值和等级
+	// Calculate experience and level
 	int32 gainXP = (int32)std::round(rewardData->xp * reward);
 	if (gainXP > 0)
 		this->giveXP(gainXP);
@@ -689,7 +689,7 @@ int32 Unit::addExperience(int32 xp)
 				nextLevelXP = assertNotNull(sObjectMgr->getUnitLevelXP(newLevel + 1))->experience;
 			else
 			{
-				// 满级
+				// Max level
 				realXP -= newXP;
 				newXP = 0;
 				nextLevelXP = 0;
@@ -1361,7 +1361,7 @@ void Unit::enterCollision(Projectile* proj, float precision)
 
 	Unit* attacker = proj->getLauncher().getSource();
 
-	// 计算伤害
+	// Calculate damage
 	int32 damage = attacker->calcDamage(this, proj, precision);
 	attacker->dealDamage(this, damage);
 }

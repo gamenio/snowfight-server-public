@@ -142,18 +142,18 @@ bool SpawnManager::fillRobotsIfNeeded()
 
 void SpawnManager::configureSimpleRobot(SimpleRobot& simpleRobot)
 {
-	// 设置难度等级
+	// Set difficulty
 	RobotDifficulty const& difficulty = this->selectRobotDifficulty();
 	simpleRobot.proficiencyLevel = difficulty.proficiencyLevel;
 	simpleRobot.natureType = difficulty.natureType;
 
-	// 设置出生模板
+	// Set spawn template
 	RobotSpawnInfo const& spawnInfo = this->selectRobotSpawnInfo();
 	RobotTemplate const* robotTmpl = sObjectMgr->getRobotTemplate(spawnInfo.templateId);
 	NS_ASSERT(robotTmpl);
 	simpleRobot.templateId = robotTmpl->id;
 
-	// 设置属性阶段
+	// Set statistics stage
 	uint8 stage = robotTmpl->findStageByCombatPower(difficulty.maxCombatPower, 0);
 	simpleRobot.stage = stage;
 	uint16 realCP = robotTmpl->getStageStats(stage).combatPower;
@@ -336,7 +336,7 @@ void SpawnManager::rollItemBoxLoot(ItemBoxTemplate const* itemBoxTemplate, uint3
 	if (!lootTmpl)
 		return;
 
-	// 根据几率生成物品
+	// Spawn items based on chance
 	for (auto it = lootTmpl->itemList.begin(); it != lootTmpl->itemList.end(); ++it)
 	{
 		LootItem const& lootItem = *it;

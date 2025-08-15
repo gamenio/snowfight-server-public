@@ -5,14 +5,14 @@
 #include "Opcode.h"
 #include "game/server/WorldSession.h"
 
-// 仅对WorldSession进行前置声明而不导入头文件会导致OpcodeHandler内存错误
+// Declaring WorldSession without importing the header file will cause an OpcodeHandler memory error
 // class WorldSession;
 
 
 enum SessionStatus
 {
-	STATUS_AUTHED = 0,                                      // 玩家验证通过 (m_player == NULL, m_isAuthed)
-	STATUS_LOGGEDIN,                                        // 玩家登录游戏 (m_player != NULL)
+	STATUS_AUTHED = 0,                                      // The player has been authenticated (m_player == NULL, m_isAuthed)
+	STATUS_LOGGEDIN,                                        // The player has logged in to the game (m_player != NULL)
 };
 
 struct OpcodeHandler
@@ -41,5 +41,5 @@ inline std::string getOpcodeNameForLogging(uint16 opcode)
 }
 
 
-#endif //__OPCODE_HANDLER_H__
+#endif // __OPCODE_HANDLER_H__
 

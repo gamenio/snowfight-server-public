@@ -6,21 +6,21 @@
 #include "game/tiles/TileArea.h"
 #include "mapparser/TMXXMLParser.h"
 
-#define TRAINING_GROUND_MAP_ID							0	// 训练场的地图ID
+#define TRAINING_GROUND_MAP_ID							0	// The map ID of the training ground
 
-#define MAP_MARGIN_IN_TILES								11	// 以瓦片数为单位的地图边距
+#define MAP_MARGIN_IN_TILES								11	// Map margin in tiles
 
 struct MapGrade
 {
-	uint8 combatGrade;			// 战斗等级
-	uint16 mapId;				// 地图ID
+	uint8 combatGrade;			// Combat grade
+	uint16 mapId;				// Map ID
 };
 
 struct MapConfig
 {
-	uint16 id;					// 地图ID
-	int32 populationCap;		// 人口数限制
-	int32 battleDuration;		// 战斗的持续时间，单位：秒
+	uint16 id;					// Map ID
+	int32 populationCap;		// Population cap
+	int32 battleDuration;		// Duration of battle, unit: seconds
 };
 
 class MapData

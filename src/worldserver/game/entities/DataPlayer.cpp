@@ -39,7 +39,7 @@ void DataPlayer::writeFields(FieldUpdateMask& updateMask, UpdateType updateType,
 		updateMask.setBit(SPLAYER_FIELD_IS_GM);
 	}
 
-	// 更新玩家自己
+	// Update the player itself
 	if ((updateFlags & UPDATE_FLAG_SELF) != 0)
 	{
 		if ((updateType == UPDATE_TYPE_CREATE && m_experience != 0) || this->hasUpdatedField(SPLAYER_FIELD_EXPERIENCE))
@@ -60,7 +60,7 @@ void DataPlayer::writeFields(FieldUpdateMask& updateMask, UpdateType updateType,
 			updateMask.setBit(SPLAYER_FIELD_MONEY);
 		}
 
-		// 物品
+		// Item
 		for (int32 slot = 0; slot < UNIT_SLOTS_COUNT; ++slot)
 		{
 			if ((updateType == UPDATE_TYPE_CREATE && m_items[slot] != ObjectGuid::EMPTY) || this->hasUpdatedField(SPLAYER_FIELD_ITEM_HEAD + slot))

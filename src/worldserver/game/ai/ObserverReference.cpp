@@ -22,7 +22,7 @@ void ObserverReference::update()
 	Robot* self = this->getSource()->getOwner();
 	WorldObject* target = this->getTarget();
 
-	// 自己与目标对象的距离
+	// The distance between oneself and the target object
 	float distance = self->getData()->getPosition().getDistance(target->getData()->getPosition());
 	m_weight += std::max(0.f, 1.0f - distance / self->getSightDistance());
 }

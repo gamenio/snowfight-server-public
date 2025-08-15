@@ -11,7 +11,7 @@
 
 class MapData;
 
-// 单位在地图上的瓦片坐标
+// The tile coordinates of the unit on the map.
 struct TileCoord
 {
 	TileCoord() :x(0), y(0) 

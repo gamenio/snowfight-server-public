@@ -1,41 +1,41 @@
 ################################################
-# World Server 配置文件                        #
+# World Server configuration file              #
 ################################################
 [worldserver]
 
 ###################################################################################################
-# 连接和目录配置
+# CONNECTIONS AND DIRECTORIES
 #
 # LogsDir
-#    Description: 设置日志的目录
-#    Important:   LogsDir需要用引号包围，因为字符串可能包含空格。
-#                 需要填写绝对路径。
-#    Default:     "" - (日志文件将被存储在程序所在目录的"log"文件夹下)
+#    Description: Set the log directory.
+#    Important:   LogsDir needs to be enclosed in quotation marks because the string may contain spaces.
+#                 You need to fill in the absolute path.
+#    Default:     "" - (Log files will be stored in the "log" folder in the program directory.)
 
 LogsDir = ""
 
 #
 # ThreadPool
-#    Description: 线程池中的线程数量
-#                 线程池当前用于:
-#					  - Log异步输出（通过参数Log.Async.Enable激活）
-#                     - Signal处理
-#                     - World的socket监听
+#    Description: Number of threads in the thread pool.
+#                 The thread pool is currently used for: 
+#					  - Log asynchronous output (enabled via the Log.Async.Enable parameter)
+#                     - Signal handling
+#                     - World socket listening
 #        Default:   2
 
 ThreadPool = 2
 
 #
 # WorldServerPort
-#    Description: 服务器端口号
+#    Description: Server port number.
 #    Default:     18402
 
 WorldServerPort = 18402
 
 #
 # BindIP
-#    Description: 服务器IP地址。
-#    Default:     "0.0.0.0" - (绑定系统的所有IP)
+#    Description: Server IP address.
+#    Default:     "0.0.0.0" - (Bind to all IPs on the system)
 
 BindIP = "0.0.0.0"
 
@@ -43,24 +43,24 @@ BindIP = "0.0.0.0"
 ###################################################################################################
 
 ###################################################################################################
-# 性能配置
+# PERFORMANCE SETTINGS
 #
 # UseProcessors
-#    Description: Windows和Linux多处理器掩码（mask）
-#    Example:     假设服务器有两个CPU:
-#                     1 - 仅使用第一个CPU
-#                     2 - 仅使用第二个CPU
-#					  3 - 同时使用两个CPU（3=1|2）
-#    Default:     0  - (由操作系统调度)
-#                 1+ - (所选处理器的位掩码（Bit mask）)
+#    Description: Processors mask for Windows and Linux based multi-processor systems.
+#    Example:     A computer with 2 CPUs:
+#                     1 - 1st CPU only
+#                     2 - 2nd CPU only
+#					  3 - 1st and 2nd CPU, because 1 | 2 is 3
+#    Default:     0  - (Selected by OS)
+#                 1+ - (Bit mask value of selected processors)
 
 UseProcessors = 0
 
 #
 # ProcessPriority
-#    Description: 进程在Windows和Linux上的处理优先级设置
-#    Details:     在Linux上使用了一个最佳的值“-15”。 (需要系统管理员权限).
-#                 在Windows上进程设置为HIGH级别。
+#    Description: Process priority setting for Windows and Linux based systems.
+#    Details:     On Linux, a nice value of -15 is used. (requires superuser).
+#                 On Windows, process is set to HIGH class.
 #    Default:     0 - (Normal)
 #                 1 - (High)
 
@@ -68,58 +68,58 @@ ProcessPriority = 1
 
 #
 # PlayerLimit
-#    Description:  世界里最大玩家数量
+#    Description:  Maximum number of players in the world.
 #    Default: 1000  
 
 PlayerLimit = 30
 
 #
 # WorldUpdateInterval
-#    Description: 世界更新间隔时间（毫秒）
+#    Description: World update interval time (in milliseconds).
 #    Default:   50
 
 WorldUpdateInterval = 50
 
 #
 # TheaterUpdateThreads
-#    Description: 更新战区的线程数
+#    Description: Update the number of threads in the theater.
 #    Default: 3
 
 TheaterUpdateThreads = 3   
 
 #
 # TheaterDeletionDelay
-#    Description: 删除战区延迟时间（秒）
+#    Description: Delete the delay time (in seconds) for the theater.
 #    Default:  3600
 
 TheaterDeletionDelay = 3600
 
 #
 # WaitForPlayersTimeout
-#    Description: 等待其他玩家的超时时间（毫秒）
+#    Description: The timeout period (in milliseconds) for waiting for other players.
 #    Default:  5000
 
 WaitForPlayersTimeout = 5000
 
 #
 # SessionTimeout
-#    Description: 玩家会话超时时间（毫秒）
+#    Description: Player session timeout (in milliseconds).
 #    Default:  60000
-#              0      -  不超时
+#              0      -  No limit
 
 SessionTimeout = 60000
 
 #
 # QueuedSessionTimeout
-#    Description: 排队加入战区的会话超时时间（毫秒）
+#    Description: The session timeout (in milliseconds) for queuing to join a theater.
 #    Default:  10000
-#              0      -  不超时
+#              0      -  No limit
 
 QueuedSessionTimeout = 10000
 
 #
 # ExpiredSessionDelay
-#    Description: 过期的会话延迟关闭时间（毫秒）
+#    Description: Expired session delay close time ( in milliseconds).
 #    Default:  5000
 
 ExpiredSessionDelay = 5000
@@ -130,33 +130,33 @@ ExpiredSessionDelay = 5000
 
 
 ###################################################################################################
-# 网络配置
+# NETWORK CONFIG
 #
 # Network.Threads
-#    Description: 网络线程的数量
-#    Default:     1 - 每1000个连接1个线程
+#    Description: Number of threads for network.
+#    Default:     1 - (Recommended 1 thread per 1000 connections)
 
 Network.Threads = 1
 
 #
 # Network.OutKBuff
-#    Description: 用于内核发送缓冲区的大小（bytes），参考socket选项SO_SNDBUF。
-#    Default:     -1 - 使用系统的默认设置
+#    Description: Amount of memory (in bytes) used for the output kernel buffer (see SO_SNDBUF socket option, TCP manual).
+#    Default:     -1 - (Use system default setting)
 
 Network.OutKBuff = 4096
 
 #
 # Network.TcpNoDelay:
-#    Description: TCP的Nagle算法设置。
-#    Default:     0 - (Disabled, 流量少延迟大)
-#                 1 - (Enabled, 流量多延迟小, TCP_NO_DELAY)
+#    Description: TCP Nagle algorithm setting.
+#    Default:     0 - (Disabled, Less traffic, More latency)
+#                 1 - (Enabled, More traffic, Less latency, TCP_NO_DELAY)
 
 Network.TcpNoDelay = 1
 
 #
 # Network.SendQueueLimit
-#    Description: 用于每个连接发送队列的大小（bytes），当发送队列超出这个限制时将强制断开连接
-#    Default:     0      - 无限制
+#    Description: The size (in bytes) of the send queue for each connection. When the send queue exceeds this limit, the connection will be forcibly disconnected.
+#    Default:     0      - Unlimited
 
 Network.SendQueueLimit = 204800
 
@@ -164,21 +164,21 @@ Network.SendQueueLimit = 204800
 ###################################################################################################
 
 ###################################################################################################
-# 日志系统配置
+# LOGGING SYSTEM SETTINGS
 #
-# Appender配置
-#    Description: 定义日志的输出目标
+# Appender configuration
+#    Description: Define the output destination for logs.
 #    Format:      Appender.<Name>=<Type>,<LogLevel>,<Flags>,[optional1],[optional2],[optional3]
 #
-#                    Name:     目标名称
+#                    Name:     Destination name
 #  
-#                    Type:     日志输出目标的类型
+#                    Type:     Type of log output destination
 #                              0 - (None)
 #                              1 - (Console)
 #                              2 - (File)
 #                              3 - (DB)
 #
-#                    LogLevel: 日志等级
+#                    LogLevel: Log level
 #                              0 - (Disabled)
 #                              1 - (Trace)
 #                              2 - (Debug)
@@ -187,16 +187,17 @@ Network.SendQueueLimit = 204800
 #                              5 - (Error)
 #                              6 - (Fatal)
 #
-#                    Flags:    日志标记，可以组合使用（例如：1|2|4|8=15）
-#                              0 - 无
-#                              1 - 增加时间戳到输出的内容
-#                              2 - 增加日志等级到输出的内容
-#                              4 - 增加过滤器类型到输出的内容
-#                              8 - 增加一个时间戳到日志的文件名，格式：YYYY-MM-DD_HH-MM-SS (仅用于 Type = File)
-#                             16 - 在重写日志文件之前，如果该文件已经存在则将其备份，备份文件名将会增加一个时间戳。
-#                               (仅用于 Mode = w)
+#                    Flags:    Log flags, which can be combined (e.g., 1|2|4|8=15)
+#                              0 - None
+#                              1 - Prefix Timestamp to the text
+#                              2 - Prefix Log Level to the text
+#                              4 - Prefix Log Filter type to the text
+#                              8 - Append timestamp to the log file name. Format: YYYY-MM-DD_HH-MM-SS 
+#                                  (Only used with Type = 2)
+#                             16 - Before overwriting the log file, backup the file if it already exists. The backup file name will have a timestamp appended to it
+#                                  (Only for Mode = w)
 #
-#                    Colors:   日志的输出颜色（当Type=Console时用于optional1）
+#                    Colors:   Log output color (used for optional1 when Type=Console)
 #                              Format: "fatal error warn info debug trace"
 #                              0 - BLACK
 #                              1 - RED
@@ -213,20 +214,21 @@ Network.SendQueueLimit = 204800
 #                             12 - LMAGENTA
 #                             13 - LCYAN
 #                             14 - WHITE
-#                             例如: "13 11 9 5 3 1"
+#                             Example: "13 11 9 5 3 1"
 #
-#                    File:     设置日志的文件名（当Type=File时用于optional1）
-#                              允许使用"%s"创建一个动态文件名的日志文件
+#                    File:     Name of the file (read as optional1 if Type = File)
+#                              Allows to use one "%s" to create dynamic files
 #  
-#                    Mode:     文件打开模式（当Type=File时用于optional2）
+#                    Mode:     Mode to open the file (read as optional2 if Type = File)
 #                              a - (Append)
 #                              w - (Overwrite)
 #  
-#                    MaxFileSize: 限制文件大小，当超出这个限制时创建新的文件(当Type=File时用于optional3)
-#                                 值应该被设置为64位无符号整数.
-#                                 最大值为 4294967295 (4 gb)，空值为无限制
-#                                 注意: 不能用于动态文件名的日志文件
-#                                 例如:  536870912 (512 mb)
+#                    MaxFileSize: Maximum file size of the log file before creating a new log file
+#                                 (read as optional3 if Type = File)
+#                                 Size is measured in bytes expressed in a 64-bit unsigned integer.
+#                                 Maximum value is 4294967295 (4 gb). Leave blank for no limit.
+#                                 NOTE: Does not work with dynamic filenames.
+#                                 Example:  536870912 (512 mb)
 #
 
 Appender.Console=1,3,0
@@ -234,11 +236,11 @@ Appender.Server=2,3,23,world.log,w,1048576
 Appender.GM=2,2,7,gm/gm.log
 
 #
-# Logger配置
-#    Description: 定义日志的类型
+# Logger configuration
+#    Description: Define the type of log.
 #    Format:      Logger.<Name>=<LogLevel>,<Appender1> [Appender2]...
 #
-#                     LogLevel: 日志等级
+#                     LogLevel: Log level
 #                               0 - (Disabled)
 #                               1 - (Trace)
 #                               2 - (Debug)
@@ -247,7 +249,7 @@ Appender.GM=2,2,7,gm/gm.log
 #                               5 - (Error)
 #                               6 - (Fatal)
 #
-#                     Appender[N]: Logger链接到的Appender列表(使用空格分隔)。
+#                     Appender[N]: List of Appenders linked to the Logger (separated by spaces).
 #
 
 Logger.root=5,Console Server
@@ -307,7 +309,7 @@ Logger.ai.robot=2,Server
 
 #
 # Log.Async.Enable
-#    Description: 异步输出日志
+#    Description: Enables asyncronous message logging.
 #    Default:     1 - (Enabled)
 #                 0 - (Disabled)
 
@@ -315,7 +317,7 @@ Log.Async.Enable = 1
 
 #
 # PidFile
-#    Description: World守护进程的PID文件。
+#    Description: World daemon PID file.
 #    Example:     "world.pid" - (Enabled)
 #    Default:     ""          - (Disabled)
 
@@ -325,52 +327,52 @@ PidFile = "world.pid"
 ###################################################################################################
 
 ###################################################################################################
-# 游戏配置
+# GAME SETTINGS
 #
 # WithdrawalDelay
-#    Description: 退出战斗的延迟时间（毫秒）。
+#    Description: The delay time (in milliseconds) for withdrawing from battle.
 #    Default:     2000
 
 WithdrawalDelay = 2000
 
 #
 # ConcealedDelay
-#    Description: 隐蔽单位需要的时间（毫秒）。
+#    Description: The time (in milliseconds) required for the concealment unit.
 #    Default:     2000
 
 ConcealedDelay = 2000
 
 #
 # EnteringDangerStateDelay
-#    Description: 进入危险状态的延迟时间（毫秒）。
+#    Description: Delay time (in milliseconds) before entering a danger state.
 #    Default:     3000
 
 EnteringDangerStateDelay = 3000
 
 #
 # DangerStateHealthLossInterval
-#    Description: 在危险状态中生命值损失间隔时间（毫秒）。
+#    Description: The interval time (in milliseconds) between health point losses in a danger state.
 #    Default:     1000
 
 DangerStateHealthLossInterval = 1000
 
 #
 # BattlePreparationDuration
-#    Description: 战斗准备的持续时间（毫秒）
+#    Description: The duration (in milliseconds) of battle preparation.
 #    Default:     3000
 
 BattlePreparationDuration = 3000
 
 #
 # BattleEndAdChance
-#    Description: 战斗结束后展示广告的几率。如果玩家已购买“移除广告”则配置项无效。
-#    Default:     100 - 100%展示广告
+#    Description: The chance of displaying ads after battle. If the player has purchased “Remove Ads,” this setting will be invalid.
+#    Default:     100 - 100% display ads
 
 BattleEndAdChance = 0
 
 #
 # EnableAppReviewMode
-#    Description: 启用应用评审模式。评审模式下训练场将显示关闭按钮。
+#    Description: Enable application review mode. In review mode, the training ground will display a close button.
 #    Default:     1 - (Enabled)
 #                 0 - (Disabled)
 

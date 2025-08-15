@@ -106,7 +106,7 @@ bool TheaterManager::tryRestoreSession(WorldSession* session)
 		return false;
 
 	WorldSession* oldSession = (*it).second;
-	// 未进入世界的玩家不能恢复会话
+	// The player who has not joined the world cannot restore the session
 	if (!oldSession->getPlayer() || !oldSession->getPlayer()->isInWorld())
 		return false;
 
@@ -119,7 +119,7 @@ bool TheaterManager::tryRestoreSession(WorldSession* session)
 	m_sessions[oldSession->getSessionId()] = session;
 	session->onSessionAccepted(oldSession);
 
-	// 将旧会话的网络连接断开并释放，所有未处理的消息将会忽略
+	// Disconnect and release the network connection of the old session, and all unprocessed messages will be ignored.
 	oldSession->kickPlayer();
 	delete oldSession;
 
@@ -217,7 +217,7 @@ Theater* TheaterManager::selectTheaterForPlayer(WorldSession* session)
 void TheaterManager::addPlayerToTheater(WorldSession* session)
 {
 	Theater* theater = this->selectTheaterForPlayer(session);
-	// 如果没有战区或者战区不能接受会话则创建新的战区
+	// If there is no theater or the theater cannot accept the session, create a new theater
 	if (!theater || !theater->acceptSession(session))
 	{
 		theater = this->createTheater();
@@ -241,7 +241,7 @@ uint16 TheaterManager::selectMapForPlayer(WorldSession* session) const
 		auto* weightList = sMapDataManager->getMapGradeWeightList(player->getData()->getCombatGrade());
 		NS_ASSERT(weightList);
 
-		// 随机选择一个地图
+		// Select a map at random
 		auto ranIt = randomWeightedContainerElement(*mapGradeList, *weightList);
 		NS_ASSERT(ranIt != mapGradeList->end());
 		MapGrade const& mapGrade = *ranIt;
@@ -263,23 +263,24 @@ bool TheaterManager::update(NSTime diff)
 		m_isStopped = true;
 	}
 
-	// 处理未决的会话。如果服务已经停止则未处理的Session将在析构函数中被释放
+	// Process pending sessions. If the service has been stopped, 
+	// unprocessed sessions will be released in the destructor
 	if(!m_isStopped)
 		this->processPendingSessions();
 
-	// 更新会话
+	// Update session
 	this->updateSessions(diff);
 
-	// 更新等待中的玩家
+	// Update players who are waiting
 	this->updateQueuedPlayers(diff);
 
-	// 更新过期的玩家
+	// Update expired players
 	this->updateExpiredPlayers(diff);
 
-	// 更新战区
+	// Update the theaters
 	this->updateTheaters(diff);
 
-	// 清除战区
+	// Purge the theaters
 	this->purgeTheaters(m_isStopped);
 
 	return !m_isStopped;
@@ -322,7 +323,7 @@ void TheaterManager::updateTheaters(NSTime diff)
 
 void TheaterManager::processPendingSessions()
 {
-	// 尝试将未决列表中的会话恢复或者加入到战区
+	// Try restoring or adding sessions from the pending list to the theater
 	WorldSession* newSession = nullptr;
 	while (m_pendingSessions.next(newSession))
 	{

@@ -30,8 +30,8 @@ enum NetworkType
 
 enum RequiredCapabilities
 {
-	// 禁止使用玩家IP地理位置进行区域映射
-	// 如果被禁用则使用玩家上报的位置（LogonChallenge协议的country字段）
+	// Disable regional mapping based on player IP location
+	// If disabled, use the location reported by the player (country field in the LogonChallenge protocol)
 	REQUIRES_DISABLE_REGION_MAPPING_WITH_GEOIP = 0x00000001
 };
 
@@ -55,7 +55,7 @@ public:
 	std::list<RealmInfo> const& getRealmList() const { return m_realmList;  }
 	void setPlatform(uint8 platform) { m_platform = platform; }
 	uint8 getPlatform() const { return m_platform; }
-	// 玩家需要的功能
+	// Capabilities required of the player
 	void setRequiredCapabilities(uint32 capabilities) { m_requiredCapabilities = capabilities; }
 	uint32 getRequiredCapabilities() const { return m_requiredCapabilities; }
 	bool isRequiresCapability(uint32 capability) { return (m_requiredCapabilities & capability) != 0; }

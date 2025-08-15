@@ -11,9 +11,10 @@
 #include "logging/Log.h"
 #include "utilities/Random.h"
 
-#define OPENING_SMILEY_DURATION_MIN					1000	// 战斗开场表情的最少持续时间。单位：毫秒
+// The minimum duration of the battle opening smiley. Unit: milliseconds.
+#define OPENING_SMILEY_DURATION_MIN					1000
 
-// 当机器人状态变化时发表情的几率
+// The chance of sending an smiley when the robot's state changes
 #define SMILEY_CHANCE_COMBAT_CHASE				1.0f
 #define SMILEY_CHANCE_COMBAT_ESCAPE				1.0f
 #define SMILEY_CHANCE_OPENING					40.0f
@@ -156,8 +157,8 @@ void SparringRobotAI::updateCombat()
 		this->clearAttackInAction(AI_ACTION_TYPE_COMBAT);
 		m_me->deleteUnitThreatList();
 		m_me->combatStop();
-		// 在自己和周围的目标均处于静止状态时，
-		// 更新可见状态可以让自己主动搜寻周围视野内的目标
+		// When both oneself and nearby targets are stationary, updating the state of visibility 
+		// allows one to actively search for targets within one's line of sight
 		m_me->updateObjectVisibility();
 	}
 }
@@ -385,7 +386,7 @@ void SparringRobotAI::unlockStart(ItemBox* itemBox)
 		targetAction = AI_ACTION_TYPE_UNLOCK_DIRECTLY;
 
 	if ((targeted && this->getAIAction() == targetAction)
-		|| (stateChanged && this->getAIAction() == AI_ACTION_TYPE_UNLOCK_DIRECTLY) // 降低动作优先级
+		|| (stateChanged && this->getAIAction() == AI_ACTION_TYPE_UNLOCK_DIRECTLY) // Lower the priority of the action
 		|| this->getAIAction() < targetAction)
 	{
 		this->applyUnlockMotion(itemBox, targetAction);
@@ -429,7 +430,7 @@ void SparringRobotAI::collectStart(Item* item)
 		targetAction = AI_ACTION_TYPE_COLLECT;
 
 	if ((targeted && this->getAIAction() == targetAction)
-		|| (stateChanged && this->getAIAction() == AI_ACTION_TYPE_COLLECT_DIRECTLY) // 降低动作优先级
+		|| (stateChanged && this->getAIAction() == AI_ACTION_TYPE_COLLECT_DIRECTLY) // Lower the priority of the action
 		|| this->getAIAction() < targetAction)
 	{
 		this->applyCollectionMotion(item, targetAction);

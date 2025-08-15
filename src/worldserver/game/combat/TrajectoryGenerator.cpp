@@ -5,13 +5,13 @@
 #include "game/utils/MathTools.h"
 #include "logging/Log.h"
 
-// 抛射体贝塞尔曲线控制点配置
-static const float PROJECTILE_CONTROL_INITIAL_ANGLE = 51.f;	// 控制点的初始角度
-static const float PROJECTILE_CONTROL_LENGTH = 45.f;		// 控制点长度
+// Projectile bezier curve control point configuration
+static const float PROJECTILE_CONTROL_INITIAL_ANGLE = 51.f;	// Initial angle of control point
+static const float PROJECTILE_CONTROL_LENGTH = 45.f;		// Control point length
 
-// 物品贝塞尔曲线控制点配置
-static const float ITEM_CONTROL_1_INITIAL_ANGLE = 90.f;		// 控制点1的初始角度
-static const float ITEM_CONTROL_2_INITIAL_ANGLE = 70.f;		// 控制点2的初始角度
+// Item bezier curve control point configuration
+static const float ITEM_CONTROL_1_INITIAL_ANGLE = 90.f;		// Initial angle of control point 1
+static const float ITEM_CONTROL_2_INITIAL_ANGLE = 70.f;		// Initial angle of control point 2
 
 // https://blog.csdn.net/qq_33662689/article/details/108904133
 // https://gist.github.com/tunght13488/6744e77c242cc7a94859#file-quadratic-bezier-js
@@ -79,16 +79,16 @@ void TrajectoryGenerator::computeProjectileTrajectory()
 	float dir = std::atan2(m_destination.y - m_origin.y, m_destination.x - m_origin.x);
 	float ctrlRad = MathTools::degrees2Radians(PROJECTILE_CONTROL_INITIAL_ANGLE);
 
-	// 将dir转换为如下形式:
+	// Transform dir to the following form:
 	//      0
 	//  /   |   \
 	//-90 --+-- +90
 	//  \   |   /
 	//      0
 	float rDir = (float)M_PI_2 - std::fabs(dir);
-	float ar = rDir / (float)M_PI_2; // 求出角度的比值，(0°~±90°)/R90=(0~±1.0)
+	float ar = rDir / (float)M_PI_2; // Find the ratio of the angles, (0°~±90°)/R90=(0~±1.0)
 
-	float lr = std::min(1.0f, dist / PROJECTILE_CONTROL_LENGTH * 0.5f); // 求出控制点长度与距离的比值
+	float lr = std::min(1.0f, dist / PROJECTILE_CONTROL_LENGTH * 0.5f); // Find the ratio of the length of the control point to the distance
 	float angle = ctrlRad * ar * lr;
 	float len = PROJECTILE_CONTROL_LENGTH * lr;
 	float dx, dy;
@@ -129,7 +129,7 @@ void TrajectoryGenerator::computeItemTrajectory()
 	ctrl1.x = std::cos(ctrl1Rad) * dist;
 	ctrl1.y = std::sin(ctrl1Rad) * dist;
 
-	// 将dir转换为如下形式:
+	// Transform dir to the following form:
 	//     ±180
 	//  /   |   \
 	//-90 --+-- +90
@@ -138,8 +138,8 @@ void TrajectoryGenerator::computeItemTrajectory()
 	float rDir = dir + (float)M_PI_2;
 	if (rDir > (float)M_PI)
 		rDir = rDir - (float)M_PI - (float)M_PI;
-	float ar = rDir / (float)M_PI_2; // 求出角度的比值，(0°~±180°)/R90=(0~±2.0)
-	float angle; // 计算的角度范围：0°(ar=0)~±初始角度(ar=±1.0)~±180°(ar=±2.0)
+	float ar = rDir / (float)M_PI_2; // Find the ratio of the angles, (0°~±180°)/R90=(0~±2.0)
+	float angle; // Calculate the angle range: 0°(ar=0)~± Initial angle (ar=±1.0)~±180°(ar=±2.0)
 	if (std::fabs(ar) > 1.0f)
 	{
 		angle = ctrl2Rad + ((float)M_PI - ctrl2Rad) * (std::fabs(ar) - 1.0f);
@@ -148,7 +148,7 @@ void TrajectoryGenerator::computeItemTrajectory()
 	else
 		angle = ctrl2Rad * ar;
 
-	float len = 2 * dist * std::sin(angle / 2.f); // 等腰三角形求底边公式
+	float len = 2 * dist * std::sin(angle / 2.f); // Formula for finding the base of an isosceles triangle
 	float A = dir + ((float)M_PI - angle) / 2.f;
 	Point ctrl2;
 	ctrl2.x = std::cos(A) * len;

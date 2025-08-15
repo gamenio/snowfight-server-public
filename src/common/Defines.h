@@ -39,7 +39,7 @@
 
 #define SZFMTD "%" PRIuPTR
 
-// 基本数据类型定义
+// Basic data type definitions
 typedef int64_t int64;
 typedef int32_t int32;
 typedef int16_t int16;

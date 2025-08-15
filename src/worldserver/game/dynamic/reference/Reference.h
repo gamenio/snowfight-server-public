@@ -11,17 +11,17 @@ template <class TO, class FROM> class Reference : public LinkedListElement
         TO* iRefTo;
         FROM* iRefFrom;
     protected:
-        // 当FROM对象需要链接到TO对象时被调用
+		// Called when the FROM object needs to be linked to the TO object
         virtual void buildLink() = 0;
 
-        // 当TO对象需要与FROM对象解除链接时被调用
+        // Called when the TO object needs to be unlinked from the FROM object
         virtual void destroyLink() = 0;
 
     public:
         Reference() { iRefTo = NULL; iRefFrom = NULL; }
         virtual ~Reference() { }
 
-        // 将FROM对象链接到TO对象
+        // Link the FROM object to the TO object
 		void link(TO* toObj, FROM* fromObj)
 		{
 			NS_ASSERT(toObj && fromObj);
@@ -33,7 +33,7 @@ template <class TO, class FROM> class Reference : public LinkedListElement
 			buildLink();
 		}
 
-		// 解除TO对象和FROM对象的链接
+		// Unlink the TO object and FROM object
         void unlink()
         {
 			if (!isValid())

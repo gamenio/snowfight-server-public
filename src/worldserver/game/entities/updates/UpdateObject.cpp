@@ -5,7 +5,7 @@
 #include "logging/Log.h"
 #include "game/entities/DataBasic.h"
 
-#define DATA_BUFFER_SIZE		512 // 用于存储数据的缓冲区大小
+#define DATA_BUFFER_SIZE		512 // The size of the buffer used to store data
 
 UpdateObject::UpdateObject()
 {
@@ -18,7 +18,7 @@ UpdateObject::UpdateObject(UpdateObject&& right):
 {
 }
 
-// 增加一个被更新的对象数据
+// Adds an updated object data
 void UpdateObject::addData(DataBasic* data, UpdateType updateType, uint32 updateFlags)
 {
 	NS_ASSERT(data->getNumberOfFields() > 0);
@@ -28,7 +28,7 @@ void UpdateObject::addData(DataBasic* data, UpdateType updateType, uint32 update
 	google::protobuf::io::StringOutputStream sos(&buff);
 	DataOutputStream output(&sos);
 
-	// 写对象元信息
+	// Write object metadata
 	Parcel::writeEnum(updateType, &output);
 	Parcel::writeUInt32(updateFlags, &output);
 	Parcel::writeUInt32(data->getGuid().getRawValue(), &output);
@@ -37,7 +37,7 @@ void UpdateObject::addData(DataBasic* data, UpdateType updateType, uint32 update
 		Parcel::writeEnum(data->getTypeId(), &output);
 	}
 
-	// 写字段和更新掩码
+	// Write fields and update masks
 	std::string fieldBuff;
 	fieldBuff.reserve(DATA_BUFFER_SIZE);
 	google::protobuf::io::StringOutputStream fieldSos(&fieldBuff);
@@ -68,7 +68,7 @@ size_t UpdateObject::sizeInBytes() const
 
 	totalSize += Parcel::uint32Size(blockCount);
 
-	// 超出范围对象的GUID字节数
+	// The number of bytes in the GUID of objects that are out of range
 	if (!m_outOfRangeGUIDs.empty())
 	{
 		totalSize += Parcel::enumSize(UPDATE_TYPE_OUT_OF_RANGE_OBJECTS);
@@ -77,7 +77,7 @@ size_t UpdateObject::sizeInBytes() const
 			totalSize += Parcel::uint32Size((*it).getRawValue());
 	}
 
-	// 被更新对象数据的字节数
+	// The number of bytes of data in the updated objects
 	for (auto const& d : m_datas)
 	{
 		totalSize += d.size();
@@ -95,7 +95,7 @@ void UpdateObject::writeToStream(DataOutputStream* output) const
 
 	Parcel::writeUInt32(blockCount, output);
 
-	// 写入超出范围对象的GUID
+	// Write the GUID of the object that is out of range
 	if (!m_outOfRangeGUIDs.empty())
 	{
 		Parcel::writeEnum(UPDATE_TYPE_OUT_OF_RANGE_OBJECTS, output);
@@ -104,7 +104,7 @@ void UpdateObject::writeToStream(DataOutputStream* output) const
 			Parcel::writeUInt32((*it).getRawValue(), output);
 	}
 	
-	// 写入被更新的对象数据
+	// Write the data of the updated objects
 	for (auto const& d : m_datas)
 	{
 		output->WriteRaw(d.data(), d.size());

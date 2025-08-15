@@ -60,7 +60,7 @@ void NTSSocket::update()
 {
 	BasicSocket::update();
 
-	// 判断连接是否超时
+	// Check if the connection has timed out
 	if (m_connTimeout > 0 && m_connActiveTime > 0)
 	{
 		int32 diff = (int32)(getUptimeMillis() - m_connActiveTime);
@@ -107,11 +107,11 @@ void NTSSocket::sendTimeResult(int64 originateTimestamp)
 	TimeResult result;
 	int64 currTime = getSystemTimeMillis();
 
-	// 客户端发送请求的时间（t1）
+	// The time (t1) when the client sends the request
 	result.set_originate_timestamp(originateTimestamp);
-	// 服务器接收到请求的时间（t2）
+	// The time (t2) when the server receives the request
 	result.set_receive_timestamp(currTime);
-	// 服务器发送应答的时间（t3）
+	// The time (t3) when the server sends the response 
 	result.set_transmit_timestamp(currTime);
 
 	NTSPacket packet(SMSG_TIME_RESULT);

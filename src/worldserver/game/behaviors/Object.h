@@ -81,16 +81,16 @@ public:
 	void buildValuesUpdateForPlayerInMap(Player* player, PlayerUpdateMapType& updateMap) const;
 	virtual void buildValuesUpdate(PlayerUpdateMapType& updateMap) {}
 
-	// 发送对象更新数据到相关玩家后清理对象，例如：对象更新掩码
+	// After sending object update data to related players, clean up the object, such as the object update mask
 	virtual void cleanupAfterUpdate();
 
-	// 将对象增加到更新列表，如果成功则返回true
+	// Adds the object to the update list and returns true if successful
 	virtual bool addToObjectUpdate() = 0;
 	virtual void removeFromObjectUpdate() = 0;
 	void addToObjectUpdateIfNeeded() override;
 
 protected:
-	// 清理更新掩码，如果remove为true并且对象在更新列表中则将其移除
+	// Clear the update mask. If remove is true and the object is in the update list, remove it
 	void clearUpdateMask(bool remove);
 
 	TypeID m_typeId;

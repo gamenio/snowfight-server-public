@@ -6,10 +6,10 @@
 
 enum UnitThreatType
 {
-	UNITTHREAT_DISTANCE,				// 我与敌人的距离
-	UNITTHREAT_ENEMY_HEALTH,			// 敌人的生命值
-	UNITTHREAT_RECEIVED_DAMAGE,			// 敌人对我累计造成的伤害
-	UNITTHREAT_ENEMY_CHARGED_POWER,		// 敌人蓄力攻击的威力
+	UNITTHREAT_DISTANCE,				// My distance from the enemy
+	UNITTHREAT_ENEMY_HEALTH,			// The enemy's health
+	UNITTHREAT_RECEIVED_DAMAGE,			// The total damage the enemy has dealing to me
+	UNITTHREAT_ENEMY_CHARGED_POWER,		// The power of the enemy's charged attack
 	MAX_UNITTHREAT_TYPES
 };
 

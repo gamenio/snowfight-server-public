@@ -22,7 +22,7 @@ MapDataManager* MapDataManager::instance()
 
 bool MapDataManager::load()
 {
-	// 加载地图配置
+	// Load map configuration
 	std::string dbFile = StringUtil::format("%smap/map.db", sApplication->getRoot().c_str());
 	try
 	{
@@ -86,7 +86,7 @@ bool MapDataManager::load()
 		return false;
 	}
 
-	// 加载地图数据
+	// Load map data
 	for (auto it = m_mapConfigs.begin(); it != m_mapConfigs.end(); ++it)
 	{
 		MapConfig& config = *it;

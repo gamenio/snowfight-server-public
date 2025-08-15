@@ -89,7 +89,7 @@ void WorldObject::destroyForNearbyPlayers()
 
 #if NS_DEBUG
 	{
-		// 确保所有玩家都从客户端对象列表中移除了当前对象
+		// Ensure that all players have removed the current object from their client object list
 		PlayerClientExistsObjectFilter filter(this);
 		std::list<Player*> result;
 		ObjectSearcher<Player, PlayerClientExistsObjectFilter> searcher(filter, result);
@@ -119,7 +119,7 @@ void WorldObject::invisibleForNearbyPlayers()
 
 void WorldObject::buildValuesUpdate(PlayerUpdateMapType& updateMap)
 {
-	// 收集所有可以看到当前对象的玩家以及与玩家相关的更新数据
+	// Collect all players who can see the current object and update data related to the players
 	ValuesUpdateAccumulator accumulator(*this, updateMap);
 	this->visitNearbyObjectsInMaxVisibleRange(accumulator);
 }

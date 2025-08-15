@@ -29,7 +29,7 @@ bool RandomStepGenerator::isWalkable(TileCoord const& position)
 
 bool RandomStepGenerator::step(TileCoord& nextStep)
 {
-	// 判断起点位置周围的8个节点中可到达的节点
+	// Find the reachable nodes among the 8 nodes adjacent to the starting point
 	std::vector<TileCoord> walkableSteps;
 	TileCoord tmp;
 	TileCoord currStep(m_owner->getMap()->getMapData()->getMapSize(), m_owner->getData()->getPosition());

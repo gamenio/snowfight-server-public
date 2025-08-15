@@ -35,7 +35,7 @@ void RobotMoveSpline::update(NSTime diff)
 	if (!m_currSegment)
 		return;
 
-	// 检测移动速度是否发生改变
+	// Check if the moving speed has changed
 	if (m_owner->getData()->hasUpdatedField(SUNIT_FIELD_MOVE_SPEED) && m_realMoveSpeed > 0)
 	{
 		int32 moveSpeed = m_owner->getData()->getMoveSpeed();
@@ -60,7 +60,7 @@ void RobotMoveSpline::update(NSTime diff)
 
 void RobotMoveSpline::popStepAndWalk()
 {
-	// 检查是否仍有路径步骤需要前进
+	// Check if there are still path steps to go
 	if (m_path.empty())
 	{
 		m_owner->getData()->clearMovementFlag(MOVEMENT_FLAG_WALKING);
@@ -139,9 +139,6 @@ void RobotMoveSpline::stop()
 	if (m_isFinished)
 		return;
 
-	MapData const* mapData = m_owner->getMap()->getMapData();
-
-	// 如果还没有到达目标瓦片则清理封闭标记
 	if (m_currSegment)
 	{
 		delete m_currSegment;

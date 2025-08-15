@@ -31,7 +31,7 @@ inline TileArea computeTileAreaInViewport(Point const& position, Size const& vie
 {
 	Point center(position);
 
-	// 始终在viewport的中心位置
+	// Always at the center of the viewport
 	float halfWidth = viewport.width * 0.5f;
 	float halfHeight = viewport.height * 0.5f;
 	center.x = std::max(center.x, halfWidth);

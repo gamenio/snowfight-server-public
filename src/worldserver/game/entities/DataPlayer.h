@@ -4,7 +4,7 @@
 #include "game/world/Locale.h"
 #include "DataUnit.h"
 
-// 游戏控制器类型
+// Game controller type
 enum ControllerType
 {
 	CONTROLLER_TYPE_UNKNOWN,
@@ -16,7 +16,7 @@ struct PlayerTemplate
 {
 	uint32 id;
 	uint32 displayId;
-	uint8 originLevel;			// 初始等级
+	uint8 originLevel;			// Origin level
 	std::vector<UnitStats> stageStatsList;
 
 	UnitStats const& getStageStats(uint8 stage) const
@@ -50,35 +50,35 @@ public:
 	Size const& getViewport() const { return m_viewport; }
 	Size const& getVisibleRange() const { return m_visibleRange; }
 
-	// 是否为GM
+	// Is it GM
 	void setGM(bool isGM);
 	bool isGM() const { return m_isGM; }
 
-	// 客户端语言
+	// Client language
 	void setLang(LangType lang) { m_lang = lang; }
 	LangType getLang() const { return m_lang; }
 
-	// 游戏控制器类型
+	// Game controller type
 	void setControllerType(ControllerType controllerType) { m_controllerType = controllerType; }
 	ControllerType getControllerType() const { return m_controllerType; }
 
-	// 是否为新玩家
+	// Is it a new player
 	bool isNewPlayer() const { return m_isNewPlayer; }
 	void setNewPlayer(bool isNewPlayer) { m_isNewPlayer = isNewPlayer; }
 
-	// 是否为训练场学员
+	// Is it a training ground trainee
 	bool isTrainee() const { return m_isTrainee; }
 	void setTrainee(bool isTrainee) { m_isTrainee = isTrainee; }
 
-	// 免费金币奖励阶段
+	// Free golds reward stage
 	void setRewardStage(uint8 stage) { m_rewardStage = stage; }
 	uint8 getRewardStage() const { return  m_rewardStage; }
 
-	// 每日奖励累计天数
+	// Cumulative days of daily reward
 	void setDailyRewardDays(int32 days) { m_dailyRewardDays = days; }
 	int32 getDailyRewardDays() const { return m_dailyRewardDays; }
 
-	// 玩家的战斗等级
+	// The player's combat levelc
 	void setCombatGrade(uint8 grade) { m_combatGrade = grade; }
 	uint8 getCombatGrade() const { return m_combatGrade; }
 
@@ -86,14 +86,14 @@ public:
 
 	void setKillCount(int32 count) override;
 
-	// 槽中的物品
+	// Item in the slot
 	ObjectGuid const& getItem(int32 slot) const { return m_items[slot]; }
 	void setItem(int32 slot, ObjectGuid const& guid);
 
 	void setConcealmentState(ConcealmentState state) override;
 	void setPickupDuration(int32 duration) override;
 
-	// 捡拾的目标
+	// The target of picking up
 	ObjectGuid const& getPickupTarget() const { return m_pickupTarget; }
 	void setPickupTarget(ObjectGuid const& guid);
 
@@ -105,11 +105,11 @@ public:
 	void setProperty(int32 property) { m_property = property; }
 	int32 getProperty() const { return m_property; }
 
-	// 属性阶段
+	// Statistic stage
 	void setStatStage(StatType statType, uint8 stage) { m_statStageList[statType] = stage; }
 	uint8 getStatStage(StatType statType) const { return m_statStageList[statType]; }
 
-	// 选定的地图ID
+	// Selected map ID
 	void setSelectedMapId(uint16 mapId) { m_selectedMapId = mapId; }
 	uint16 getSelectedMapId() const { return m_selectedMapId; }
 

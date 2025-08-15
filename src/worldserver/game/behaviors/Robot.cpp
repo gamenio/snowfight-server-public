@@ -20,39 +20,39 @@
 
 const int32 SIGHT_DISTANCE_IN_TILES					= (int32)std::ceil(SIGHT_DISTANCE / (float)TILE_WIDTH_HALF);
 
-#define ATTACK_INTERVAL								100		// 攻击间隔时间。单位：毫秒
-#define EXPECTED_NUMBER_OF_ATTACKS_MIN				2		// 连续攻击时期望的最小攻击次数
-#define AIMING_ERROR_RANGE_MAX						80.f	// 瞄准误差最大范围。单位：points
+#define ATTACK_INTERVAL								100		// Attack interval time. Unit: milliseconds
+#define EXPECTED_NUMBER_OF_ATTACKS_MIN				2		// The minimum number of attacks expected during a continuous attack period
+#define AIMING_ERROR_RANGE_MAX						80.f	// Maximum aiming error range. Unit: points
 
-#define NORMAL_ATTACK_MIN_INTERVAL					120		// 普通攻击最小间隔时间。单位：毫秒
-#define	NORMAL_ATTACK_MAX_INTERVAL					150		// 普通攻击最大间隔时间。
+#define NORMAL_ATTACK_MIN_INTERVAL					120		// The minimum interval time of normal attack. Unit: milliseconds
+#define	NORMAL_ATTACK_MAX_INTERVAL					150		// The maximum interval time of normal attack.
 
-#define CHARGE_START_STAMINA_RATIO					0.8f	// 开始蓄力时的体力比例
-#define CHARGE_START_ATTACK_RANGE_RATIO				0.6f	// 开始蓄力时的攻击距离与目标距离的比例
+#define CHARGE_START_STAMINA_RATIO					0.8f	// The ratio of stamina when starting to charge
+#define CHARGE_START_ATTACK_RANGE_RATIO				0.6f	// The ratio of attack distance to target distance when starting to charge
 
-#define HAND_DOWN_DELAY								500		// 放下手的延迟时间。单位：毫秒
-#define MISS_DISTANCE								64.0f	// 未击中时雪球掠过玩家的距离
+#define HAND_DOWN_DELAY								500		// Hand down delay time. Unit: milliseconds.
+#define MISS_DISTANCE								64.0f	// The distance the snowball misses the player when it does not hit
 
-#define EXCLUDED_EXPLOR_AREA_EXPIRATION_TIME		30000	// 被排除的探索区的失效时间。单位：毫秒
+#define EXCLUDED_EXPLOR_AREA_EXPIRATION_TIME		30000	// The expiration time of the excluded exploration area. Unit: milliseconds
 
-// 当敌人在指定的攻击距离内时所采用的攻击方式
+// The attack method used when the enemy is within the specified attack distance
 #define ATTACK_CHARGED_WITHIN_DIST					140.0f
 #define ATTACK_FAST_WITHIN_DIST						80.0f
 
-#define ENEMY_CRITICAL_THREAT_DISTANCE				140.f	// 敌人对自己构成严重威胁的距离
-#define FAVORABLE_MAGICBEAN_MAX_DIFF				4		// 有利于自己的魔豆最大差值
+#define ENEMY_CRITICAL_THREAT_DISTANCE				140.f	// The distance at which the enemy poses a critical threat
+#define FAVORABLE_MAGICBEAN_MAX_DIFF				4		// The maximum difference in magic beans that is favorable to oneself
 
-#define ITEMS_TO_COLLECT_AND_TARGETED_ITEM_DISTANCE	100.f	// 要收集的物品与目标物品的距离
+#define ITEMS_TO_COLLECT_AND_TARGETED_ITEM_DISTANCE	100.f	// The distance between the item to be collected and the target item
 
 uint8 RobotTemplate::findStageByCombatPower(uint16 expectedCombatPower, uint16 minCombatPower) const
 {
-	// 查找最靠近expectedCombatPower的战斗力和属性阶段
+	// Find the combat power and statistic stage closest to expectedCombatPower.
 	auto it = combatPowerStages.lower_bound(expectedCombatPower);
 	if (it == combatPowerStages.end())
 		--it;
 	uint16 cpFound = (*it).first;
 	uint8 stage = (*it).second;
-	// 找到的战斗力不能低于minCombatPower
+	// The combat power found cannot be lower than minCombatPower
 	while (cpFound < minCombatPower)
 	{
 		--it;
@@ -411,7 +411,7 @@ bool Robot::startContinuousAttack()
 
 	this->stopNormalAttack();
 
-	// 首次攻击的延迟，模拟玩家瞄准花费的时间
+	// The delay of the first attack simulates the time it takes for a player to aim
 	RobotProficiency const* proficiency = sObjectMgr->getRobotProficiency(this->getData()->getProficiencyLevel());
 	NS_ASSERT(proficiency);
 	int32 delay = random(proficiency->minContinuousAttackDelay, proficiency->maxContinuousAttackDelay);
@@ -919,7 +919,7 @@ bool Robot::canHide(TileCoord const& hidingSpot) const
 	if (m_map->isBattleEnding())
 		return false;
 
-	// 如果正在躲藏则需要等待生命值完全恢复
+	// If the robot is hiding, you need to wait until its health is fully restored
 	if (this->hasUnitState(UNIT_STATE_HIDING))
 	{
 		if (this->getData()->getHealth() >= this->getData()->getMaxHealth())
@@ -932,20 +932,20 @@ bool Robot::canHide(TileCoord const& hidingSpot) const
 		int32 abandonHidingHealthPercent = nature->getEffectValue(NATURE_EFFECT_ABANDON_HIDING_HEALTH_PERCENT);
 		if (healthPercent > abandonHidingHealthPercent)
 			return false;
-		// 有急救物品的情况下
+		// When first aid item is available
 		if (this->getItem(INVENTORY_SLOT_FIRST_AID) && healthPercent > abandonHidingHealthPercent * 0.75f)
 			return false;
 	}
 
-	// 有对自己构成威胁的人
+	// There are guys who are a threat to me
 	if (!m_unitThreatManager.getThreatList().empty())
 		return false;
 
-	// 躲藏点没有与危险区保持安全距离
+	// The hiding spot is not at a safe distance from the danger zone
 	if (!m_map->isSafeDistanceMaintained(hidingSpot))
 		return false;
 
-	// 躲藏点在危险地区
+	// The hiding spot is in a dangerous district
 	if (m_map->isDangerousDistrict(hidingSpot))
 		return false;
 
@@ -1030,11 +1030,11 @@ bool Robot::canCollect(Item* supply) const
 	ItemTemplate const* tmpl = sObjectMgr->getItemTemplate(supply->getData()->getItemId());
 	NS_ASSERT(tmpl);
 
-	// 战斗结束中只收集金币
+	// Only collect golds during the ending battle
 	if (m_map->isBattleEnding() && tmpl->itemClass != ITEM_CLASS_GOLD)
 		return false;
 
-	// 如果装备了0级雪球夹则放弃收集其他雪球夹
+	// If equipped with a level 0 snowball maker, you will not collect other snowball maker
 	if (tmpl->itemClass == ITEM_CLASS_EQUIPMENT && tmpl->itemSubClass == ITEM_SUBCLASS_SNOWBALL_MAKER)
 	{
 		CarriedItem* item = this->getItem(EQUIPMENT_SLOT_SNOWBALL_MAKER);
@@ -1042,7 +1042,7 @@ bool Robot::canCollect(Item* supply) const
 			return false;
 	}
 
-	// 放弃距离正在收集的物品较远的物品
+	// Ignore the item that is farther from the item it is collecting.
 	if (m_collecting)
 	{
 		float dist = m_collecting->getData()->getPosition().getDistance(supply->getData()->getPosition());
@@ -1053,15 +1053,15 @@ bool Robot::canCollect(Item* supply) const
 	if (!this->canCollectInCombat())
 		return false;
 
-	// 物品正在被其他机器人收集
+	// The item is being collected by other robot
 	if(supply->getCollectorCount() > 0 && (supply->getCollectorCount() > 1 || !supply->isCollector(const_cast<Robot*>(this))))
 		return false;
 
-	// 物品正在被其他单位捡拾
+	// The item is being picked up by other robot
 	if(supply->getPickerCount() > 0 && (supply->getPickerCount() > 1 || !supply->isPicker(const_cast<Robot*>(this))))
 		return false;
 
-	// 物品在危险区中
+	// The item is in the danger zone
 	TileCoord itemCoord(m_map->getMapData()->getMapSize(), supply->getData()->getPosition());
 	if(!m_map->isWithinSafeZone(itemCoord))
 		return false;
@@ -1131,7 +1131,7 @@ bool Robot::checkCollectionCombatConditions() const
 {
 	NS_ASSERT(m_collecting);
 
-	// 正在捡拾收集的目标
+	// Pick up the target being collected
 	if (m_collecting != this->getPickupTarget())
 		return false;
 
@@ -1349,14 +1349,14 @@ bool Robot::canUnlock(ItemBox* itemBox) const
 	if (!this->canUnlockInCombat())
 		return false;
 
-	// 物品箱正在被其他单位解锁
+	// The item box is being unlocked by other the unit
 	if (itemBox->getUnlockerCount() > 0 && (itemBox->getUnlockerCount() > 1 || !itemBox->isUnlocker(const_cast<Robot*>(this))))
 		return false;
 
 	if (this->hasUnitState(UNIT_STATE_HIDING))
 		return false;
 
-	// 物品箱在危险区中
+	// The item box is in the danger zone
 	TileCoord itemBoxCoord(m_map->getMapData()->getMapSize(), itemBox->getData()->getPosition());
 	if (!m_map->isWithinSafeZone(itemBoxCoord))
 		return false;
@@ -1525,7 +1525,7 @@ void Robot::transport(Point const& dest)
 		this->concealIfNeeded(dest);
 	}
 
-	// 设置新的位置
+	// Set a new position
 	this->getMap()->robotRelocation(this, dest);
 
 	if (this->getLocator())
@@ -1620,7 +1620,7 @@ void Robot::combatStop()
 
 float Robot::calcOptimalDistanceToDodgeTarget(Unit* target) const
 {
-	// 减去TILE_WIDTH_HALF防止走位死循环
+	// Subtract TILE_WIDTH_HALF to prevent infinite looping of walking position
 	float dist = this->calcEffectiveRange(target) - TILE_WIDTH_HALF;
 	return dist;
 }
@@ -1641,7 +1641,7 @@ bool Robot::checkCombatChaseConditions() const
 	if (!this->canActiveAttack(m_combating))
 		return false;
 
-	// 与危险区已保持安全距离
+	// A safe distance has been maintained from the danger zone
 	if (m_map->getCurrentSafeZoneRadius() > 0)
 	{
 		TileCoord currdCoord(mapData->getMapSize(), this->getData()->getPosition());
@@ -1669,7 +1669,7 @@ bool Robot::checkCombatEscapeConditions() const
 	if (!this->canActiveAttack(m_combating))
 		return true;
 
-	// 在危险中
+	// In danger
 	if (m_map->getCurrentSafeZoneRadius() > 0)
 	{
 		if (m_dangerState == DANGER_STATE_ENTERING 
@@ -1684,7 +1684,8 @@ bool Robot::checkCombatEscapeConditions() const
 	if (healthPercent > nature->getEffectValue(NATURE_EFFECT_ABANDON_ESCAPE_HEALTH_PERCENT))
 		return false;
 
-	// 一对一的情况下生命值比例大于阈值并且生命值高于对手
+	// In a one-on-one situation, the health percentage is greater than the threshold, 
+	// and the health is higher than the enemy's
 	if (m_unitThreatManager.getThreatList().size() <= 1
 		&& healthPercent > nature->getEffectValue(NATURE_EFFECT_ABANDON_ESCAPE_IN_1V1_COMBAT_HEALTH_PERCENT)
 		&& this->getData()->getHealth() > m_combating->getData()->getHealth())
@@ -1731,16 +1732,16 @@ bool Robot::canActiveAttack(Unit* victim) const
 	if (this->isInCollection())
 		return true;
 
-	// 危险警报未触发前不主动攻击玩家
+	// Do not actively attack the player before the danger alert is triggered
 	if (victim->isType(TYPEMASK_PLAYER) && !m_map->isDangerAlertTriggered())
 		return false;
 
-	// 魔豆数量超过敌人
+	// The number of magic beans exceeds that of the enemy
 	int32 mbDiff = this->getData()->getMagicBeanCount() - victim->getData()->getMagicBeanCount();
 	if (mbDiff >= m_favorableMagicBeanDiff)
 		return true;
 
-	// 收集到了足够多的装备
+	// Collected enough equipment
 	if (m_equipmentCount >= m_favorableEquipmentCount)
 		return true;
 
@@ -1754,7 +1755,7 @@ void Robot::receiveDamage(Unit* attacker, int32 damage)
 
 	if (attacker)
 	{
-		// 露出并重新隐蔽
+		// Expose and reconceal
 		switch (this->getData()->getConcealmentState())
 		{
 		case CONCEALMENT_STATE_CONCEALED:
@@ -1770,7 +1771,8 @@ void Robot::receiveDamage(Unit* attacker, int32 damage)
 
 		if (this->canCombatWith(attacker))
 		{
-			// 增加单位威胁后必须立即开始战斗，延迟战斗将可能造成威胁被添加但是战斗没有开始的情况（目标已不在可视范围内）
+			// After adding a unit threat, combat must start immediately. Delaying combat may result 
+			// in the threat being added but combat not starting (the target is no longer out of sight).
 			this->addThreat(attacker, UNITTHREAT_RECEIVED_DAMAGE, (float)damage);
 
 			if (!this->isInCombat())
@@ -1828,7 +1830,7 @@ bool Robot::canSeeOrDetect(WorldObject* object) const
 	if (object == this)
 		return false;
 
-	// 当前机器人无法看到其他GM玩家
+	// The current robot cannot see other GM players
 	if (object->isType(TYPEMASK_PLAYER))
 	{
 		DataPlayer* dPlayer = object->asPlayer()->getData();
@@ -1840,7 +1842,7 @@ bool Robot::canSeeOrDetect(WorldObject* object) const
 	{
 		if (!this->hasItemEffectType(ITEM_EFFECT_DISCOVER_CONCEALED_UNIT))
 		{
-			// 当前机器人无法看到已隐蔽并且不在发现范围内的单位
+			// The current robot cannot see units that are concealed and out of discovery distance
 			DataUnit* dUnit = object->asUnit()->getData();
 			if (dUnit->getConcealmentState() == CONCEALMENT_STATE_CONCEALED && !this->isWithinDist(object, DISCOVER_CONCEALED_UNIT_DISTANCE))
 				return false;
@@ -2365,7 +2367,7 @@ void Robot::attackInternal()
 
 	this->addUnitState(UNIT_STATE_ATTACKING);
 
-	// 露出并重新隐蔽
+	// Expose and reconceal
 	switch (this->getData()->getConcealmentState())
 	{
 	case CONCEALMENT_STATE_CONCEALED:
@@ -2388,7 +2390,7 @@ void Robot::attackInternal()
 	simpleProj.orientation = direction;
 	simpleProj.chargedStamina = this->getData()->getChargedStamina();
 
-	// 抛射体类型
+	// Projectile type
 	simpleProj.projectileType = PROJECTILE_TYPE_NORMAL;
 	if (m_staminaUpdater->isInCharge())
 		simpleProj.projectileType = PROJECTILE_TYPE_CHARGED;
@@ -2402,12 +2404,12 @@ void Robot::attackInternal()
 		}
 	}
 
-	// 伤害加成
+	// Damage bonus
 	simpleProj.damageBonusRatio = 0.f;
 	if((simpleProj.projectileType == PROJECTILE_TYPE_CHARGED || simpleProj.projectileType == PROJECTILE_TYPE_INTENSIFIED) && this->hasItemEffectType(ITEM_EFFECT_DAMAGE_BONUS_PERCENT))
 		simpleProj.damageBonusRatio = (float)getTotalItemEffectModifier(ITEM_EFFECT_DAMAGE_BONUS_PERCENT) / 100.f;
 
-	// 计算抛射体大小比例
+	// Calculate the size scale of the projectile
 	simpleProj.scale = this->calcProjectileScale(simpleProj.projectileType);
 	NS_ASSERT(simpleProj.scale >= 1.0f);
 
@@ -2518,7 +2520,7 @@ void Robot::concealed()
 {
 	NS_ASSERT(this->getData()->getConcealmentState() != CONCEALMENT_STATE_CONCEALED);
 
-	// 标记当前的隐藏点为已检查
+	// Mark the current hiding spot as checked
 	TileCoord currCoord(this->getMap()->getMapData()->getMapSize(), this->getData()->getPosition());
 	this->markHidingSpotChecked(currCoord);
 
@@ -2694,7 +2696,7 @@ bool Robot::checkUseItemChaseConditions(CarriedItem* item) const
 
 bool Robot::checkUseItemFindEnemiesConditions(CarriedItem* item) const
 {
-	// 是胜负对决并且找不到敌人时使用
+	// Use when showdown occurs and no enemy can be found
 	if (m_map->isShowdown() && m_unitThreatManager.getThreatList().empty())
 		return true;
 
@@ -2775,7 +2777,7 @@ bool Robot::canUnlockInCombat() const
 	if (m_unitThreatManager.getThreatList().empty())
 		return true;
 
-	// 检查生命值，除非敌人是机器人并且不在解锁中
+	// Check health, unless the enemy is a robot and not in unlock state
 	bool checkHealth = true;
 	if (m_combating && m_combating->isType(TYPEMASK_ROBOT))
 	{
@@ -2799,7 +2801,7 @@ bool Robot::canCollectInCombat() const
 	if (m_unitThreatManager.getThreatList().empty())
 		return true;
 
-	// 检查生命值，除非敌人是机器人并且不在收集中
+	// Check health, unless the enemy is a robot and not in collection state
 	bool checkHealth = true;
 	if (m_combating && m_combating->isType(TYPEMASK_ROBOT))
 	{

@@ -17,8 +17,8 @@ public:
 	static Application* instance();
 
 	int run(int argc, char** argv);
-	// 获取应用程序的根目录
-	// 格式: /home/.../{SERVER_APP_DIR}/
+	// Get the root directory of the application
+	// Format: /home/.../{SERVER_APP_DIR}/
 	std::string const& getRoot() const { return m_appRoot; }
 
 private:

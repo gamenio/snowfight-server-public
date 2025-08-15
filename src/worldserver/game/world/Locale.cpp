@@ -2,9 +2,6 @@
 
 char const* langTags[TOTAL_LANGS] = {
 	"en-US",
-	"zh-CN",
-	"ja-JP",
-	"ko-KR",
 };
 
 LangType getLangTypeByLangTag(std::string const& langTag)

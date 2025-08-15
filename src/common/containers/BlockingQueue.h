@@ -63,8 +63,9 @@ public:
 	}
 
 
-	// 如果队列中有新的元素则取出并存储到value中，否则线程等待直到队列中有新的元素或者调用cancel()
-	// 如果返回true则有新的元素存储到value
+	// If there is a new element in the queue, it is popped and stored in the value. Otherwise, 
+	// the thread waits until there is a new element in the queue or cancel() is called.
+	// If true is returned, a new element is stored in the value
 	bool waitAndPop(T& value)
 	{
 		std::unique_lock<std::mutex> lock(m_queueMutex);
@@ -83,7 +84,7 @@ public:
 		return true;
 	}
 
-	// 解除所有等待的线程并删除队列中的元素
+	// Wake up all waiting threads and remove elements from the queue
 	void cancel()
 	{
 		std::unique_lock<std::mutex> lock(m_queueMutex);

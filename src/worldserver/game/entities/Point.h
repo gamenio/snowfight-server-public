@@ -92,13 +92,13 @@ public:
 		return !(*this == right);
 	}
 
-	// 计算该点到另外一个点的距离
+	// Calculate the distance between the point and another point
 	float getDistance(Point const& other) const
 	{
 		return (*this - other).getLength();
 	}
 
-	// 计算该点到另外一个点平方距离
+	// Calculate the square distance between the point and another point
 	float getDistanceSquared(Point const& other) const
 	{
 		float dx = other.x - x;
@@ -106,14 +106,14 @@ public:
 		return (dx * dx + dy * dy);
 	}
 
-	// 计算从原点到该点的距离
+	// Calculate the distance from the origin to the point
 	float getLength() const 
 	{
 		return sqrtf(x*x + y*y);
 	}
 
 
-	// 计算从原点到该点的平方距离
+	// Calculate the square distance from the origin to the point
 	float getLengthSquared() const
 	{
 		return (x * x + y * y);
@@ -140,4 +140,4 @@ private:
 };
 
 
-#endif //__POINT_H__
+#endif // __POINT_H__

@@ -28,13 +28,13 @@ bool PointMovementGenerator::update(NSTime diff)
 		return true;
 
 	TileCoord currCoord(m_owner->getData()->getMapData()->getMapSize(), m_owner->getData()->getPosition());
-	// 到达目标点
+	// Reach the target point
 	if (currCoord == m_realPoint)
 	{
 		this->moveStop();
 		return false;
 	}
-	// 前往目标点
+	// Go to the target point
 	else
 	{
 		TileCoord toCoord = m_realPoint;
@@ -88,7 +88,7 @@ void PointMovementGenerator::initialize()
 {
 	MapData* mapData = m_owner->getMap()->getMapData();
 	TileCoord currCoord(mapData->getMapSize(), m_owner->getData()->getPosition());
-	// 找到距离point最近的开放位置
+	//  Find the nearest open position to the point
 	if (!mapData->isValidTileCoord(m_point) || mapData->isWall(m_point) || m_owner->getMap()->isTileClosed(m_point))
 		m_owner->getMap()->findNearestOpenTile(m_point, currCoord, m_realPoint);
 	else

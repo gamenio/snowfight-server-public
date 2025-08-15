@@ -12,7 +12,7 @@
 #include "ObjectShapes.h"
 #include "UnitHelper.h"
 
-#define INACTIVATION_DELAY							500 // 失活状态延迟时间。单位：毫秒
+#define INACTIVATION_DELAY							500 // Inactive state delay time. Unit: milliseconds
 
 Projectile::Projectile() :
 	m_state(PROJECTILE_STATE_ACTIVE),
@@ -45,7 +45,7 @@ bool Projectile::canDetect(Unit* target) const
 	if (target == launcher)
 		return false;
 
-	// 如果发射者没有开启GM模式，则抛射体无法探测到其他GM玩家
+	// If the launcher does not enable GM mode, the projectile cannot detected other GM players
 	if (target->isType(TYPEMASK_PLAYER))
 	{
 		DataPlayer* dPlayer = target->asPlayer()->getData();
@@ -53,7 +53,7 @@ bool Projectile::canDetect(Unit* target) const
 			return false;
 	}
 
-	// 如果发射者开启GM模式，则抛射体只能探测到GM玩家，不能探测到其他目标
+	// If the launcher enables GM mode, the projectile can only detected GM players and cannot detected other targets
 	if (launcher->isType(TYPEMASK_PLAYER))
 	{
 		DataPlayer* dPlayer = launcher->asPlayer()->getData();
@@ -65,7 +65,7 @@ bool Projectile::canDetect(Unit* target) const
 	{
 		if (!launcher->hasItemEffectType(ITEM_EFFECT_DISCOVER_CONCEALED_UNIT))
 		{
-			// 抛射体无法探测到已隐蔽并且不在发现范围内的目标
+			// The projectile cannot detected targets that are concealed and not within the discover distance
 			DataUnit* dUnit = target->asUnit()->getData();
 			if (dUnit->getConcealmentState() == CONCEALMENT_STATE_CONCEALED && !launcher->isWithinDist(target, DISCOVER_CONCEALED_UNIT_DISTANCE))
 				return false;
@@ -85,7 +85,7 @@ bool Projectile::canDetect(ItemBox* target) const
 	if (!launcher->isAlive() || !target->isInWorld() || !target->isVisible())
 		return false;
 
-	// 如果发射者开启GM模式，则抛射体不能探测到目标
+	// If the launcher enables GM mode, the projectile cannot detected the target
 	if (launcher->isType(TYPEMASK_PLAYER))
 	{
 		DataPlayer* dPlayer = launcher->asPlayer()->getData();
@@ -172,7 +172,7 @@ void Projectile::sendLaunchResult(int32 status, AttackableObject* target)
 	if (target)
 	{
 		message.set_target(target->getData()->getGuid().getRawValue());
-		// 修正碰撞位置
+		// Correct collision position
 		if (target->isType(TYPEMASK_UNIT))
 		{
 			Rect collbox = target->getBoundingBox();
@@ -190,7 +190,7 @@ void Projectile::sendLaunchResult(int32 status, AttackableObject* target)
 	message.set_position_y(collPos.y);
 	message.set_status(status);
 
-	// 发送给周围客户端中包含这个抛射体的玩家
+	// Send to players in the nearby client who contain this projectile
 	PlayerClientExistsObjectFilter filter(this);
 	std::list<Player*> result;
 	ObjectSearcher<Player, PlayerClientExistsObjectFilter> searcher(filter, result);
@@ -290,7 +290,7 @@ void Projectile::updatePosition(Point const& newPosition)
 	{
 		this->getMap()->projectileRelocation(this, newPosition);
 
-		// 抛射体在地面的位置
+		// The position of the projectile on the ground
 		MapData const* mapData = this->getMap()->getMapData();
 		Point shadowPosition = this->calcShadowPosition();
 		TileCoord groundCoord(mapData->getMapSize(), shadowPosition);
@@ -310,12 +310,12 @@ Point Projectile::calcShadowPosition()
 	Point startPos = this->getData()->getTrajectory().startPosition;
 	Point endPos = this->getData()->getTrajectory().startPosition + this->getData()->getTrajectory().endPosition;
 
-	// 计算阴影起始位置
+	// Calculate the starting position of the shadow
 	Point shadowStartPos;
 	shadowStartPos.x = startPos.x;
 	shadowStartPos.y = startPos.y - this->getData()->getLaunchCenter().y;
 
-	// 计算阴影当前位置
+	// Calculate the current position of the shadow
 	float scale = std::max(0.f, std::min(1.f, m_moveSpline->getElapsed() / (float)m_moveSpline->getDuration()));
 	float dx = (endPos.x - shadowStartPos.x) * scale;
 	float dy = (endPos.y - shadowStartPos.y) * scale;
@@ -411,7 +411,7 @@ bool Projectile::reloadData(SimpleProjectile const& simpleProjectile, BattleMap*
 
 	data->setOrientation(simpleProjectile.orientation);
 
-	// 计算抛物线
+	// Calculate the trajectory
 	Point landingPos = UnitHelper::computeLandingPosition(simpleProjectile.launcherOrigin, simpleProjectile.attackRange, simpleProjectile.orientation);
 	Point launchPos = UnitHelper::computeLaunchPosition(map->getMapData(), simpleProjectile.launcherOrigin, simpleProjectile.launchCenter, simpleProjectile.launchRadiusInMap, landingPos);
 	TrajectoryGenerator trajGenerator(TRAJECTORY_TYPE_PROJECTILE, launchPos, landingPos);
@@ -420,7 +420,7 @@ bool Projectile::reloadData(SimpleProjectile const& simpleProjectile, BattleMap*
 	BezierCurveConfig const& config = trajGenerator.getBezierCurveConfig();
 	data->setTrajectory(config);
 
-	// 计算持续时间
+	// Calculate duration
 	int32 duration = (int32)(config.length / PROJECTILE_SPEED * 1000);
 	data->setDuration(duration);
 

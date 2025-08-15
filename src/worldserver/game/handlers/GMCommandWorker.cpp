@@ -114,7 +114,7 @@ GMCommandWorker::ExecutionResult GMCommandWorker::executeCommandInTable(ArgList&
 		auto tableIt = table.find(*argIt);
 		if (tableIt != table.end())
 		{
-			args.erase(argIt); // 保留参数部分
+			args.erase(argIt); // Reserve the parameter part
 
 			auto const& subCmds = (*tableIt).second.subCommands;
 			if (!subCmds.empty())
@@ -138,7 +138,7 @@ GMCommandWorker::ExecutionResult GMCommandWorker::executeCommandInTable(ArgList&
 		return RESULT_CMD_NOT_FOUND;
 }
 
-// GM开关。
+// GM switch.
 // Syntax: gm <on|off>
 bool GMCommandWorker::executeGMCommand(ArgList& args, std::string& error)
 {
@@ -187,7 +187,7 @@ bool GMCommandWorker::executeGMCommand(ArgList& args, std::string& error)
 	return true;
 }
 
-// 用指定的参数查找执行的目标，如果未找到则返回NULL。
+// Find the target to be executed using the specified arguments. If not found, return NULL.
 Unit* GMCommandWorker::getExecutionTarget(Player* sender, ArgList& args, std::string& error)
 {
 	std::string targetType = takeOutArg(args);

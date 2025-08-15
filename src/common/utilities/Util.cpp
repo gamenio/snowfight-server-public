@@ -169,7 +169,8 @@ std::string getUtf8ErrorMsg(boost::system::error_code const& error)
 {
 	std::string emsg = error.message();
 
-	// 定义BOOST_SYSTEM_USE_UTF8时，在Windows上Boost库使用代码页CP_UTF8代替默认的CP_ACP并返回UTF-8消息。该宏对POSIX没有影响。
+	// When BOOST_SYSTEM_USE_UTF8 is defined, the Boost library on Windows uses code page CP_UTF8 
+	// instead of the default CP_ACP and returns UTF-8 messages. This macro has no affect on POSIX.
 #if PLATFORM == PLATFORM_WINDOWS && !defined(BOOST_SYSTEM_USE_UTF8)
 	if (!emsg.empty())
 	{

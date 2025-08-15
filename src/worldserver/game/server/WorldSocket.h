@@ -22,14 +22,14 @@ private:
 	void checkIP();
 	void packAndSend(WorldPacket&& packet, MessageLite const & message);
 
-	// 登录验证
+	// Login authentication
 	//void sendAuthChallenge();
 	void handleAuthProof(WorldPacket& packet);
 
 	// Ping
 	void handlePing(WorldPacket& packet);
 
-	// 时间同步
+	// Time synchronization
 	void handleTimeSyncResp(WorldPacket & recvPacket);
 
 	WorldSession* m_session;

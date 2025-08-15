@@ -70,7 +70,7 @@ bool Theater::acceptSession(WorldSession* session)
 	if (this->getOnlineCount() <= 0 && m_map->getMapId() != player->getData()->getSelectedMapId())
 		return false;
 
-	// 对战人数达到上限
+	// The maximum number of combatants has been reached
 	int32 combatants = this->getOnlineCount() + m_map->getRobotCount();
 	if (combatants >= this->getPopulationCap())
 		return false;
@@ -78,7 +78,7 @@ bool Theater::acceptSession(WorldSession* session)
 	if (!m_map->canJoinBattle())
 		return false;
 
-	// 战区不在睡眠状态
+	// The theater is not in a state of sleep
 	if (!this->isSleepState())
 	{
 		if (player->getData()->isTrainee() 
@@ -148,31 +148,31 @@ float Theater::getOrder(WorldSession* session) const
 
 	float weight = 0;
 
-	// 如果有玩家在线或者玩家选定的地图与当前战区地图匹配
+	// If there are players online or the map selected by the player matches the current theater map
 	if (this->getOnlineCount() > 0 || m_map->getMapId() == player->getData()->getSelectedMapId())
 		weight += 1.0f;
 
 	int32 combatants = this->getOnlineCount() + m_map->getRobotCount();
-	// 对战人数没有达到上限
+	// The maximum number of players has not been reached
 	if (combatants < this->getPopulationCap())
 	{
 		weight += 1.0f;
-		// 在线人数占人口上限比例
+		// The ratio of online count to the population cap
 		weight += (float)this->getOnlineCount() / this->getPopulationCap();
 	}
 
-	// 能够加入战斗
+	// Can join the battle
 	if (m_map->canJoinBattle())
 		weight += 1.0f;
 
-	// 战区处于睡眠状态
+	// The theater is in a state of sleep
 	if (this->isSleepState())
 		weight += 1.0f;
 	else
 	{
-		if (!player->getData()->isTrainee() // 不是训练场学员
-			&& !m_map->isTrainingGround() // 地图不是训练场
-			&& m_map->isWithinCombatGrade(player->getData()->getCombatPower())) // 玩家战斗等级在区间范围内
+		if (!player->getData()->isTrainee() // Not a training ground trainee
+			&& !m_map->isTrainingGround() // A map is not a training ground
+			&& m_map->isWithinCombatGrade(player->getData()->getCombatPower())) // The player's combat grade is within the specified range
 		{
 			weight += 1.0f;
 		}

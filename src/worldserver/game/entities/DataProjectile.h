@@ -5,15 +5,15 @@
 #include "DataWorldObject.h"
 #include "game/combat/TrajectoryGenerator.h"
 
-#define PROJECTILE_SPEED			355.f			// 抛射体的速度。单位：points/second 
+#define PROJECTILE_SPEED			355.f			// Projectile speed. Unit: points/second
 
 enum LaunchStatus
 {
 	LAUNCHSTATUS_NONE				= 0,
-	LAUNCHSTATUS_FINISHED,					// 落到预定目的地
-	LAUNCHSTATUS_HIT_TARGET,				// 击中目标
-	LAUNCHSTATUS_HIT_BUILDING,				// 与建筑物发生碰撞
-	LAUNCHSTATUS_FAILED,					// 发射失败
+	LAUNCHSTATUS_FINISHED,					// Landed at the specified destination
+	LAUNCHSTATUS_HIT_TARGET,				// Hit the target
+	LAUNCHSTATUS_HIT_BUILDING,				// Collision with a building
+	LAUNCHSTATUS_FAILED,					// Launch failed
 };
 
 enum ProjectileType
@@ -52,14 +52,14 @@ public:
 	void setProjectileType(ProjectileType type) { m_projType = type; }
 	ProjectileType getProjectileType() const { return m_projType; }
 
-	// 伤害加成比例
+	// Damage bonus ratio
 	void setDamageBonusRatio(float ratio) { m_damageBonusRatio = ratio; }
 	float getDamageBonusRatio() const { return m_damageBonusRatio; }
 
-	// 持续时间。单位：毫秒
+	// Duration. Unit: milliseconds
 	int32 getDuration() const { return m_duration; }
 	void setDuration(int32 duration) { m_duration = duration; }
-	// 已用时间。单位：毫秒
+	// Time elapsed. Unit: milliseconds
 	void setElapsed(int32 elapsed) { m_elapsed = elapsed; }
 	int32 getElapsed() const { return m_elapsed; }
 

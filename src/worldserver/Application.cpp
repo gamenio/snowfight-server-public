@@ -11,15 +11,15 @@
 #define DEFAULT_CONFIG_FILE     "worldserver.conf"
 #define DEFAULT_LOG_DIR         "log"
 
-// 兼容的最小游戏版本号（客户端版本号）
-//    格式:        0x00  Major  Minor  Revision
+// Minimum compatible game version number (client version number)
+//    Format:        0x00  Major  Minor  Revision
 //                   00  01     00     00
 #define GAME_VERSION				0x00030100
 
-// 构建版本号
+// Build version number
 #define BUILD_NUMBER                27
 
-// 在打印错误并释放资源后返回EXIT_FAILURE
+// Return EXIT_FAILURE after printing the error and releasing resource
 #define RETURN_FAILURE(...) \
 	do { \
 		NS_LOG_ERROR("server.worldserver", __VA_ARGS__); \
@@ -72,7 +72,7 @@ int Application::run(int argc, char** argv)
 	}
 
 	std::string pidFile = sConfigMgr->getStringDefault("PidFile", "");
-	// 检测实例是否已经运行
+	// Check whether the instance is already running
 	if (!pidFile.empty())
 	{
 		uint32 pid = getPIDFromFile(m_appRoot + pidFile);
@@ -83,8 +83,8 @@ int Application::run(int argc, char** argv)
 		}
 	}
 
-	// 如果要异步输出Log，需要将io_service传递给Log单例
-	// 通常情况下输出Log是在调用它的线程中执行的，这可能发生在主线程中
+	// If you want to output logs asynchronously, you need to pass io_service to the Log singleton
+	// Normally, logs are output in the thread that calls it, which may be the main thread
     std::string logPath = m_appRoot + DEFAULT_LOG_DIR + "/";
 	sLog->initialize(sConfigMgr->getBoolDefault("Log.Async.Enable", false) ? &m_ioService : nullptr, logPath);
 
@@ -105,20 +105,20 @@ int Application::run(int argc, char** argv)
 	NS_LOG_INFO("server.worldserver", "Using Boost version: %i.%i.%i", BOOST_VERSION / 100000, BOOST_VERSION / 100 % 1000, BOOST_VERSION % 100);
 	NS_LOG_INFO("server.worldserver", "Bind Address: %s:%d", worldListener.c_str(), worldPort);
 
-	// 设置signal处理器
-	// 必须在启动io_service线程池之前设置，否则这些线程会退出
+	// Set the signal handler
+	// This must be set before starting the io_service thread pool, otherwise these threads will exit
 	boost::asio::signal_set signals(m_ioService, SIGINT, SIGTERM);
 #if PLATFORM == PLATFORM_WINDOWS
 	signals.add(SIGBREAK);
 #endif
 	signals.async_wait(std::bind(&Application::signalHandler, this, std::placeholders::_1, std::placeholders::_2));
 
-	// 启动io_service线程池
+	// Start the io_service thread pool
 	int numThreads = std::max(1, sConfigMgr->getIntDefault("ThreadPool", 1));
 	for (int i = 0; i < numThreads; ++i)
 		m_threadPool.emplace_back(boost::bind(&boost::asio::io_service::run, &m_ioService));
 
-	// 创建worldserver的PID文件
+	// Create the PID file for worldserver
 	if (!pidFile.empty())
 	{
 		if (uint32 pid = createPIDFile(m_appRoot + pidFile))
@@ -127,10 +127,10 @@ int Application::run(int argc, char** argv)
 			RETURN_FAILURE("Cannot create PID file %s.", pidFile.c_str());
 	}
 
-	// 根据配置文件设置进程的优先级
+	// Set the priority of the process based on the configuration file
 	setProcessPriority("server.worldserver");
 
-	// 初始化世界
+	// Initialize the world
 	if (!sWorld->initWorld())
 	{
 		RETURN_FAILURE("Failed to initialize world.");
@@ -142,7 +142,7 @@ int Application::run(int argc, char** argv)
 		RETURN_FAILURE("Network.Threads must be greater than 0");
 	}
 
-	// 启动worldserver的Socket监听
+	// Start listening socket for worldserver
 	if (!sWorldSocketMgr->startNetwork(m_ioService, worldListener, worldPort, networkThreads))
 	{
 		RETURN_FAILURE("Failed to start network.");
@@ -150,7 +150,7 @@ int Application::run(int argc, char** argv)
 
 	sWorld->run();
 
-	// 关闭服务器...
+	// Start shutting down the server
 
 	shutdownThreadPool();
 
@@ -164,8 +164,8 @@ int Application::run(int argc, char** argv)
 	return EXIT_SUCCESS;
 }
 
-// 如果命令选项被处理则返回true，否则返回false
-// options中包含未被处理的命令选项
+// Returns true if the command option is processed, otherwise returns false
+// The options contain unprocessed command options
 bool Application::parseCommandLine(int argc, char** argv, std::string& configFile, variables_map& options)
 {
 	options_description desc("Allowed options");

@@ -29,7 +29,7 @@ public:
 		this->close();
 	}
 
-	// 设置内核发送缓冲区大小，-1使用系统默认值
+	// Set the kernel send buffer size. -1 uses the system default value
 	void setSendBufferSize(int32 size) { m_sendBufferSize = size; }
 
 	void setTcpNoDelay(bool noDelay) { m_tcpNoDelay = noDelay; }
@@ -104,13 +104,13 @@ public:
 	}
 
 	//
-	// 异步接受新的连接
-	//
-	// ACCEPT_CALLBACK, 当有新的连接时被调用，函数原型：
+	// Asynchronously accept new connection
+	// 
+	// ACCEPT_CALLBACK, called when a new connection is established. Function prototype:
 	// void(boost::asio::ip::tcp::socket&& newSocket, uint32 threadIndex)
-	// 回调函数抛出的boost::system::system_error异常将会被捕获。
+	// The boost::system::system_error exception thrown by the callback function will be caught.
 	//
-	// SOCKET_FACTORY, 接收新连接的Socket和网络线程Id（NetworkThread），函数原型：
+	// SOCKET_FACTORY, receives new connection socket and network thread ID (NetworkThread), function prototype:
 	// std::pair<tcp::socket*, uint32>()
 	//
     template<typename ACCEPT_CALLBACK, typename SOCKET_FACTORY>

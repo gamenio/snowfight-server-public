@@ -19,10 +19,11 @@ public:
 	TargetStepGenerator(Unit* owner);
 	~TargetStepGenerator();
 
-	// 生成从起始位置（currStep）到目标位置（target）的路径，如果返回true则给出下一步（nextStep）的位置，
-	// 如果返回false则说明出现下列情况之一：
-	// - 已到达目标位置
-	// - 不存在路径
+	// Generate a path from the currStep to the target. If true is returned, the nextStep is given.
+	// If false is returned, one of the following situations has occurred:
+	// - The target position has been reached.
+	// - No path exists.
+
 	bool step(TileCoord& nextStep, TileCoord const& currStep, TileCoord const& target, StepInfo* info = nullptr);
 
 private:

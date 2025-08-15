@@ -14,7 +14,7 @@ void broadcastStaminaWorker(Player* source, uint16 opcode, StaminaInfo& info)
 	info.flags = source->getData()->getStaminaFlags();
 	info.chargeStartStamina = source->getData()->getChargeStartStamina();
 
-	// 向发送者发送操作确认包
+	// Send an operation acknowlegement packet to the sender.
 	if (WorldSession* session = source->getSession())
 	{
 		WorldPacket packet(opcode);
@@ -24,7 +24,7 @@ void broadcastStaminaWorker(Player* source, uint16 opcode, StaminaInfo& info)
 		session->packAndSend(std::move(packet), info);
 	}
 
-	// 向周围的玩家发送蓄力状态和蓄力期间的体力值变化
+	// Send the charge state and changes in stamina during the charge period to nearby players
 	if (source->hasUnitState(UNIT_STATE_CHARGING) || opcode == MSG_CHARGE_START || opcode == MSG_CHARGE_STOP)
 	{
 		info.stamina = source->getData()->getStamina();
@@ -72,7 +72,7 @@ void WorldSession::handleAttackInfo(WorldPacket& recvPacket)
 	attacker->stopContinuousAttack();
 	if (!attacker->hasUnitState(UNIT_STATE_CHARGING))
 	{
-		// 如果体力不足则攻击失败
+		// If stamina is not enough, the attack will fail
 		if (attacker->getData()->getStamina() < attacker->getData()->getAttackTakesStamina())
 		{
 			NS_LOG_DEBUG("world.handler.combat", "handleAttackInfo attacker: %s Not enough stamina.", attacker->getData()->getGuid().toString().c_str());

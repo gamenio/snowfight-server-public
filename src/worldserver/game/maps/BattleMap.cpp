@@ -11,7 +11,7 @@
 #include "game/world/ObjectMgr.h"
 #include "game/world/World.h"
 
-#define USE_MAP_CENTER_AS_SAFEZONE_CENTER		0		// 使用地图中心作为安全区中心位置
+#define USE_MAP_CENTER_AS_SAFEZONE_CENTER		0		// Use the center of the map as the center of the safe zone
 
 class ReusableObjectsStoreCleaner
 {
@@ -97,7 +97,7 @@ BattleMap::~BattleMap()
 	m_spawnManager->setMap(nullptr);
 	m_spawnManager = nullptr;
 
-	// 在删除地图之前必须先调用unloadAll()函数
+	// Before deleting the map, you must first call the unloadAll() function
 }
 
 void BattleMap::onStart()
@@ -135,7 +135,7 @@ void BattleMap::update(NSTime diff)
 	this->updatePatrolPoints();
 	this->resetAllMarkedGrids();
 
-	// 更新玩家
+	// Update players
 	this->resetMaxVisibleRange();
 	ObjectUpdater updater(diff);
 	TypeContainerVisitor<ObjectUpdater, WorldTypeGridContainer> updaterVisitor(updater);
@@ -146,12 +146,12 @@ void BattleMap::update(NSTime diff)
 		this->updateMaxVisibleRangeWithPlayer(player);
 		player->update(diff);
 
-		// 更新周围活动状态的Grid中的被动对象，例如：Item
+		// Update passive objects in the nearby active state grid, such as items
 		GridArea area = computeGridAreaInRect(player->getData()->getPosition(), player->getData()->getVisibleRange(), this->getMapData()->getMapSize());
 		this->updateObjectsInGridArea(area, updaterVisitor);
 	}
 
-	// 更新除玩家以外的主动对象
+	// Update active objects other than players
 	ObjectUpdateNotifier updateNotifier(*this, diff);
 	this->visitCreatedGrids(updateNotifier);
 
@@ -159,7 +159,7 @@ void BattleMap::update(NSTime diff)
 	this->processRelocationNotifies(diff);
 	this->processObjectRemoveList();
 
-	// 更新对象生成管理器
+	// Update object spawning manager
 	m_spawnManager->update(diff);
 
 	this->sendObjectUpdates();
@@ -182,7 +182,7 @@ void BattleMap::deleteFromWorld(Player* player)
 
 void BattleMap::addPlayerToMap(Player* player)
 {
-	// 计算玩家所在的Grid坐标
+	// Calculate the player's grid coordinates
 	GridCoord coord = computeGridCoordForPosition(player->getData()->getPosition());
 	this->ensureGridLoaded(coord);
 	this->addToGrid(player, coord);
@@ -671,7 +671,7 @@ void BattleMap::sendObjectUpdates()
 {
 	PlayerUpdateMapType updateMap;
 
-	// 将所有需要接收更新对象的玩家存储到updateMap中
+	// Store all players who need to receive update objects in updateMap
 	for (auto it = m_updateObjects.begin(); it != m_updateObjects.end(); ++it)
 	{
 		Object* obj = *it;
@@ -691,7 +691,7 @@ void BattleMap::sendObjectUpdates()
 		}
 	}
 
-	// 发送更新后清理对象
+	// Clean up objects after sending updates
 	while (!m_updateObjects.empty())
 	{
 		Object* obj = *m_updateObjects.begin();
@@ -825,7 +825,7 @@ void BattleMap::setSafeZoneCenter(TileCoord const& center)
 	m_initialSafeZoneRadius = std::max(mapWidth, mapHeight);
 
 	m_currSafeZoneRadius = m_initialSafeZoneRadius;
-	m_currSafeDistance = SIGHT_DISTANCE_IN_TILES; // 与危险区的安全距离
+	m_currSafeDistance = SIGHT_DISTANCE_IN_TILES; // Safe distance from the danger zone
 
 	NS_LOG_DEBUG("world.map", "safeZoneCenter: %d,%d currSafeZoneRadius: %d currSafeDistance: %d", m_safeZoneCenter.x, m_safeZoneCenter.y, m_initialSafeZoneRadius, m_currSafeDistance);
 }
@@ -856,13 +856,13 @@ void BattleMap::updateBattleState(NSTime diff)
 	case BATTLE_STATE_IN_PROGRESS:
 		this->updateSafeZone();
 
-		// 当人口限制为1时战斗将不会切换到结束状态
+		// When the population cap is set to 1, the battle will not change to the ending state
 		if (m_mapData->getPopulationCap() > 1)
 		{
 			if (m_aliveCounter <= 1 && m_spawnManager->isAllPlayersHere())
 			{
 				if (!this->isTrainingGround()
-					// 训练场已添加机器人
+					// Robots have been added to the training ground
 					|| this->getRobotCount() > 0)
 				{
 					m_battleStateTimer.reset();
@@ -906,7 +906,7 @@ Player* BattleMap::findVictoriousPlayer() const
 template<typename T>
 void BattleMap::addToGrid(T* obj, GridCoord const& coord)
 {
-	//增加obj到所在grid的容器中
+	// Add the obj to the grid container specified by the coord
 	this->getGrid(coord)->addWorldObject(obj);
 }
 
@@ -994,7 +994,7 @@ void BattleMap::findNearestOpenTile(TileCoord const& findCoord, TileCoord const&
 	std::vector<TileCoord> foundCoordList;
 	this->findNearestOpenTileList(findCoord, foundCoordList, isExcludeHidingSpots);
 	NS_ASSERT(!foundCoordList.empty());
-	// 通过排序得到距离currCoord最近的位置
+	// Sort to find the position nearest to currCoord
 	if (foundCoordList.size() > 1)
 	{
 		std::multimap<int32, std::size_t> orderedCoords;
@@ -1188,7 +1188,7 @@ void BattleMap::ensureGridLoaded(GridCoord const& coord)
 
 void BattleMap::ensureGridCreated(GridCoord const& coord)
 {
-	// 如果没有创建则创建grid
+	// If it has not been created, create the grid
 	if (!this->getGrid(coord))
 	{
 		GridType* grid = new GridType(coord);
@@ -1292,7 +1292,7 @@ void BattleMap::updateObjectsInGridArea(GridArea const& area, TypeContainerVisit
 	{
 		for (uint32 y = area.lowBound.y; y <= area.highBound.y; ++y)
 		{
-			// 标记Grid为已访问，避免重复访问同一个Grid
+			// Mark grid as visited to avoid visiting the same grid repeatedly
 			GridCoord coord(x, y);
 			if (isGridMarked(coord))
 				continue;
@@ -1308,13 +1308,13 @@ void BattleMap::processRelocationNotifies(NSTime diff)
 	if (m_gridRefList.empty())
 		return;
 
-	// 处理活动状态的Grid中对象的位置变化通知
+	// Handle notifications of changes in the position of objects in the active state grid
 	ObjectRelocation relocation(*this);
 	TypeContainerVisitor<ObjectRelocation, WorldTypeGridContainer> relocationVisitor(relocation);
 	for (auto it = m_gridRefList.begin(); it != m_gridRefList.end(); ++it)
 	{
 		GridType* grid = *it;
-		// 仅访问被标记过的Grid
+		// Only visit marked grids
 		if (!isGridMarked(grid->getGridCoord()))
 			continue;
 
@@ -1323,7 +1323,7 @@ void BattleMap::processRelocationNotifies(NSTime diff)
 
 	if (m_isSafeZoneRelocated)
 	{
-		// 当安全区位置发生变化时通知活动状态的Grid中的对象
+		// Notify objects in the active state grid when the location of the safe zone changes
 		SafeZoneRelocationNotifier notifier(*this);
 		TypeContainerVisitor<SafeZoneRelocationNotifier, WorldTypeGridContainer> notifierVisitor(notifier);
 		for (auto it = m_gridRefList.begin(); it != m_gridRefList.end(); ++it)
@@ -1337,7 +1337,7 @@ void BattleMap::processRelocationNotifies(NSTime diff)
 		m_isSafeZoneRelocated = false;
 	}
 
-	// 清理对象的通知标记
+	// Cleans the notification flags for objects
 	ObjectNotifyCleaner cleaner;
 	TypeContainerVisitor<ObjectNotifyCleaner, WorldTypeGridContainer> cleanerVisitor(cleaner);
 	for (auto it = m_gridRefList.begin(); it != m_gridRefList.end(); ++it)
@@ -1561,7 +1561,7 @@ void BattleMap::updateDistrictWaypointNodes()
 			&& districtId != m_mapData->getDistrictId(m_safeZoneCenter))
 		{
 			it = m_districtWaypointNodes.erase(it);
-			// 清理对象的地区计数器
+			// Cleans the district counter for objects.
 			ObjectDistrictCounterCleaner cleaner(districtId);
 			this->visitCreatedGrids(cleaner);
 		}

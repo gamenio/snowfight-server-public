@@ -22,15 +22,15 @@ class Socket: public std::enable_shared_from_this<SOCKET_TYPE>
 public:
 	enum
 	{
-		// 消息缓冲区的缺省大小
+		// The default size of the message buffer
 		MESSAGE_BUFFER_SIZE = 4096,
-		// 不限制发送队列大小
+		// Unlimited send queue size
 		SEND_QUEUE_UNLIMITED = 0
 
 	};
 
-	// 构造指定类型的Socket对象
-	// readBufferSize 设置用户空间的接收缓冲区大小
+	// Construct a Socket object of the specified type
+	// The readBufferSize is used to set the size of the receive buffer in user space
     Socket(tcp::socket&& socket) try:
 		m_readBuffer(MESSAGE_BUFFER_SIZE),
 		m_sendQueueLimit(SEND_QUEUE_UNLIMITED),
@@ -65,12 +65,12 @@ public:
 	boost::asio::ip::address getRemoteAddress() const { return m_remoteEndpoint.address(); }
 	uint16 getRemotePort() const { return m_remoteEndpoint.port(); }
 
-	// 返回Socket的打开状态，函数线程安全
+	// Returns the open status of the socket. The function is thread-safe
 	bool isOpen() { return !m_isClosed; }
 
 	void asyncRead() { this->readHeader(); }
 
-	// 主动关闭Socket，函数线程安全
+	// Actively closes the socket. The function is thread-safe
 	void closeSocket()
 	{
 		if (m_isClosed.exchange(true))
@@ -88,7 +88,7 @@ public:
 	}
 
 
-	// 添加数据包到队列中，函数线程安全
+	// Add data packet to queue. Function is thread-safe.
 	void queuePacket(PACKET_TYPE&& packet)
 	{
 		if (m_isClosed)
@@ -97,15 +97,14 @@ public:
 		m_packetQueue.add(std::move(packet));
 	}
 
-
-	// 当Socket被添加到网络线程的队列中之后被调用
+	// Called after the socket is added to the network thread queue
 	virtual void start() = 0;
 
-	// 当Socket接收到数据后调用
+	// Called when the socket receives data
 	virtual void onReceivedData(PACKET_TYPE&& packet) { }
 
-	// 在Socket被关闭时调用。
-	// 此函数有可能在非网络线程中被调用，这与closeSocket()函数调用位置有关
+	// Called when the socket is closed
+	// This function may be called in a non-network thread, which is related to the location where the closeSocket() function is called
 	virtual void onSocketClosed() { }
 
 	virtual void update()
@@ -116,7 +115,7 @@ public:
 		MessageBuffer buff(MESSAGE_BUFFER_SIZE);
 		PACKET_TYPE packet;
 
-		// 尽可能的将数据包合并到一个MessageBuffer之后再发送
+		// Merge data packets into a single MessageBuffer as much as possible before sending
 		while (m_packetQueue.next(packet))
 		{
 			if (m_isClosed)
@@ -133,7 +132,7 @@ public:
 			{
 				packet.write(buff);
 			}
-			// 单个包大于SEND_BUFFER_SIZE
+			// A single packet is larger than SEND_BUFFER_SIZE
 			else
 			{
 				MessageBuffer largeBuf(packet.getByteSize());

@@ -79,7 +79,7 @@ bool UnitHelper::checkLineOfSight(BattleMap* map, TileCoord const& fromCoord, Ti
 	const int32 maxX = x2;
 
 	TileCoord current;
-	bool gap = false; //y变化时填补缝隙，避免视线穿越瓦片的边缘
+	bool gap = false; // Fill gaps when Y changes to prevent the line of sight from crossing the edge of the tile
 	TileCoord side1;
 	TileCoord side2;
 	for (int32 x = x1; x <= maxX; x++)

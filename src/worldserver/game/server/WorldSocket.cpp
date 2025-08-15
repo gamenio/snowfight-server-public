@@ -61,7 +61,8 @@ void WorldSocket::onReceivedData(WorldPacket&& packet)
 	}
 }
 
-// 当onSocketClosed()被调用时WorldSession对象可能已经被释放，所以在这里不应该对m_session做任何引用
+// When onSocketClosed() is called, the WorldSession object may already have been released, 
+// so no references to m_session should be made here
 void WorldSocket::onSocketClosed()
 {
 	std::lock_guard<std::mutex> lock(m_sessMutex);
@@ -70,14 +71,14 @@ void WorldSocket::onSocketClosed()
 
 void WorldSocket::checkIP()
 {
-	// TODO 如果IP没有在黑名单则发起验证请求
+	// TODO If the IP is not on the blacklist, initiate a authentication request
 	this->asyncRead();
 	//this->sendAuthChallenge();
 }
 
 //void WorldSocket::sendAuthChallenge()
 //{
-//	// TODO 生成一个随机数用于协议数据加密
+//	// TODO Generate a random number for protocol data encryption
 //	AuthChallenge message;
 //	message.set_auth_seed(9999);
 //
@@ -98,7 +99,7 @@ void WorldSocket::handleAuthProof(WorldPacket& packet)
 	std::string playerId = message.playerid();
 	std::string originalPlayerId = message.original_playerid();
 
-	// TODO 登录凭证验证通过后创建会话
+	// TODO A session is created after the login credentials are authenticated
 
 	std::lock_guard<std::mutex> lock(m_sessMutex);
 
@@ -106,7 +107,7 @@ void WorldSocket::handleAuthProof(WorldPacket& packet)
 	m_session->setPlayerId(playerId);
 	m_session->setOriginalPlayerId(originalPlayerId);
 
-	// 如果设置了SessionID, TheaterManager将尝试从相同ID的会话中恢复
+	// If SessionID is set, TheaterManager will attempt to restore from a session with the same ID
 	if(sessionId > 0)
 		m_session->setSessionId(sessionId);
 

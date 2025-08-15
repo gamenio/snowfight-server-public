@@ -148,7 +148,7 @@ public:
 
 	void updateObjectsInGridArea(GridArea const& area, TypeContainerVisitor<ObjectUpdater, WorldTypeGridContainer>& visitor);
 
-	// 单位在寻路时将避开状态为封闭的瓦片
+	// When pathfinding, units will avoid tiles that are in a closed state
 	bool isTileClosed(int32 x, int32 y) const { return this->hasTileFlag(x, y, TILE_FLAG_CLOSED); }
 	bool isTileClosed(TileCoord const& coord) const { return this->hasTileFlag(coord, TILE_FLAG_CLOSED); }
 	void setTileClosedPosition(Point const& position, bool isClosed = true);
@@ -189,7 +189,7 @@ public:
 	void removeUpdateObject(Object* obj) { m_updateObjects.erase(obj); }
 	void sendObjectUpdates();
 
-	// 向地图上除自己以外的所有玩家发送消息
+	// Send a message to all players on the map except self
 	void sendGlobalFlashMessage(FlashMessage const& message, Player* self = nullptr);
 	void sendGlobalPlayerActionMessage(PlayerActionMessage const& message, Player* self = nullptr);
 
@@ -229,8 +229,8 @@ private:
 	void clearClosedTileFlag(TileCoord const& coord);
 	void markClosedTileFlag(TileCoord const& coord);
 
-	// 当对象移动到新的Grid时调用
-	// GridObject::removeFromGrid()将会影响到ObjectUpdater中的迭代器，故做延迟处理
+	// Called when the object moves to a new grid
+	// GridObject::removeFromGrid() will affect the iterator in ObjectUpdater, so it will be processed delayed
 	void addObjectToNewGrid(WorldObject* target);
 	void processObjectToNewGridList();
 

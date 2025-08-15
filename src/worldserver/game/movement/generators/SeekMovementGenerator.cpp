@@ -62,7 +62,7 @@ bool SeekMovementGenerator::update(NSTime diff)
 	if (!m_owner->getMoveSpline()->isFinished())
 		return true;
 
-	// 如果没有需要处理的隐藏点则结束移动
+	// If there is no hiding spot to process, stop moving
 	TileCoord currHidingSpot;
 	if (!this->selectNextPendingHidingSpot(currHidingSpot))
 	{
@@ -73,7 +73,7 @@ bool SeekMovementGenerator::update(NSTime diff)
 	{
 		TileCoord currCoord(m_owner->getData()->getMapData()->getMapSize(), m_owner->getData()->getPosition());
 		Point currHidingSpotPos = currHidingSpot.computePosition(m_owner->getData()->getMapData()->getMapSize());
-		// 到达隐藏点附近
+		// Reach the near the hiding spot
 		if (m_owner->isWithinDist(currHidingSpotPos, DISCOVER_CONCEALED_UNIT_DISTANCE))
 		{
 			this->removePendingHidingSpot(currHidingSpot);
@@ -81,7 +81,7 @@ bool SeekMovementGenerator::update(NSTime diff)
 
 			this->addAdjacentHidingSpots(currHidingSpot);
 		}
-		// 去隐藏点
+		// Go to the hiding spot
 		else
 		{
 			TileCoord nextStep;

@@ -232,7 +232,8 @@ void PlayerRelocationNotifier::visit(PlayerGridType& g)
 
 		m_player.updateVisibilityOf(player, m_updateObject, m_visibleNow);
 
-		// m_player有可能从player的可视范围内出现或移出，如果出现则需要将m_player的可见状态发送给player
+		// The m_player may come into or move out of the player's visible range. If it comes into sight, 
+		// the m_player's visibility state needs to be sent to the player
 		if (!player->isNeedNotify(NOTIFY_VISIBILITY_CHANGED))
 		{
 			player->updateVisibilityOf(&m_player);
@@ -490,7 +491,7 @@ void ObjectUpdateNotifier::visit(RobotGridType& g)
 		Robot* robot = it->getSource();
 		robot->update(m_diff);
 
-		// 更新周围活动状态的Grid中的被动对象，例如：Item
+		// Update passive objects in the nearby active state grid, such as items
 		GridArea area = computeGridAreaInCircle(robot->getData()->getPosition(), robot->getSightDistance());
 		m_map.updateObjectsInGridArea(area, m_updaterVisitor);
 	}
