@@ -12,4 +12,4 @@ Enter the following commands in CMD
 `cd build`  
 `cmake -G "Visual Studio 14 2015 Win64" ../ -DCMAKE_INSTALL_PREFIX="./bin" -DCMAKE_BUILD_TYPE=DEBUG -DWITH_COREDEBUG=TRUE`  
 
-Open the `snowfight_server.sln` solution file in the `build` directory to compile the source.
+Open the `snowfight_server.sln` in the `build` directory with MS Visual Studio and compile the project.
