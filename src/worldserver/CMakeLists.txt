@@ -41,7 +41,11 @@ if( WIN32 )
   if ( MSVC )
     add_custom_command(TARGET worldserver
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/bin/worldserver.conf.dist ${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/
+      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/worldserver.conf.dist" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/"
+	  COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/scripts/"
+	  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/scripts/import_world_sql.bat" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/scripts/"
+	  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/bin/odb/" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/odb/"
+	  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_CURRENT_SOURCE_DIR}/bin/map/" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/map/"
     )
   endif()
 endif()

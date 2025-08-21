@@ -27,7 +27,12 @@ if( WIN32 )
   if ( MSVC )
     add_custom_command(TARGET authserver
       POST_BUILD
-      COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/bin/authserver.conf.dist ${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/
+      COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/authserver.conf.dist" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/"
+	  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/realmlist.db.sql" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/"
+	  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/bannedlist.db.sql" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/"
+	  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/geoip.mmdb" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/"
+	  COMMAND ${CMAKE_COMMAND} -E make_directory "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/scripts/"
+	  COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_CURRENT_SOURCE_DIR}/bin/scripts/import_auth_sql.bat" "${CMAKE_BINARY_DIR}/bin/$(ConfigurationName)/scripts/"
     )
   endif()
 endif()
