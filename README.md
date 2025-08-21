@@ -11,6 +11,14 @@ Enter the following commands in CMD
 `cd <source_root>`  
 `mkdir build`  
 `cd build`  
-`cmake -G "Visual Studio 14 2015 Win64" ../ -DCMAKE_INSTALL_PREFIX="./bin" -DCMAKE_BUILD_TYPE=DEBUG -DWITH_COREDEBUG=TRUE`  
+`cmake -G "Visual Studio 14 2015 Win64" ../ -DCMAKE_INSTALL_PREFIX="./bin" -DCMAKE_BUILD_TYPE=DEBUG -DWITH_COREDEBUG=TRUE` 
+
 Open the `snowfight_server.sln` in the `build` directory with MS Visual Studio and compile the project.  
 ### Running the Server
+After the build is complete, you can find the files required for server runtime in the `<source_root>\build\bin\<config>` directory.  
+- Rename the following server configuration files:  
+`worldserver.conf.dist -> worldserver.conf`  
+`ntsserver.conf.dist -> ntsserver.conf`  
+`authserver.conf.dist -> authserver.conf`   
+- Run `import_auth_sql.bat` and `import_world_sql.bat` in the `scripts` directory to generate DB files for the server.  
+- Finally, run `worldserver.exe`, `ntsserver.exe`, and `authserver.exe` separately.  
