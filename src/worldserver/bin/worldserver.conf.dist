@@ -232,7 +232,7 @@ Network.SendQueueLimit = 204800
 #
 
 Appender.Console=1,3,0
-Appender.Server=2,3,23,world.log,w,1048576
+Appender.Server=2,2,7,world.log,w,1048576
 Appender.GM=2,2,7,gm/gm.log
 
 #

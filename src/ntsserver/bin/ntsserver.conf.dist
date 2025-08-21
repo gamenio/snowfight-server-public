@@ -182,7 +182,7 @@ Network.SendQueueLimit = 12800
 #
 
 Appender.Console=1,3,0
-Appender.Server=2,3,23,nts.log,w,1048576
+Appender.Server=2,2,7,nts.log,w,1048576
 
 #
 # Logger configuration
