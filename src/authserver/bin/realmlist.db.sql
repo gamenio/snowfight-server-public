@@ -16,10 +16,7 @@ CREATE TABLE IF NOT EXISTS "region_map" (
 	"group_id"	INTEGER
 );
 INSERT INTO "realm_info" ("id","name","group_id","address","port","platform","game_version","compatibility") VALUES
- (1,'WorldServer',1,'0.0.0.0',18403,0,'3.1.0',3),
- (2,'WorldServer',1,'0.0.0.0',18402,0,'3.2.0',3);
--- Uncommented after client version 3.2 release
--- (1,'WorldServer',1,'0.0.0.0',18402,0,'3.1.0',3);
+ (1,'WorldServer',1,'0.0.0.0',18402,0,'3.1.0',3);
  
 INSERT INTO "region_map" ("country","group_id") VALUES ('US',1);
 COMMIT;
