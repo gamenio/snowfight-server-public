@@ -2,8 +2,8 @@ SnowFight Go is a multiplayer online survival snowball fight game. Written in C+
 ## Running on Windows
 ### Requirements
 > Windows 10 1903 (19H1) or their servers versions (fully updated 2019) and up  
-> Boost ≥ 1.58   
-> CMake ≥ 3.2.0
+> Boost ≥ 1.58  
+> CMake ≥ 3.2.0  
 > SQLite ≥ 3.12.2  
 > MS Visual Studio (Community) ≥ 14.0 (2015) (Desktop) (Not previews)  
 ### Compiling the Source
