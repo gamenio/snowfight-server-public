@@ -8,10 +8,11 @@ SnowFight Go is a multiplayer online survival snowball fight game. Written in C+
 > MS Visual Studio (Community) ≥ 14.0 (2015) (Desktop) (Not previews)  
 ### Compiling the Source
 Enter the following commands in CMD  
-`cd <source_root>`  
-`mkdir build`  
-`cd build`  
-`cmake -G "Visual Studio 14 2015 Win64" ../ -DCMAKE_INSTALL_PREFIX="./bin" -DCMAKE_BUILD_TYPE=DEBUG -DWITH_COREDEBUG=TRUE` 
+
+    > cd <source_root>  
+    > mkdir build  
+    > cd build  
+    > cmake -G "Visual Studio 14 2015 Win64" ../ -DCMAKE_INSTALL_PREFIX="./bin" -DCMAKE_BUILD_TYPE=DEBUG -DWITH_COREDEBUG=TRUE 
 
 Open the `snowfight_server.sln` in the `build` directory with MS Visual Studio and compile the project.  
 ### Running the Server
