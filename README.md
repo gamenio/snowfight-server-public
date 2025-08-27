@@ -43,9 +43,9 @@ Enter the following commands in Shell
 After the build is complete, you can find the files required for server runtime in the `<source_root>\build\bin` directory.  
 Rename the following server configuration files  
 
-    $ cp ./authserver.conf.dist ./authserver.conf
-    $ cp ./worldserver.conf.dist ./worldserver.conf
-    $ cp ./ntsserver.conf.dist ./ntsserver.conf
+    $ mv ./authserver.conf.dist ./authserver.conf
+    $ mv ./worldserver.conf.dist ./worldserver.conf
+    $ mv ./ntsserver.conf.dist ./ntsserver.conf
 
 Generate DB files for the server  
 
